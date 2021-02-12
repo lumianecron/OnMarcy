@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">OnMarcy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="cities">
+        <item>Select city</item>
+        <item>Tokyo</item>
+        <item>Hokkaido</item>
+        <item>Akita</item>
+        <item>Osaka</item>
+        <item>Kyoto</item>
+        <item>Okinawa</item>
+    </string-array>
+    <string-array name="type">
+        <item>Brand</item>
+        <item>Marketer</item>
+    </string-array>
+    <string name="url">https://api-onmarcy.genoratory.com/</string>
+</resources>
