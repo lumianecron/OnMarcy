@@ -42,4 +42,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // tambahan buat connect dbase server
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation files('libs/httpcore-4.4.1.jar')
+    implementation files('libs/httpclient-4.5.jar')
+    implementation files('libs/picasso-2.5.2.jar')
+    implementation files('libs/printerbtlibs.jar')
 }
