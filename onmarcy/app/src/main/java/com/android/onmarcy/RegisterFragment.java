@@ -110,7 +110,7 @@ public class RegisterFragment extends Fragment {
                     popupWindow.showAtLocation(getView(), Gravity.BOTTOM, 0, 300);
                 }
                 if (!binding.edtConfirm.getText().toString().equals(binding.edtPassword.getText().toString())) {
-                    binding.edtConfirm.setError(getResources().getString(R.string.password_dont_match));
+                    binding.edtConfirm.setError(getResources().getString(R.string.password_doesnt_match));
                     isValid = false;
                 }
 

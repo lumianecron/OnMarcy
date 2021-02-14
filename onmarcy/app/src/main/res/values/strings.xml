@@ -21,7 +21,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="re_enter_password">Re-enter Password</string>
-    <string name="password_dont_match">Passwords don`t match</string>
+    <string name="password_doesnt_match">Password doesn`t match</string>
     <string name="referral_code_optional">Referral Code (optional)</string>
     <string name="personal_information">PERSONAL INFORMATION</string>
     <string name="name">Name</string>
