@@ -15,15 +15,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REGISTER AN ACCOUNT"
-            android:textColor="#C10B0B"
+            android:text="@string/register_an_account"
+            android:textColor="@color/red3"
             android:textSize="20sp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email Address"
+            android:text="@string/email_address"
             android:textStyle="bold"/>
 
         <EditText
@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username"
+            android:text="@string/username"
             android:textStyle="bold"/>
 
         <EditText
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password"
+            android:text="@string/password"
             android:textStyle="bold"/>
 
         <EditText
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Re-enter Password"
+            android:text="@string/re_enter_password"
             android:textStyle="bold"/>
 
         <EditText
@@ -70,7 +70,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Referral Code (optional)"
+            android:text="@string/referral_code_optional"
             android:textStyle="bold"/>
 
         <EditText
@@ -81,8 +81,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PERSONAL INFORMATION"
-            android:textColor="#C10B0B"
+            android:text="@string/personal_information"
+            android:textColor="@color/red3"
             android:textSize="20sp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="20dp"/>
@@ -90,7 +90,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
+            android:text="@string/name"
             android:textStyle="bold"/>
 
         <EditText
@@ -101,7 +101,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone"
+            android:text="@string/phone"
             android:textStyle="bold"/>
 
         <EditText
@@ -113,10 +113,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="City"
+            android:text="@string/city"
             android:textStyle="bold"/>
 
-        <Spinner
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/sp_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,15 +127,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Account Type"
+            android:text="@string/account_type"
             android:textStyle="bold"/>
 
         <Spinner
             android:id="@+id/sp_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/type"
-            android:layout_marginVertical="10dp"/>
+            android:entries="@array/types"
+            android:layout_marginVertical="10dp"
+            android:paddingLeft="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,13 +146,13 @@
                 android:id="@+id/cb_policy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I have read and agree to the "/>
+                android:text="@string/i_have_read_and_agree_to_the"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Terms of Service"
-                android:textColor="#C10B0B" />
+                android:text="@string/terms_of_service"
+                android:textColor="@color/red3" />
 
         </LinearLayout>
 
@@ -159,8 +160,8 @@
             android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="register"
-            android:backgroundTint="#C10B0B"
+            android:text="@string/register"
+            android:backgroundTint="@color/red3"
             android:layout_gravity="right"
             android:layout_marginBottom="20dp"/>
 

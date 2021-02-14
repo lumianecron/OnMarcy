@@ -79,7 +79,7 @@ public class Global {
     }
 
     public static String executePost(String _targetURL, JSONObject _jsonObject, int _timeoutMiliSecond){
-        String url = "octa.genoratory.com/";
+        String url = "api-onmarcy.genoratory.com/";
         String hostUrl = "https://" + url;
 
         Log.wtf("HOST", hostUrl + _targetURL);

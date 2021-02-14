@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,21 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+            }
+        });
+
+        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
+            boolean isValid = true;
+            @Override
+            public void onClick(View view) {
+                if(TextUtils.isEmpty(binding.edtUsername.getText().toString())){
+                    isValid = false;
+                    binding.edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
+                }
+                if(TextUtils.isEmpty(binding.edtPassword.getText().toString())){
+                    isValid = false;
+                    binding.edtPassword.setError(getResources().getString(R.string.please_fill_out_this_field));
+                }
             }
         });
     }
