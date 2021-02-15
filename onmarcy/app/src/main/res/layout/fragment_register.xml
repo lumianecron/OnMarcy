@@ -149,6 +149,7 @@
                 android:text="@string/i_have_read_and_agree_to_the"/>
 
             <TextView
+                android:id="@+id/tv_terms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/terms_of_service"

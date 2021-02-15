@@ -134,7 +134,7 @@ public class User implements Parcelable {
 
     //SELECT
     public static void select(Activity activity, String username, String password, Boolean useLoading, CallbackSelect callback) {
-        new select(activity, username, password, useLoading, callback).execute("api/v1/user/select.php");
+        new select(activity, username, password, useLoading, callback).execute("v1/login");
     }
 
     private static class select extends AsyncTask<String, Void, String> {
@@ -194,8 +194,8 @@ public class User implements Parcelable {
     }
 
     //INSERT
-    public static void insert(Activity activity, String username, String password, Boolean useLoading, Callback callback) {
-        new insert(activity, username, password, useLoading, callback).execute("api/v1/user/insert.php");
+    public static void insert(Activity activity, String username, String password, String email, Boolean useLoading, Callback callback) {
+        new insert(activity, username, password, useLoading, callback).execute("v1/login");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {

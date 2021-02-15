@@ -23,7 +23,12 @@ import android.widget.Toast;
 
 import com.android.onmarcy.databinding.FragmentRegisterBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import model.City;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +37,7 @@ import java.util.ArrayList;
  */
 public class RegisterFragment extends Fragment {
     FragmentRegisterBinding binding;
-    private String[] dataCity;
+    ArrayList<City> cities = new ArrayList<>();
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -60,8 +65,25 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dataCity = getResources().getStringArray(R.array.cities);
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataCity);
+        City.select(getActivity(), new City.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        City city = new City(data.getJSONObject(i));
+                        cities.add(city);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
+        ArrayAdapter<City> cityAdapter = new ArrayAdapter<City>(getContext(), android.R.layout.simple_list_item_1, cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spCity.setAdapter(cityAdapter);
 
@@ -114,9 +136,34 @@ public class RegisterFragment extends Fragment {
                     isValid = false;
                 }
 
+                int code = 0;
+                for (int i = 0; i < cities.size(); i++) {
+                    if(cities.get(i).getName().equals(binding.spCity.getSelectedItem().toString())){
+                        code = cities.get(i).getCode();
+                    }
+                }
+                if(code == 0) isValid = false;
+
+//                int type = binding.spType.getSelectedItem().equals("Brand") ? 1 : 2;
+//                Toast.makeText(getActivity(), type + "", Toast.LENGTH_SHORT).show();
+
                 if (isValid) {
                     Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
                 }
+            }
+        });
+
+        binding.tvTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TermsOfServiceDialog dialog = new TermsOfServiceDialog(getActivity());
+                dialog.dialogResult = new TermsOfServiceDialog.OnMyDialogResult() {
+                    @Override
+                    public void finish(boolean isClose) {
+
+                    }
+                };
+                dialog.show();
             }
         });
     }

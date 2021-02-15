@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="500dp"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Terms of Service "
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="OnMarcy"
+                android:background="@color/red1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="3dp"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="14sp"
+            android:text="ACCEPTANCE OF TERMS"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:layout_margin="10dp"
+            android:text="THIS AGREEMENT GOVERNS YOUR USE OF ONMARCY WEBSITE."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="Onmarcy is a website owned and operated by CV. Tunas Karya Data. Onmarcy connects brands to influential social media users (hereinafter: “Marketers”).
+Any person who wishes to use Onmarcy must agree to the terms and conditions of these Terms of Use, which includes the Onmarcy Privacy Policy (collectively, the “Agreement“), as well as all other policies and guidelines incorporated by reference in this Agreement. The Agreement is a binding agreement between you and Onmarcy (CV. Tunas Karya Data)."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            android:layout_margin="10dp"
+            android:text="BY USING ONMARCY, YOU AGREE TO BE BOUND BY ALL TERMS AND CONDITIONS OF THIS AGREEMENT AND ALL POLICIES AND GUIDELINES INCORPORATED BY REFERENCE. PLEASE READ THIS AGREEMENT CAREFULLY. IF YOU DO NOT WISH TO BE BOUND BY THIS AGREEMENT, DO NOT INDICATE YOUR ACCEPTANCE, AND DO NOT USE ONMARCY."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:text="CHANGES TO THIS AGREEMENT"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="Onmarcy may change any of the terms and conditions contained in this Agreement, including the Privacy Policy and other policies and guidelines governing the Service, at any time in its sole discretion. NOTICE OF MATERIAL CHANGES TO THIS AGREEMENT WILL BE POSTED ON ONMARCY'S WEBSITE BEFORE THEY BECOME EFFECTIVE. YOU ARE RESPONSIBLE FOR REVIEWING THE NOTICE AND ANY APPLICABLE CHANGES."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="YOU AGREE THAT YOUR CONTINUED USE OF THE WEBSITE FOLLOWING ANY CHANGES TO THIS AGREEMENT AND AFTER THE CHANGES TAKE EFFECT WILL CONSTITUTE YOUR ACCEPTANCE OF SUCH CHANGES."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="IF YOU DO NOT AGREE TO FUTURE CHANGES TO THIS AGREEMENT, DO NOT CONTINUE TO USE THE WEBSITE AFTER THE EFFECTIVE DATE OF SUCH CHANGES. INFORMATION COLLECTED AND STORED BY ONMARCY"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            android:text="To use certain features of Onmarcy, such as the Onmarcy contact form or registration, this use causes Onmarcy to collect and store your information."/>
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="close"
+            android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

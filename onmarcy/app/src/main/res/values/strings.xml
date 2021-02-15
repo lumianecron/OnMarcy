@@ -13,7 +13,7 @@
         <item>Marketer</item>
     </string-array>
     <string name="url">https://api-onmarcy.genoratory.com/</string>
-<!--    Register-->
+    <!--    Register-->
     <string name="email_format_is_not_valid">Email format is not valid</string>
     <string name="please_fill_out_this_field">Please fill out this field</string>
     <string name="register_an_account">REGISTER AN ACCOUNT</string>
@@ -32,7 +32,7 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="popup_agreement">Please agree with our terms</string>
     <string name="register">register</string>
-<!--    Login-->
+    <!--    Login-->
     <string name="login_to_your_account">LOGIN TO YOUR ACCOUNT</string>
     <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="join_us">Join us!</string>
