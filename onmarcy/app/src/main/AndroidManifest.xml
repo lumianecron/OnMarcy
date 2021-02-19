@@ -13,6 +13,7 @@ package="com.android.onmarcy">
     <uses-library
         android:name="org.apache.http.legacy"
         android:required="false" />
+
     <activity android:name=".MainActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -21,6 +22,7 @@ package="com.android.onmarcy">
         </intent-filter>
         <nav-graph android:value="@navigation/main_navigation" />
     </activity>
+    <activity android:name=".MainActivity2"></activity>
 </application>
 
 </manifest>

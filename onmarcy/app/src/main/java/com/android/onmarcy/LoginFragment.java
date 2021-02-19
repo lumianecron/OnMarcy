@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
             boolean isValid = true;
             @Override
             public void onClick(View view) {
-                boolean success = true;
+                /*boolean success = true;
                 if(TextUtils.isEmpty(binding.edtUsername.getText().toString())){
                     isValid = false;
                     binding.edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
@@ -106,7 +106,8 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
+                }*/
+                Navigation.findNavController(view).navigate(R.id.action_login_to_home);
             }
         });
     }
