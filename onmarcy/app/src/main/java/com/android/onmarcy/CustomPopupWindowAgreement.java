@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 public class CustomPopupWindowAgreement extends AppCompatTextView {
     private Drawable background;
     private int textColor;
+    public static String errMessage;
 
     public CustomPopupWindowAgreement(@NonNull Context context) {
         super(context);
@@ -37,7 +38,7 @@ public class CustomPopupWindowAgreement extends AppCompatTextView {
         setTextColor(textColor);
         setTextSize(14.f);
         setGravity(Gravity.CENTER);
-        setText(R.string.popup_agreement);
+        setText(errMessage);
         setPadding(30, 30, 30, 30);
     }
 

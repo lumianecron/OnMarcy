@@ -12,9 +12,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.onmarcy.databinding.FragmentLoginBinding;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -27,7 +29,9 @@ import model.User;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    FragmentLoginBinding binding;
+    EditText edtUsername, edtPassword;
+    Button btnLogin;
+    TextView tvJoin;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -47,39 +51,36 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-        return view;
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.tvJoin.setOnClickListener(new View.OnClickListener() {
+        bindView(view);
+
+        tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
             }
         });
 
-        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
-            boolean isValid = true;
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*boolean success = true;
-                if(TextUtils.isEmpty(binding.edtUsername.getText().toString())){
-                    isValid = false;
-                    binding.edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
+                boolean success = true;
+                if (TextUtils.isEmpty(edtUsername.getText().toString())) {
+                    edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
                     success = false;
                 }
-                if(TextUtils.isEmpty(binding.edtPassword.getText().toString())){
-                    isValid = false;
-                    binding.edtPassword.setError(getResources().getString(R.string.please_fill_out_this_field));
+                if (TextUtils.isEmpty(edtPassword.getText().toString())) {
+                    edtPassword.setError(getResources().getString(R.string.please_fill_out_this_field));
                     success = false;
                 }
 
-                if(success){
-                    String username = binding.edtUsername.getText().toString();
+                if (success) {
+                    /*String username = binding.edtUsername.getText().toString();
                     String password = binding.edtPassword.getText().toString();
                     User.select(getActivity(), username, password, true, new User.CallbackSelect() {
                         @Override
@@ -105,10 +106,18 @@ public class LoginFragment extends Fragment {
 //                            Global.showLoading(getActivity(), "INFO", "Login unsuccessful!");
                             Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                }*/
-                Navigation.findNavController(view).navigate(R.id.action_login_to_home);
+                    });*/
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    private void bindView(View view) {
+        edtUsername = view.findViewById(R.id.edt_username);
+        edtPassword = view.findViewById(R.id.edt_password);
+        btnLogin = view.findViewById(R.id.btn_login);
+        tvJoin = view.findViewById(R.id.tv_join);
     }
 }

@@ -22,7 +22,7 @@ package="com.android.onmarcy">
         </intent-filter>
         <nav-graph android:value="@navigation/main_navigation" />
     </activity>
-    <activity android:name=".MainActivity2"></activity>
+    <activity android:name=".HomeActivity"></activity>
 </application>
 
 </manifest>
