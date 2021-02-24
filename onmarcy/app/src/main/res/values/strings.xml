@@ -36,4 +36,9 @@
     <string name="new_password">New Password</string>
     <string name="select_city">Select City</string>
     <string name="please_choose_city">Please choose city</string>
+    <string name="type_your_instagram">Type your Instagram</string>
+    <string name="send">Send</string>
+    <string name="submit">submit</string>
+    <string name="verified">Verified</string>
+    <string name="pending">pending</string>
 </resources>
