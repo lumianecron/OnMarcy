@@ -41,4 +41,13 @@
     <string name="submit">submit</string>
     <string name="verified">Verified</string>
     <string name="pending">pending</string>
+    <string name="total_post">Total post</string>
+    <string name="total_comment">Total comment</string>
+    <string name="total_like">Total like</string>
+    <string name="minimum_age">Minimum age</string>
+    <string name="maximum_age">Maximum age</string>
+    <string name="male">Male</string>
+    <string name="time_posting">Time posting</string>
+    <string name="service_type">Service type</string>
+    <string name="female">Female</string>
 </resources>

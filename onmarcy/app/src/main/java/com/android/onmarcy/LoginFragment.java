@@ -87,10 +87,11 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void success(JSONObject data) {
                             User user = new User(data);
-                            /*Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                            Intent intent = new Intent(getActivity(), HomeActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();*/
+                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+//                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+//                            startActivity(intent);
+//                            getActivity().finish();
+
                             Log.d("RUNNN", "username : " + user.getUsername());
                             Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();

@@ -16,6 +16,9 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 
 public class User implements Parcelable {
+    @SerializedName("hash")
+    private String hash;
+
     @SerializedName("username")
     private String username;
 
@@ -88,10 +91,16 @@ public class User implements Parcelable {
     };
 
     @NonNull
+    public String getHash() {
+        return hash;
+    }
+    public void setHash(@NonNull String hash) {
+        this.hash = hash;
+    }
+
     public String getUsername() {
         return username;
     }
-
     public void setUsername(@NonNull String username) {
         this.username = username;
     }
@@ -99,7 +108,6 @@ public class User implements Parcelable {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -107,7 +115,6 @@ public class User implements Parcelable {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -115,7 +122,6 @@ public class User implements Parcelable {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -133,6 +139,7 @@ public class User implements Parcelable {
     // digunakan untuk mapping
     public User(JSONObject json) {
         try {
+            this.hash = json.has("hash") ? json.getString("hash") : "";
             this.username = json.has("username") ? json.getString("username") : "";
             this.password = json.has("password") ? json.getString("password") : "";
             this.email = json.has("email") ? json.getString("email") : "";
@@ -143,6 +150,12 @@ public class User implements Parcelable {
             this.refferal = json.has("refferal") ? json.getString("refferal") : "";
         }
         catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    //LOGOUT
+    public static void logout(){
+//        Global.setShared();
+
     }
 
     //SELECT

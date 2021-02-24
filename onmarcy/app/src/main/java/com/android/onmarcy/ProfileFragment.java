@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -32,12 +34,15 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import model.City;
+import model.SocialMedia;
+import model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,9 +51,9 @@ import model.City;
  */
 public class ProfileFragment extends Fragment {
     CircleImageView imageView;
-    TextView tvFollowers, tvFollowing;
     EditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm;
     SearchableSpinner spCity;
+    Button btnSend;
     private ArrayList<City> cities = new ArrayList<>();
     private int code = 0;
     private String cityName = "";
@@ -81,12 +86,27 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
         bindData(view);
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SocialMedia.insert(getActivity(), "enjirou", 1, 2, 205, "enjirou", 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "HK003912uyf", true, new SocialMedia.Callback() {
+                    @Override
+                    public void success() {
+                        Global.showLoading(getContext(), "success", "info");
+                    }
+
+                    @Override
+                    public void error() {
+                        Global.showLoading(getContext(), "error", "info");
+                    }
+                });
+            }
+        });
     }
 
     private void bindView(View view) {
         imageView = view.findViewById(R.id.image_view);
-        tvFollowers = view.findViewById(R.id.tvFollowers);
-        tvFollowing = view.findViewById(R.id.tvFollowing);
         edtName = view.findViewById(R.id.edt_name);
         edtUsername = view.findViewById(R.id.edt_username);
         edtEmail = view.findViewById(R.id.edt_email);
@@ -94,6 +114,7 @@ public class ProfileFragment extends Fragment {
         edtPassword = view.findViewById(R.id.edt_password);
         edtConfirm = view.findViewById(R.id.edt_confirm);
         spCity = view.findViewById(R.id.sp_city);
+        btnSend = view.findViewById(R.id.btn_send);
     }
 
     private void bindData(View view) {
@@ -101,8 +122,6 @@ public class ProfileFragment extends Fragment {
                 .load("https://i2.wp.com/popculture.id/wp-content/uploads/2020/01/sung-jin-woo-solo-leveling.jpg?fit=770%2C513&ssl=1")
                 .apply(new RequestOptions().override(120, 120))
                 .into(imageView);
-        tvFollowers.setText("12");
-        tvFollowing.setText("5");
         edtName.setText("Enjirou");
         edtUsername.setText("enjirou123");
         edtEmail.setText("shiruku0004@gmail.com");
