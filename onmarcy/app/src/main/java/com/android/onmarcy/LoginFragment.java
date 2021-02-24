@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,24 +81,18 @@ public class LoginFragment extends Fragment {
                 }
 
                 if (success) {
-                    /*String username = binding.edtUsername.getText().toString();
-                    String password = binding.edtPassword.getText().toString();
+                    String username = edtUsername.getText().toString();
+                    String password = edtPassword.getText().toString();
                     User.select(getActivity(), username, password, true, new User.CallbackSelect() {
                         @Override
                         public void success(JSONObject data) {
                             User user = new User(data);
-//                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-//                            Intent intent;
-//                            if(user.getName().equalsIgnoreCase("") && user.getEmail().equalsIgnoreCase("")){
-//                                intent = new Intent(getActivity(),  NewActivity.class);
-//                            }
-//                            else{
-//                                intent = new Intent(getActivity(),  HomeActivity.class);
-//                            }
-//                            intent.putExtra("userLogin", user);
-//                            startActivity(intent);
-//                            getActivity().finish();
-//                            Global.showLoading(getActivity(), "INFO", "Login successful!");
+                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                            Log.d("RUNNN", "username : " + user.getUsername());
+                            Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();
                         }
 
@@ -106,9 +101,9 @@ public class LoginFragment extends Fragment {
 //                            Global.showLoading(getActivity(), "INFO", "Login unsuccessful!");
                             Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
-                    });*/
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
+                    });
+//                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+//                    startActivity(intent);
                 }
             }
         });

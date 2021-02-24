@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,6 +52,7 @@ public class ProfileFragment extends Fragment {
     private ArrayList<City> cities = new ArrayList<>();
     private int code = 0;
     private String cityName = "";
+    ArrayAdapter<City> adapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -105,33 +107,12 @@ public class ProfileFragment extends Fragment {
         edtUsername.setText("enjirou123");
         edtEmail.setText("shiruku0004@gmail.com");
         edtPhone.setText("087855161565");
-        City.select(getActivity(), new City.CallbackSelect() {
-            @Override
-            public void success(JSONArray data) {
-                for (int i = 0; i < data.length(); i++) {
-                    try {
-                        City city = new City(data.getJSONObject(i));
-                        cities.add(city);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                for (int i = 0; i < cities.size(); i++) {
-                    if (cities.get(i).getCode() == 205) {
-                        cityName = cities.get(i).getName();
-                        break;
-                    }
-                }
-            }
 
-            @Override
-            public void error() {
-
-            }
-        });
-        ArrayAdapter<City> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCity.setAdapter(adapter);
+
+        loadCity();
     }
 
     @Override
@@ -168,24 +149,39 @@ public class ProfileFragment extends Fragment {
                 isValid = false;
             }
 
-            if (spCity.getSelectedItem() != null) {
-                for (int i = 0; i < cities.size(); i++) {
-                    if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
-                        code = cities.get(i).getCode();
-                    }
-                }
-            }
-
-            if (code == 0) {
-                isValid = false;
-                errorMessage = getString(R.string.please_choose_city);
-                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
-            }
-
             if (isValid) {
                 Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void loadCity(){
+        City.select(getActivity(), new City.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                cities.clear();
+                int idx = 0;
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        City city = new City(data.getJSONObject(i));
+                        cities.add(city);
+                        if(cities.get(i).getCode() == 205){
+                            idx = i;
+                        }
+                        Log.d("RUNNNNN", "idx : " + i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                spCity.setSelection(idx, true);
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 }

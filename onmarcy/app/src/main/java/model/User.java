@@ -25,14 +25,23 @@ public class User implements Parcelable {
     @SerializedName("email")
     private String email;
 
+    @SerializedName("name")
+    private String name;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("city")
+    private int cityCode;
+
     @SerializedName("user_type")
     private int userType;
 
-    @SerializedName("active")
-    private boolean isActive;
+    @SerializedName("refferal")
+    private String refferal;
 
-    @SerializedName("name")
-    private String name;
+    @SerializedName("active")
+    private int isActive;
 
     public User(String username, String password) {
         this.username = username;
@@ -126,8 +135,12 @@ public class User implements Parcelable {
         try {
             this.username = json.has("username") ? json.getString("username") : "";
             this.password = json.has("password") ? json.getString("password") : "";
-            this.name = json.has("name") ? json.getString("name") : "";
             this.email = json.has("email") ? json.getString("email") : "";
+            this.name = json.has("name") ? json.getString("name") : "";
+            this.phone = json.has("phone") ? json.getString("phone") : "";
+            this.cityCode = json.has("city") ? json.getInt("city") : 0;
+            this.userType = json.has("user_type") ? json.getInt("user_type") : 0;
+            this.refferal = json.has("refferal") ? json.getString("refferal") : "";
         }
         catch (JSONException e) { e.printStackTrace(); }
     }
@@ -194,8 +207,8 @@ public class User implements Parcelable {
     }
 
     //INSERT
-    public static void insert(Activity activity, String username, String password, String email, Boolean useLoading, Callback callback) {
-        new insert(activity, username, password, useLoading, callback).execute("v1/login");
+    public static void insert(Activity activity, String username, String password, String email, String name, String phone, int cityCode, int userType, String refferal, Boolean useLoading, Callback callback) {
+        new insert(activity, username, password, email, name, phone, cityCode, userType, refferal, useLoading, callback).execute("v1/register");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
@@ -205,13 +218,25 @@ public class User implements Parcelable {
         final Boolean useLoading;
         final String username;
         final String password;
+        final String email;
+        final String name;
+        final String phone;
+        final int cityCode;
+        final int userType;
+        final String refferal;
 
-        private insert(Activity activity, String username, String password, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, String username, String password, String email, String name, String phone, int cityCode, int userType, String refferal, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
             this.username = username;
             this.password = password;
+            this.email = email;
+            this.name = name;
+            this.phone = phone;
+            this.cityCode = cityCode;
+            this.userType = userType;
+            this.refferal = refferal;
         }
 
         @Override
@@ -220,6 +245,12 @@ public class User implements Parcelable {
             try {
                 jsonObject.put("username", username);
                 jsonObject.put("password", password);
+                jsonObject.put("email", email);
+                jsonObject.put("name", name);
+                jsonObject.put("phone", phone);
+                jsonObject.put("city", cityCode);
+                jsonObject.put("user_type", userType);
+                jsonObject.put("refferal", refferal);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
