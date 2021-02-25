@@ -1,6 +1,7 @@
 package com.android.onmarcy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -53,7 +54,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView imageView;
     EditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm;
     SearchableSpinner spCity;
-    Button btnSend;
+    Button btnSend, btnSubmit;
     private ArrayList<City> cities = new ArrayList<>();
     private int code = 0;
     private String cityName = "";
@@ -103,6 +104,15 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User.logout();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void bindView(View view) {
@@ -115,6 +125,7 @@ public class ProfileFragment extends Fragment {
         edtConfirm = view.findViewById(R.id.edt_confirm);
         spCity = view.findViewById(R.id.sp_city);
         btnSend = view.findViewById(R.id.btn_send);
+        btnSubmit = view.findViewById(R.id.btn_submit);
     }
 
     private void bindData(View view) {
@@ -122,10 +133,23 @@ public class ProfileFragment extends Fragment {
                 .load("https://i2.wp.com/popculture.id/wp-content/uploads/2020/01/sung-jin-woo-solo-leveling.jpg?fit=770%2C513&ssl=1")
                 .apply(new RequestOptions().override(120, 120))
                 .into(imageView);
-        edtName.setText("Enjirou");
-        edtUsername.setText("enjirou123");
-        edtEmail.setText("shiruku0004@gmail.com");
-        edtPhone.setText("087855161565");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+            edtName.setText(user.getName());
+            edtUsername.setText(user.getUsername());
+            edtEmail.setText(user.getEmail());
+            edtPhone.setText(user.getPhone());
+            code = user.getCityCode();
+            cityName = user.getCityName();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        edtName.setText("Enjirou");
+//        edtUsername.setText("enjirou123");
+//        edtEmail.setText("shiruku0004@gmail.com");
+//        edtPhone.setText("087855161565");
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -185,7 +209,7 @@ public class ProfileFragment extends Fragment {
                     try {
                         City city = new City(data.getJSONObject(i));
                         cities.add(city);
-                        if(cities.get(i).getCode() == 205){
+                        if(cities.get(i).getName().equalsIgnoreCase(cityName)){
                             idx = i;
                         }
                         Log.d("RUNNNNN", "idx : " + i);
@@ -193,6 +217,8 @@ public class ProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                Log.d("RUNNNNN", "city : " + cityName);
+                Log.d("RUNNNNN", "idxCity : " + idx);
                 adapter.notifyDataSetChanged();
                 spCity.setSelection(idx, true);
             }

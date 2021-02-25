@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.User;
@@ -59,6 +60,16 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+            if(!user.getUsername().equals("")){
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override

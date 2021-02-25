@@ -1,12 +1,15 @@
 package model;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.android.onmarcy.MainActivity;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.android.onmarcy.Global;
 
@@ -15,7 +18,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class User implements Parcelable {
+public class User {
     @SerializedName("hash")
     private String hash;
 
@@ -37,6 +40,9 @@ public class User implements Parcelable {
     @SerializedName("city")
     private int cityCode;
 
+    @SerializedName("city_name")
+    private String cityName;
+
     @SerializedName("user_type")
     private int userType;
 
@@ -57,38 +63,6 @@ public class User implements Parcelable {
         this.name = name;
         this.email = email;
     }
-
-    protected User(Parcel in) {
-        username = in.readString();
-        password = in.readString();
-        name = in.readString();
-        email = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(username);
-        dest.writeString(password);
-        dest.writeString(name);
-        dest.writeString(email);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     @NonNull
     public String getHash() {
@@ -126,6 +100,24 @@ public class User implements Parcelable {
         this.email = email;
     }
 
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public int getCityCode() { return cityCode; }
+    public void setCityCode(int cityCode) { this.cityCode = cityCode; }
+
+    public String getCityName() { return cityName; }
+    public void setCityName(String cityName) { this.cityName = cityName; }
+
+    public int getUserType() { return userType; }
+    public void setUserType(int userType) { this.userType = userType; }
+
+    public String getRefferal() { return refferal; }
+    public void setRefferal(String refferal) { this.refferal = refferal; }
+
+    public int getIsActive() { return isActive; }
+    public void setIsActive(int isActive) { this.isActive = isActive; }
+
     public interface CallbackSelect {
         void success(JSONObject data);
         void error();
@@ -146,6 +138,7 @@ public class User implements Parcelable {
             this.name = json.has("name") ? json.getString("name") : "";
             this.phone = json.has("phone") ? json.getString("phone") : "";
             this.cityCode = json.has("city") ? json.getInt("city") : 0;
+            this.cityName = json.has("city_name") ? json.getString("city_name") : "";
             this.userType = json.has("user_type") ? json.getInt("user_type") : 0;
             this.refferal = json.has("refferal") ? json.getString("refferal") : "";
         }
@@ -154,8 +147,7 @@ public class User implements Parcelable {
 
     //LOGOUT
     public static void logout(){
-//        Global.setShared();
-
+        Global.setShared(Global.SHARED_INDEX.USER, null);
     }
 
     //SELECT
