@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -31,7 +33,7 @@ import model.User;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    EditText edtUsername, edtPassword;
+    TextInputEditText edtUsername, edtPassword;
     Button btnLogin;
     TextView tvJoin;
 

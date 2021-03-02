@@ -104,15 +104,6 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                User.logout();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void bindView(View view) {
@@ -170,31 +161,36 @@ public class ProfileFragment extends Fragment {
         boolean isValid = true;
         String errorMessage = "";
 
-        if (item.getItemId() == R.id.item_save) {
-            if (TextUtils.isEmpty(edtName.getText().toString())) {
-                edtName.setError(getResources().getString(R.string.please_fill_out_this_field));
-                isValid = false;
-            }
-            if (TextUtils.isEmpty(edtUsername.getText().toString())) {
-                edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
-                isValid = false;
-            }
-            if (TextUtils.isEmpty(edtEmail.getText().toString())) {
-                edtEmail.setError(getResources().getString(R.string.please_fill_out_this_field));
-                isValid = false;
-            }
-            if (TextUtils.isEmpty(edtPhone.getText().toString())) {
-                edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
-                isValid = false;
-            }
-            if (!edtConfirm.getText().toString().equals(edtPassword.getText().toString())) {
-                edtConfirm.setError(getResources().getString(R.string.password_doesnt_match));
-                isValid = false;
-            }
+        switch (item.getItemId()){
+            case R.id.item_save:
+                if (TextUtils.isEmpty(edtName.getText().toString())) {
+                    edtName.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtUsername.getText().toString())) {
+                    edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
+                    edtEmail.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtPhone.getText().toString())) {
+                    edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (!edtConfirm.getText().toString().equals(edtPassword.getText().toString())) {
+                    edtConfirm.setError(getResources().getString(R.string.password_doesnt_match));
+                    isValid = false;
+                }
 
-            if (isValid) {
-                Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
-            }
+                if (isValid) {
+                    Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
+                }
+            case R.id.item_logout:
+                User.logout();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

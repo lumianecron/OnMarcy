@@ -26,6 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +44,7 @@ import model.User;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
-    EditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
+    TextInputEditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
     TextView tvTerms;
     Spinner spCity, spType;
     CheckBox cbPolicy;
