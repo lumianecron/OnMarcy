@@ -21,11 +21,53 @@ public class SocialMedia {
     @SerializedName("status_active")
     private int status_active;
 
-    public SocialMedia(String id, int total_post, int status_active) {
-        this.id = id;
-        this.total_post = total_post;
-        this.status_active = status_active;
-    }
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("socialmedia")
+    private int socialmedia;
+
+    @SerializedName("category")
+    private int category;
+
+    @SerializedName("total_post")
+    private int totalPost;
+
+    @SerializedName("total_follower")
+    private int totalFollower;
+
+    @SerializedName("total_following")
+    private int totalFollowing;
+
+    @SerializedName("total_comment")
+    private int totalComment;
+
+    @SerializedName("total_like")
+    private int totalLike;
+
+    @SerializedName("market_age_min")
+    private int marketAgeMin;
+
+    @SerializedName("market_age_max")
+    private int marketAgeMax;
+
+    @SerializedName("market_male")
+    private int marketMale;
+
+    @SerializedName("market_female")
+    private int marketFemale;
+
+    @SerializedName("time_posting")
+    private String timePosting;
+
+    @SerializedName("service_post")
+    private int servicePost;
+
+    @SerializedName("service_story")
+    private int serviceStory;
+
+    @SerializedName("service_bio")
+    private int serviceBio;
 
     public String getId() {
         return id;
@@ -50,6 +92,70 @@ public class SocialMedia {
     public void setStatus_active(int status_active) {
         this.status_active = status_active;
     }
+
+    public String getUsername() {return username;}
+
+    public void setUsername(String username) {this.username = username;}
+
+    public int getSocialmedia() {return socialmedia;}
+
+    public void setSocialmedia(int socialmedia) {this.socialmedia = socialmedia;}
+
+    public int getCategory() {return category;}
+
+    public void setCategory(int category) {this.category = category;}
+
+    public int getTotalPost() {return totalPost;}
+
+    public void setTotalPost(int totalPost) {this.totalPost = totalPost;}
+
+    public int getTotalFollower() {return totalFollower;}
+
+    public void setTotalFollower(int totalFollower) {this.totalFollower = totalFollower;}
+
+    public int getTotalFollowing() {return totalFollowing;}
+
+    public void setTotalFollowing(int totalFollowing) {this.totalFollowing = totalFollowing;}
+
+    public int getTotalComment() {return totalComment;}
+
+    public void setTotalComment(int totalComment) {this.totalComment = totalComment;}
+
+    public int getTotalLike() {return totalLike;}
+
+    public void setTotalLike(int totalLike) {this.totalLike = totalLike;}
+
+    public int getMarketAgeMin() {return marketAgeMin;}
+
+    public void setMarketAgeMin(int marketAgeMin) {this.marketAgeMin = marketAgeMin;}
+
+    public int getMarketAgeMax() {return marketAgeMax;}
+
+    public void setMarketAgeMax(int marketAgeMax) {this.marketAgeMax = marketAgeMax;}
+
+    public int getMarketMale() {return marketMale;}
+
+    public void setMarketMale(int marketMale) {this.marketMale = marketMale;}
+
+    public int getMarketFemale() {return marketFemale;}
+
+    public void setMarketFemale(int marketFemale) {this.marketFemale = marketFemale;}
+
+    public String getTimePosting() {return timePosting;}
+
+    public void setTimePosting(String timePosting) {this.timePosting = timePosting;}
+
+    public int getServicePost() {return servicePost;}
+
+    public void setServicePost(int servicePost) {this.servicePost = servicePost;}
+
+    public int getServiceStory() {return serviceStory;}
+
+    public void setServiceStory(int serviceStory) {this.serviceStory = serviceStory;}
+
+    public int getServiceBio() {return serviceBio;}
+
+    public void setServiceBio(int serviceBio) {this.serviceBio = serviceBio;}
 
     public interface CallbackSelect{
         void success(JSONObject jsonObject);
@@ -87,6 +193,12 @@ public class SocialMedia {
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("socialmedia", 1);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
         }
 
@@ -218,6 +330,47 @@ public class SocialMedia {
         protected void onPreExecute() {
             super.onPreExecute();
             if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    public static void verify(Activity activity, String code, Callback callback) {
+        new verify(activity, code, callback).execute("v1/socialmedia/verify");
+    }
+
+    private static class verify extends AsyncTask<String, Void, String>{
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final String code;
+
+        private verify(Activity activity, String code, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.code = code;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("code", code);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try{
+                JSONObject jsonObject = new JSONObject(result);
+                if(jsonObject.getBoolean(Global.RESPONSE_SUCCESS)){
+                    callback.success();
+                }else{
+                    callback.error();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

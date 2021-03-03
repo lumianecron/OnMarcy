@@ -52,13 +52,15 @@ import model.User;
  */
 public class ProfileFragment extends Fragment {
     CircleImageView imageView;
-    EditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm;
+    EditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
+    TextView tvStatus, tvUsernameig;
     SearchableSpinner spCity;
     Button btnSend, btnSubmit;
     private ArrayList<City> cities = new ArrayList<>();
     private int code = 0;
     private String cityName = "";
     ArrayAdapter<City> adapter;
+    private User user;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -91,7 +93,31 @@ public class ProfileFragment extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SocialMedia.insert(getActivity(), "enjirou", 1, 2, 205, "enjirou", 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "HK003912uyf", true, new SocialMedia.Callback() {
+                int code = -1;
+                for (int i = 0; i < cities.size(); i++) {
+                    if(cities.get(i).getName().equals(spCity.getSelectedItem().toString())){
+                        code = cities.get(i).getCode();
+                        break;
+                    }
+                }
+                SocialMedia.insert(getActivity(), user.getUsername(), 1, 2, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
+                    @Override
+                    public void success() {
+                        Global.showLoading(getContext(), "success", "info");
+                    }
+
+                    @Override
+                    public void error() {
+                        Global.showLoading(getContext(), "error", "info");
+                    }
+                });
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SocialMedia.verify(getActivity(), edtVerification.getText().toString(), new SocialMedia.Callback() {
                     @Override
                     public void success() {
                         Global.showLoading(getContext(), "success", "info");
@@ -115,8 +141,12 @@ public class ProfileFragment extends Fragment {
         edtPassword = view.findViewById(R.id.edt_password);
         edtConfirm = view.findViewById(R.id.edt_confirm);
         spCity = view.findViewById(R.id.sp_city);
+        edtVerification = view.findViewById(R.id.edt_verification);
         btnSend = view.findViewById(R.id.btn_send);
+        edtInstagram = view.findViewById(R.id.edt_instagram);
         btnSubmit = view.findViewById(R.id.btn_submit);
+        tvStatus = view.findViewById(R.id.tv_status);
+        tvUsernameig = view.findViewById(R.id.tv_usernameig);
     }
 
     private void bindData(View view) {
@@ -126,7 +156,7 @@ public class ProfileFragment extends Fragment {
                 .into(imageView);
         JSONObject jsonObject = new JSONObject();
         try {
-            User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+            user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
             edtName.setText(user.getName());
             edtUsername.setText(user.getUsername());
             edtEmail.setText(user.getEmail());
@@ -137,16 +167,27 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-//        edtName.setText("Enjirou");
-//        edtUsername.setText("enjirou123");
-//        edtEmail.setText("shiruku0004@gmail.com");
-//        edtPhone.setText("087855161565");
+        if(user.getUserType() == 1){ //marketer
+            tvStatus.setVisibility(View.INVISIBLE);
+        }
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCity.setAdapter(adapter);
 
         loadCity();
+
+//        SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
+//            @Override
+//            public void success(JSONObject jsonObject) {
+//                Global.showLoading(getContext(), "success", "info");
+//            }
+//
+//            @Override
+//            public void error() {
+//                Global.showLoading(getContext(), "error", "info");
+//            }
+//        });
     }
 
     @Override

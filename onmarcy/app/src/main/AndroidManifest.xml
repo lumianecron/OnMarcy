@@ -19,7 +19,7 @@ package="com.android.onmarcy">
     </activity>
     <activity
         android:name=".HomeActivity"
-        android:windowSoftInputMode="adjustNothing" />
+        android:windowSoftInputMode="adjustPan"/>
     <activity android:name=".SplashActivity">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
