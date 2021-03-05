@@ -138,6 +138,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_input_layout_instagram"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -167,6 +168,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_input_layout_verification"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -177,25 +179,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_verification"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:enabled="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_submit"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.9"
-                android:text="@string/submit" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_usernameig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username"/>
 
     </LinearLayout>
 

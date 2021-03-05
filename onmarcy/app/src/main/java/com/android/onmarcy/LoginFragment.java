@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment {
         JSONObject jsonObject = new JSONObject();
         try {
             User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
-            if(!user.getUsername().equals("")){
+            if (!user.getUsername().equals("")) {
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
             }
@@ -101,25 +101,19 @@ public class LoginFragment extends Fragment {
                         public void success(JSONObject data) {
                             User user = new User(data);
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-//                            Intent intent = new Intent(getActivity(), HomeActivity.class);
-//                            startActivity(intent);
-//                            getActivity().finish();
-
                             Log.d("RUNNN", "username : " + user.getUsername());
                             Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                             startActivity(intent);
+                            getActivity().finishAffinity();
                         }
 
                         @Override
                         public void error() {
-//                            Global.showLoading(getActivity(), "INFO", "Login unsuccessful!");
                             Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-//                    startActivity(intent);
                 }
             }
         });

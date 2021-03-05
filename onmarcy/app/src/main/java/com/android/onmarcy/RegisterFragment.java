@@ -140,10 +140,6 @@ public class RegisterFragment extends Fragment {
                     edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-//                if (TextUtils.isEmpty(edtReferral.getText().toString())) {
-//                    edtReferral.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
 
                 if (spCity.getSelectedItem() != null) {
                     for (int i = 0; i < cities.size(); i++) {
@@ -153,11 +149,11 @@ public class RegisterFragment extends Fragment {
                     }
                 }
 
-                if (spType.getSelectedItemPosition() == 1){
+                if (spType.getSelectedItemPosition() == 1) {
                     type = 2;
                 }
 
-                if(!cbPolicy.isChecked() || code == 0){
+                if (!cbPolicy.isChecked() || code == 0) {
                     if (!cbPolicy.isChecked()) {
                         isValid = false;
                         errorMessage = getString(R.string.popup_agreement);
@@ -190,8 +186,7 @@ public class RegisterFragment extends Fragment {
                         }
                     });
 
-                }
-                else{
+                } else {
                     Log.d("RUNNN", "attempt failed");
                 }
             }

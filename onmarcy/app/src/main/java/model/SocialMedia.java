@@ -69,6 +69,15 @@ public class SocialMedia {
     @SerializedName("service_bio")
     private int serviceBio;
 
+    @SerializedName("status_verifiy")
+    private int statusVerify;
+
+    @SerializedName("grade")
+    private double grade;
+
+    @SerializedName("score")
+    private double score;
+
     public String getId() {
         return id;
     }
@@ -157,6 +166,18 @@ public class SocialMedia {
 
     public void setServiceBio(int serviceBio) {this.serviceBio = serviceBio;}
 
+    public int getStatusVerify() {return statusVerify;}
+
+    public void setStatusVerify(int statusVerify) {this.statusVerify = statusVerify;}
+
+    public double getGrade() { return grade; }
+
+    public void setGrade(double grade) { this.grade = grade; }
+
+    public double getScore() { return score; }
+
+    public void setScore(double score) { this.score = score; }
+
     public interface CallbackSelect{
         void success(JSONObject jsonObject);
         void error();
@@ -172,6 +193,21 @@ public class SocialMedia {
             this.id = jsonObject.has("id") ? jsonObject.getString("id") : "";
             this.total_post = jsonObject.has("total_post") ? jsonObject.getInt("total_post") : 0;
             this.status_active = jsonObject.has("status_active") ? jsonObject.getInt("status_active") : 0;
+            this.totalFollower = jsonObject.has("total_follower") ? jsonObject.getInt("total_follower") : 0;
+            this.totalFollowing = jsonObject.has("total_following") ? jsonObject.getInt("total_following") : 0;
+            this.totalComment = jsonObject.has("total_comment") ? jsonObject.getInt("total_comment") : 0;
+            this.totalLike = jsonObject.has("total_like") ? jsonObject.getInt("total_like") : 0;
+            this.marketAgeMax = jsonObject.has("market_age_max") ? jsonObject.getInt("market_age_max") : 0;
+            this.marketAgeMin = jsonObject.has("market_age_min") ? jsonObject.getInt("market_age_min") : 0;
+            this.marketMale = jsonObject.has("market_male") ? jsonObject.getInt("market_male") : 0;
+            this.marketFemale = jsonObject.has("market_female") ? jsonObject.getInt("market_female") : 0;
+            this.timePosting = jsonObject.has("time_posting") ? jsonObject.getString("time_posting") : "";
+            this.grade = jsonObject.has("grade") ? jsonObject.getDouble("grade") : 0;
+            this.score = jsonObject.has("score") ? jsonObject.getDouble("score") : 0;
+            this.servicePost = jsonObject.has("service_post") ? jsonObject.getInt("service_post") : 0;
+            this.serviceBio = jsonObject.has("service_bio") ? jsonObject.getInt("service_bio") : 0;
+            this.serviceStory = jsonObject.has("service_story") ? jsonObject.getInt("service_story") : 0;
+            this.statusVerify = jsonObject.has("status_verify") ? jsonObject.getInt("status_verify") : 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -330,47 +366,6 @@ public class SocialMedia {
         protected void onPreExecute() {
             super.onPreExecute();
             if(useLoading) Global.showLoading(activity.get(), "", "Loading");
-        }
-    }
-
-    public static void verify(Activity activity, String code, Callback callback) {
-        new verify(activity, code, callback).execute("v1/socialmedia/verify");
-    }
-
-    private static class verify extends AsyncTask<String, Void, String>{
-        final WeakReference<Activity> activity;
-        final Callback callback;
-        final String code;
-
-        private verify(Activity activity, String code, Callback callback) {
-            this.activity = new WeakReference<>(activity);
-            this.callback = callback;
-            this.code = code;
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("code", code);
-            }
-            catch (JSONException e) { e.printStackTrace(); }
-            return Global.executePost(urls[0], jsonObject, 3000);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try{
-                JSONObject jsonObject = new JSONObject(result);
-                if(jsonObject.getBoolean(Global.RESPONSE_SUCCESS)){
-                    callback.success();
-                }else{
-                    callback.error();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

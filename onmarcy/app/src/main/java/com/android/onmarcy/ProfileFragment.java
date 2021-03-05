@@ -31,6 +31,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
@@ -52,10 +54,11 @@ import model.User;
  */
 public class ProfileFragment extends Fragment {
     CircleImageView imageView;
-    EditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
-    TextView tvStatus, tvUsernameig;
+    TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
+    TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
+    TextView tvStatus;
     SearchableSpinner spCity;
-    Button btnSend, btnSubmit;
+    Button btnSend;
     private ArrayList<City> cities = new ArrayList<>();
     private int code = 0;
     private String cityName = "";
@@ -95,29 +98,12 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 int code = -1;
                 for (int i = 0; i < cities.size(); i++) {
-                    if(cities.get(i).getName().equals(spCity.getSelectedItem().toString())){
+                    if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
                         code = cities.get(i).getCode();
                         break;
                     }
                 }
                 SocialMedia.insert(getActivity(), user.getUsername(), 1, 2, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
-                    @Override
-                    public void success() {
-                        Global.showLoading(getContext(), "success", "info");
-                    }
-
-                    @Override
-                    public void error() {
-                        Global.showLoading(getContext(), "error", "info");
-                    }
-                });
-            }
-        });
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SocialMedia.verify(getActivity(), edtVerification.getText().toString(), new SocialMedia.Callback() {
                     @Override
                     public void success() {
                         Global.showLoading(getContext(), "success", "info");
@@ -144,9 +130,9 @@ public class ProfileFragment extends Fragment {
         edtVerification = view.findViewById(R.id.edt_verification);
         btnSend = view.findViewById(R.id.btn_send);
         edtInstagram = view.findViewById(R.id.edt_instagram);
-        btnSubmit = view.findViewById(R.id.btn_submit);
         tvStatus = view.findViewById(R.id.tv_status);
-        tvUsernameig = view.findViewById(R.id.tv_usernameig);
+        textInputLayoutInstagram = view.findViewById(R.id.txt_input_layout_instagram);
+        textInputLayoutVerification = view.findViewById(R.id.txt_input_layout_verification);
     }
 
     private void bindData(View view) {
@@ -167,8 +153,29 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(user.getUserType() == 1){ //marketer
+        if (user.getUserType() == 1) { //brand
             tvStatus.setVisibility(View.INVISIBLE);
+            textInputLayoutInstagram.setVisibility(View.INVISIBLE);
+            btnSend.setVisibility(View.INVISIBLE);
+            textInputLayoutVerification.setVisibility(View.INVISIBLE);
+        } else {
+            SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
+                @Override
+                public void success(JSONObject jsonObject) {
+                    try {
+                        SocialMedia socialMedia = new SocialMedia(jsonObject);
+                        if (socialMedia.getStatusVerify() == 0) {
+                            tvStatus.setVisibility(View.INVISIBLE);
+                        }
+                    } catch (Exception ex) {
+                        Toast.makeText(getActivity(), ex + "", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void error() {
+                }
+            });
         }
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
@@ -176,18 +183,6 @@ public class ProfileFragment extends Fragment {
         spCity.setAdapter(adapter);
 
         loadCity();
-
-//        SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
-//            @Override
-//            public void success(JSONObject jsonObject) {
-//                Global.showLoading(getContext(), "success", "info");
-//            }
-//
-//            @Override
-//            public void error() {
-//                Global.showLoading(getContext(), "error", "info");
-//            }
-//        });
     }
 
     @Override
@@ -202,7 +197,7 @@ public class ProfileFragment extends Fragment {
         boolean isValid = true;
         String errorMessage = "";
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.item_save:
                 if (TextUtils.isEmpty(edtName.getText().toString())) {
                     edtName.setError(getResources().getString(R.string.please_fill_out_this_field));
@@ -226,17 +221,57 @@ public class ProfileFragment extends Fragment {
                 }
 
                 if (isValid) {
+                    if(user.getUserType() == 1){
+                        int code = -1;
+                        for (int i = 0; i < cities.size(); i++) {
+                            if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
+                                code = cities.get(i).getCode();
+                                break;
+                            }
+                        }
+                        User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
+                            @Override
+                            public void success() {
+                                Toast.makeText(getActivity(), "Update successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void error() {
+                                Toast.makeText(getActivity(), "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }else{
+                        int code = -1;
+                        for (int i = 0; i < cities.size(); i++) {
+                            if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
+                                code = cities.get(i).getCode();
+                                break;
+                            }
+                        }
+                        User.updateMarketer(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
+                            @Override
+                            public void success() {
+                                Toast.makeText(getActivity(), "Update successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void error() {
+                                Toast.makeText(getActivity(), "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                     Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
                 }
             case R.id.item_logout:
                 User.logout();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finishAffinity();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadCity(){
+    public void loadCity() {
         City.select(getActivity(), new City.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
@@ -246,7 +281,7 @@ public class ProfileFragment extends Fragment {
                     try {
                         City city = new City(data.getJSONObject(i));
                         cities.add(city);
-                        if(cities.get(i).getName().equalsIgnoreCase(cityName)){
+                        if (cities.get(i).getName().equalsIgnoreCase(cityName)) {
                             idx = i;
                         }
                         Log.d("RUNNNNN", "idx : " + i);

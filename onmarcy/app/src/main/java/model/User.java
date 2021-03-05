@@ -291,38 +291,38 @@ public class User {
     }
 
     //UPDATE
-    public static void update(Activity activity, String username, String password, String name, String email, Boolean useLoading, Callback callback) {
-        new update(activity, username, password, name, email, useLoading, callback).execute("api/v1/user/update.php");
+    public static void updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        new updateBrand(activity, name, phone, city, useLoading, callback).execute("api/v1/profile/update_brand.php");
     }
 
-    private static class update extends AsyncTask<String, Void, String> {
-
+    private static class updateBrand extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
         final Callback callback;
         final Boolean useLoading;
-        final String username;
-        final String password;
         final String name;
-        final String email;
+        final String phone;
+        final int city;
 
-        private update(Activity activity, String username, String password, String name, String email, Boolean useLoading, Callback callback) {
+        private updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
-            this.username = username;
-            this.password = password;
             this.name = name;
-            this.email = email;
+            this.phone = phone;
+            this.city = city;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("username", username);
-                jsonObject.put("password", password);
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("phone", phone);
+                jsonObject.put("address", "");
+                jsonObject.put("city", city);
                 jsonObject.put("name", name);
-                jsonObject.put("email", email);
+                jsonObject.put("photo", "");
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -345,9 +345,7 @@ public class User {
             catch(Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
-//                callback.error();
             }
-
         }
 
         @Override
@@ -357,30 +355,39 @@ public class User {
         }
     }
 
-    //DELETE
-    public static void delete(Activity activity, String username, Boolean useLoading, CallbackSelect callback) {
-        new delete(activity, username, useLoading, callback).execute("api/v1/user/delete.php");
+    //UPDATE
+    public static void updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        new updateBrand(activity, name, phone, city, useLoading, callback).execute("api/v1/profile/update_marketer.php");
     }
 
-    private static class delete extends AsyncTask<String, Void, String> {
-
+    private static class updateMarketer extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
-        final CallbackSelect callback;
+        final Callback callback;
         final Boolean useLoading;
-        final String username;
+        final String name;
+        final String phone;
+        final int city;
 
-        private delete(Activity activity, String username, Boolean useLoading, CallbackSelect callback) {
+        private updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
-            this.username = username;
+            this.name = name;
+            this.phone = phone;
+            this.city = city;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("username", username);
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("phone", phone);
+                jsonObject.put("address", "");
+                jsonObject.put("city", city);
+                jsonObject.put("name", name);
+                jsonObject.put("photo", "");
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -394,7 +401,7 @@ public class User {
             try {
                 JSONObject json = new JSONObject(result);
                 if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success(json.getJSONObject(Global.RESPONSE_DATA));
+                    callback.success();
                 }
                 else {
                     callback.error();
@@ -403,9 +410,7 @@ public class User {
             catch(Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
-//                callback.error();
             }
-
         }
 
         @Override
