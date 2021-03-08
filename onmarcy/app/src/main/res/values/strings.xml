@@ -51,4 +51,7 @@
     <string name="service_type">Service type</string>
     <string name="female">Female</string>
     <string name="verification_code">Verification code</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+    <string name="category">Category</string>
 </resources>

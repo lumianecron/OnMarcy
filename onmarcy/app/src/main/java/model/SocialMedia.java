@@ -16,10 +16,10 @@ public class SocialMedia {
     private String id;
 
     @SerializedName("total_post")
-    private int total_post;
+    private int totalPost;
 
     @SerializedName("status_active")
-    private int status_active;
+    private int statusActive;
 
     @SerializedName("username")
     private String username;
@@ -27,11 +27,11 @@ public class SocialMedia {
     @SerializedName("socialmedia")
     private int socialmedia;
 
-    @SerializedName("category")
+    @SerializedName("category_id")
     private int category;
 
-    @SerializedName("total_post")
-    private int totalPost;
+    @SerializedName("category_name")
+    private String categoryName;
 
     @SerializedName("total_follower")
     private int totalFollower;
@@ -86,21 +86,9 @@ public class SocialMedia {
         this.id = id;
     }
 
-    public int getTotal_post() {
-        return total_post;
-    }
+    public int getStatusActive() {return statusActive;}
 
-    public void setTotal_post(int total_post) {
-        this.total_post = total_post;
-    }
-
-    public int getStatus_active() {
-        return status_active;
-    }
-
-    public void setStatus_active(int status_active) {
-        this.status_active = status_active;
-    }
+    public void setStatusActive(int statusActive) {this.statusActive = statusActive;}
 
     public String getUsername() {return username;}
 
@@ -178,6 +166,10 @@ public class SocialMedia {
 
     public void setScore(double score) { this.score = score; }
 
+    public String getCategoryName() {return categoryName;}
+
+    public void setCategoryName(String categoryName) {this.categoryName = categoryName;}
+
     public interface CallbackSelect{
         void success(JSONObject jsonObject);
         void error();
@@ -191,8 +183,10 @@ public class SocialMedia {
     public SocialMedia(JSONObject jsonObject){
         try{
             this.id = jsonObject.has("id") ? jsonObject.getString("id") : "";
-            this.total_post = jsonObject.has("total_post") ? jsonObject.getInt("total_post") : 0;
-            this.status_active = jsonObject.has("status_active") ? jsonObject.getInt("status_active") : 0;
+            this.category = jsonObject.has("category_id") ? jsonObject.getInt("category_id") : 0;
+            this.categoryName = jsonObject.has("category_name") ? jsonObject.getString("category_name") : "";
+            this.totalPost = jsonObject.has("total_post") ? jsonObject.getInt("total_post") : 0;
+            this.statusActive = jsonObject.has("status_active") ? jsonObject.getInt("status_active") : 0;
             this.totalFollower = jsonObject.has("total_follower") ? jsonObject.getInt("total_follower") : 0;
             this.totalFollowing = jsonObject.has("total_following") ? jsonObject.getInt("total_following") : 0;
             this.totalComment = jsonObject.has("total_comment") ? jsonObject.getInt("total_comment") : 0;

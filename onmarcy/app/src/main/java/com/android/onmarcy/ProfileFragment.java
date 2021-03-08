@@ -3,14 +3,19 @@ package com.android.onmarcy;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -56,14 +62,16 @@ public class ProfileFragment extends Fragment {
     CircleImageView imageView;
     TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
     TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
-    TextView tvStatus;
+    TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
-    Button btnSend;
+    Button btnSend, arrow;
+    LinearLayout hiddenView;
+    CardView cardView;
     private ArrayList<City> cities = new ArrayList<>();
+    private ArrayAdapter<City> adapter;
+    private User user;
     private int code = 0;
     private String cityName = "";
-    ArrayAdapter<City> adapter;
-    private User user;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -96,13 +104,7 @@ public class ProfileFragment extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int code = -1;
-                for (int i = 0; i < cities.size(); i++) {
-                    if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
-                        code = cities.get(i).getCode();
-                        break;
-                    }
-                }
+                code = getCode(spCity.getSelectedItem().toString());
                 SocialMedia.insert(getActivity(), user.getUsername(), 1, 2, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
                     @Override
                     public void success() {
@@ -114,6 +116,24 @@ public class ProfileFragment extends Fragment {
                         Global.showLoading(getContext(), "error", "info");
                     }
                 });
+            }
+        });
+
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View view) {
+                if (hiddenView.getVisibility() == View.VISIBLE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                    }
+                    hiddenView.setVisibility(View.GONE);
+                    arrow.setText(R.string.expand);
+                } else {
+                    TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
+                    hiddenView.setVisibility(View.VISIBLE);
+                    arrow.setText(R.string.collapse);
+                }
             }
         });
     }
@@ -133,6 +153,22 @@ public class ProfileFragment extends Fragment {
         tvStatus = view.findViewById(R.id.tv_status);
         textInputLayoutInstagram = view.findViewById(R.id.txt_input_layout_instagram);
         textInputLayoutVerification = view.findViewById(R.id.txt_input_layout_verification);
+        cardView = view.findViewById(R.id.base_cardview);
+        arrow = view.findViewById(R.id.arrow_button);
+        hiddenView = view.findViewById(R.id.hidden_view);
+        tvFollower = view.findViewById(R.id.tv_followers);
+        tvFollowing = view.findViewById(R.id.tv_following);
+        tvUsername = view.findViewById(R.id.tv_username);
+        tvTotalPost = view.findViewById(R.id.tv_total_post);
+        tvTotalComment = view.findViewById(R.id.tv_total_comment);
+        tvTotalLike = view.findViewById(R.id.tv_total_like);
+        tvMinAge = view.findViewById(R.id.tv_min_age);
+        tvMaxAge = view.findViewById(R.id.tv_max_age);
+        tvMale = view.findViewById(R.id.tv_male);
+        tvFemale = view.findViewById(R.id.tv_female);
+        tvTimePosting = view.findViewById(R.id.tv_time_posting);
+        tvServiceType = view.findViewById(R.id.tv_service_type);
+        tvCategory = view.findViewById(R.id.tv_category);
     }
 
     private void bindData(View view) {
@@ -140,7 +176,7 @@ public class ProfileFragment extends Fragment {
                 .load("https://i2.wp.com/popculture.id/wp-content/uploads/2020/01/sung-jin-woo-solo-leveling.jpg?fit=770%2C513&ssl=1")
                 .apply(new RequestOptions().override(120, 120))
                 .into(imageView);
-        JSONObject jsonObject = new JSONObject();
+
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
             edtName.setText(user.getName());
@@ -154,10 +190,10 @@ public class ProfileFragment extends Fragment {
         }
 
         if (user.getUserType() == 1) { //brand
-            tvStatus.setVisibility(View.INVISIBLE);
-            textInputLayoutInstagram.setVisibility(View.INVISIBLE);
-            btnSend.setVisibility(View.INVISIBLE);
-            textInputLayoutVerification.setVisibility(View.INVISIBLE);
+            tvStatus.setVisibility(View.GONE);
+            textInputLayoutInstagram.setVisibility(View.GONE);
+            btnSend.setVisibility(View.GONE);
+            textInputLayoutVerification.setVisibility(View.GONE);
         } else {
             SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
                 @Override
@@ -166,9 +202,33 @@ public class ProfileFragment extends Fragment {
                         SocialMedia socialMedia = new SocialMedia(jsonObject);
                         if (socialMedia.getStatusVerify() == 0) {
                             tvStatus.setVisibility(View.INVISIBLE);
+                        } else {
+                            tvFollower.setText(socialMedia.getTotalFollower() + "");
+                            tvFollowing.setText(socialMedia.getTotalFollowing() + "");
+                            tvUsername.setText(socialMedia.getId());
+                            tvTotalPost.setText(socialMedia.getTotalPost() + "");
+                            tvTotalComment.setText(socialMedia.getTotalComment() + "");
+                            tvTotalLike.setText(socialMedia.getTotalLike() + "");
+                            tvMinAge.setText(socialMedia.getMarketAgeMin() + "");
+                            tvMaxAge.setText(socialMedia.getMarketAgeMax() + "");
+                            tvMale.setText(socialMedia.getMarketMale() + "");
+                            tvFemale.setText(socialMedia.getMarketFemale() + "");
+                            tvTimePosting.setText(socialMedia.getTimePosting() + "");
+                            tvCategory.setText(socialMedia.getCategoryName());
+
+                            if(socialMedia.getServiceBio() == 1){
+                                tvServiceType.setText("Bio");
+                            }
+                            if(socialMedia.getServicePost() == 1){
+                                tvServiceType.setText("Post");
+                            }
+                            if(socialMedia.getServiceStory() == 1){
+                                tvServiceType.setText("Story");
+                            }
                         }
                     } catch (Exception ex) {
                         Toast.makeText(getActivity(), ex + "", Toast.LENGTH_SHORT).show();
+                        Log.d("RUNNN", ex + "");
                     }
                 }
 
@@ -195,7 +255,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         boolean isValid = true;
-        String errorMessage = "";
 
         switch (item.getItemId()) {
             case R.id.item_save:
@@ -221,14 +280,8 @@ public class ProfileFragment extends Fragment {
                 }
 
                 if (isValid) {
-                    if(user.getUserType() == 1){
-                        int code = -1;
-                        for (int i = 0; i < cities.size(); i++) {
-                            if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
-                                code = cities.get(i).getCode();
-                                break;
-                            }
-                        }
+                    if (user.getUserType() == 1) {
+                        code = getCode(spCity.getSelectedItem().toString());
                         User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
                             @Override
                             public void success() {
@@ -240,14 +293,8 @@ public class ProfileFragment extends Fragment {
                                 Toast.makeText(getActivity(), "Update unsuccessful", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }else{
-                        int code = -1;
-                        for (int i = 0; i < cities.size(); i++) {
-                            if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
-                                code = cities.get(i).getCode();
-                                break;
-                            }
-                        }
+                    } else {
+                        code = getCode(spCity.getSelectedItem().toString());
                         User.updateMarketer(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
                             @Override
                             public void success() {
@@ -300,5 +347,16 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    public int getCode(String cityName) {
+        int index = -1;
+        for (int i = 0; i < cities.size(); i++) {
+            if (cities.get(i).getName().equals(cityName)) {
+                index = i;
+                break;
+            }
+        }
+        return cities.get(index).getCode();
     }
 }

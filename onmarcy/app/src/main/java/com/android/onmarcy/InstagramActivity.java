@@ -45,8 +45,8 @@ public class InstagramActivity extends AppCompatActivity {
     }
 
     private void bindView() {
-        tvFollower = findViewById(R.id.tvFollowers);
-        tvFollowing = findViewById(R.id.tvFollowing);
+        tvFollower = findViewById(R.id.tv_followers);
+        tvFollowing = findViewById(R.id.tv_following);
         tvUsername = findViewById(R.id.tv_username);
         tvTotalPost = findViewById(R.id.tv_total_post);
         tvTotalComment = findViewById(R.id.tv_total_comment);
