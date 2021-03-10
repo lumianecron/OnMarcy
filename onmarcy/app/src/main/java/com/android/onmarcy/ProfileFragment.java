@@ -1,5 +1,6 @@
 package com.android.onmarcy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -39,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
@@ -59,12 +61,16 @@ import model.User;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+    private Activity activity;
+
     CircleImageView imageView;
     TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
     TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
     Button btnSend, arrow;
+    MenuItem menuAdd;
     LinearLayout hiddenView;
     CardView cardView;
     private ArrayList<City> cities = new ArrayList<>();
@@ -85,6 +91,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.activity = getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -169,6 +176,7 @@ public class ProfileFragment extends Fragment {
         tvTimePosting = view.findViewById(R.id.tv_time_posting);
         tvServiceType = view.findViewById(R.id.tv_service_type);
         tvCategory = view.findViewById(R.id.tv_category);
+        menuAdd = view.findViewById(R.id.menu_add);
     }
 
     private void bindData(View view) {
@@ -189,54 +197,47 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (user.getUserType() == 1) { //brand
-            tvStatus.setVisibility(View.GONE);
-            textInputLayoutInstagram.setVisibility(View.GONE);
-            btnSend.setVisibility(View.GONE);
-            textInputLayoutVerification.setVisibility(View.GONE);
-        } else {
-            SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
-                @Override
-                public void success(JSONObject jsonObject) {
-                    try {
-                        SocialMedia socialMedia = new SocialMedia(jsonObject);
-                        if (socialMedia.getStatusVerify() == 0) {
-                            tvStatus.setVisibility(View.INVISIBLE);
-                        } else {
-                            tvFollower.setText(socialMedia.getTotalFollower() + "");
-                            tvFollowing.setText(socialMedia.getTotalFollowing() + "");
-                            tvUsername.setText(socialMedia.getId());
-                            tvTotalPost.setText(socialMedia.getTotalPost() + "");
-                            tvTotalComment.setText(socialMedia.getTotalComment() + "");
-                            tvTotalLike.setText(socialMedia.getTotalLike() + "");
-                            tvMinAge.setText(socialMedia.getMarketAgeMin() + "");
-                            tvMaxAge.setText(socialMedia.getMarketAgeMax() + "");
-                            tvMale.setText(socialMedia.getMarketMale() + "");
-                            tvFemale.setText(socialMedia.getMarketFemale() + "");
-                            tvTimePosting.setText(socialMedia.getTimePosting() + "");
-                            tvCategory.setText(socialMedia.getCategoryName());
+        SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
+            @Override
+            public void success(JSONObject jsonObject) {
+                try {
+                    SocialMedia socialMedia = new SocialMedia(jsonObject);
+                    if (socialMedia.getStatusVerify() == 0) {
 
-                            if(socialMedia.getServiceBio() == 1){
-                                tvServiceType.setText("Bio");
-                            }
-                            if(socialMedia.getServicePost() == 1){
-                                tvServiceType.setText("Post");
-                            }
-                            if(socialMedia.getServiceStory() == 1){
-                                tvServiceType.setText("Story");
-                            }
+                    } else {
+                        tvFollower.setText(socialMedia.getTotalFollower() + "");
+                        tvFollowing.setText(socialMedia.getTotalFollowing() + "");
+                        tvUsername.setText(socialMedia.getId());
+                        tvTotalPost.setText(socialMedia.getTotalPost() + "");
+                        tvTotalComment.setText(socialMedia.getTotalComment() + "");
+                        tvTotalLike.setText(socialMedia.getTotalLike() + "");
+                        tvMinAge.setText(socialMedia.getMarketAgeMin() + "");
+                        tvMaxAge.setText(socialMedia.getMarketAgeMax() + "");
+                        tvMale.setText(socialMedia.getMarketMale() + "");
+                        tvFemale.setText(socialMedia.getMarketFemale() + "");
+                        tvTimePosting.setText(socialMedia.getTimePosting() + "");
+                        tvCategory.setText(socialMedia.getCategoryName());
+
+                        if(socialMedia.getServiceBio() == 1){
+                            tvServiceType.setText("Bio");
                         }
-                    } catch (Exception ex) {
-                        Toast.makeText(getActivity(), ex + "", Toast.LENGTH_SHORT).show();
-                        Log.d("RUNNN", ex + "");
+                        if(socialMedia.getServicePost() == 1){
+                            tvServiceType.setText("Post");
+                        }
+                        if(socialMedia.getServiceStory() == 1){
+                            tvServiceType.setText("Story");
+                        }
                     }
+                } catch (Exception ex) {
+                    Toast.makeText(getActivity(), ex + "", Toast.LENGTH_SHORT).show();
+                    Log.d("RUNNN", ex + "");
                 }
+            }
 
-                @Override
-                public void error() {
-                }
-            });
-        }
+            @Override
+            public void error() {
+            }
+        });
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -255,7 +256,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         boolean isValid = true;
-
         switch (item.getItemId()) {
             case R.id.item_save:
                 if (TextUtils.isEmpty(edtName.getText().toString())) {
@@ -282,38 +282,48 @@ public class ProfileFragment extends Fragment {
                 if (isValid) {
                     if (user.getUserType() == 1) {
                         code = getCode(spCity.getSelectedItem().toString());
-                        User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
+                        User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
                             @Override
                             public void success() {
-                                Toast.makeText(getActivity(), "Update successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
+//                                HomeActivity homeActivity = (HomeActivity) getActivity();
+//                                homeActivity.profileFragment();
                             }
 
                             @Override
                             public void error() {
-                                Toast.makeText(getActivity(), "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Update unsuccessful", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
                         code = getCode(spCity.getSelectedItem().toString());
-                        User.updateMarketer(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, true, new User.Callback() {
+                        User.updateMarketer(activity, edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
                             @Override
                             public void success() {
-                                Toast.makeText(getActivity(), "Update successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
+                                user.setName(edtName.getText().toString());
+                                user.setPhone(edtPhone.getText().toString());
+                                user.setCityCode(code);
+                                Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                                HomeActivity homeActivity = (HomeActivity) activity;
+                                homeActivity.profileFragment();
                             }
 
                             @Override
                             public void error() {
-                                Toast.makeText(getActivity(), "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Update unsuccessful", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-                    Toast.makeText(getActivity(), "Berhasil", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Berhasil", Toast.LENGTH_SHORT).show();
                 }
+                break;
             case R.id.item_logout:
                 User.logout();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().finishAffinity();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -331,13 +341,13 @@ public class ProfileFragment extends Fragment {
                         if (cities.get(i).getName().equalsIgnoreCase(cityName)) {
                             idx = i;
                         }
-                        Log.d("RUNNNNN", "idx : " + i);
+//                        Log.d("RUNNNNN", "idx : " + i);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d("RUNNNNN", "city : " + cityName);
-                Log.d("RUNNNNN", "idxCity : " + idx);
+                /*Log.d("RUNNNNN", "city : " + cityName);
+                Log.d("RUNNNNN", "idxCity : " + idx);*/
                 adapter.notifyDataSetChanged();
                 spCity.setSelection(idx, true);
             }

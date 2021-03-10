@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -51,18 +52,6 @@ public class User {
 
     @SerializedName("active")
     private int isActive;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String username, String password, String name, String email) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
 
     @NonNull
     public String getHash() {
@@ -292,7 +281,7 @@ public class User {
 
     //UPDATE
     public static void updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
-        new updateBrand(activity, name, phone, city, useLoading, callback).execute("api/v1/profile/update_brand.php");
+        new updateBrand(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_brand");
     }
 
     private static class updateBrand extends AsyncTask<String, Void, String> {
@@ -320,9 +309,10 @@ public class User {
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("phone", phone);
                 jsonObject.put("address", "");
-                jsonObject.put("city", city);
+                jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
                 jsonObject.put("photo", "");
+                jsonObject.put("gender", 1);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -357,7 +347,7 @@ public class User {
 
     //UPDATE
     public static void updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
-        new updateBrand(activity, name, phone, city, useLoading, callback).execute("api/v1/profile/update_marketer.php");
+        new updateMarketer(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_marketer");
     }
 
     private static class updateMarketer extends AsyncTask<String, Void, String> {
@@ -385,9 +375,10 @@ public class User {
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("phone", phone);
                 jsonObject.put("address", "");
-                jsonObject.put("city", city);
+                jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
                 jsonObject.put("photo", "");
+                jsonObject.put("gender", 1);
             }
             catch (JSONException e) { e.printStackTrace(); }
 

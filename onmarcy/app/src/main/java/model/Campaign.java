@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
 public class Campaign {
     @SerializedName("category_code")
@@ -62,13 +63,13 @@ public class Campaign {
         }
     }
 
-    public static void insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, SocialMedia.Callback callback) {
+    public static void insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
         new insert(activity, category, title, notes, ageMin, ageMax, gender, duration, price, useLoading, callback).execute("v1/campaign/insert");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
-        final SocialMedia.Callback callback;
+        final Callback callback;
         final Boolean useLoading;
         final int category;
         final String title;
@@ -79,7 +80,7 @@ public class Campaign {
         final int duration;
         final int price;
 
-        private insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, SocialMedia.Callback callback) {
+        private insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -107,7 +108,7 @@ public class Campaign {
                 jsonObject.put("age_min", ageMin);
                 jsonObject.put("age_max", ageMax);
                 jsonObject.put("gender", gender);
-                jsonObject.put("date", "");
+                jsonObject.put("date", "2021-03-10");
                 jsonObject.put("time", "");
                 jsonObject.put("duration", duration);
                 jsonObject.put("price", price);

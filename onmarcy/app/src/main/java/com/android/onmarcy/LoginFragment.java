@@ -73,6 +73,9 @@ public class LoginFragment extends Fragment {
             e.printStackTrace();
         }
 
+        edtUsername.setText("enjirou");
+        edtPassword.setText(("enjirou123"));
+
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +105,7 @@ public class LoginFragment extends Fragment {
                             User user = new User(data);
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                             Log.d("RUNNN", "username : " + user.getUsername());
-                            Global.showLoading(getActivity(), "INFO", "Login successful!");
+//                            Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                             startActivity(intent);
