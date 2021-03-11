@@ -12,40 +12,19 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class City {
+public class Category {
     @SerializedName("code")
     private int code;
 
     @SerializedName("name")
     private String name;
 
-    public City(int code, String name) {
-        this.code = code;
-        this.name = name;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public interface CallbackSelect {
         void success(JSONArray data);
         void error();
     }
 
-    public City(JSONObject json) {
+    public Category(JSONObject json){
         try {
             this.code = json.has("code") ? json.getInt("code") : 0;
             this.name = json.has("name") ? json.getString("name") : "";
@@ -55,7 +34,7 @@ public class City {
     }
 
     public static void select(Activity activity, CallbackSelect callback) {
-        new select(activity, callback).execute("v1/system/city");
+        new select(activity, callback).execute("v1/category/select");
     }
 
     private static class select extends AsyncTask<String, Void, String> {
@@ -87,10 +66,5 @@ public class City {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }
