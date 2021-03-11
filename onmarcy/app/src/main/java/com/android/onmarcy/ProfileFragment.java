@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
     TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
-    Button btnSend, arrow;
+    Button btnSend, arrow, btnVerify;
     MenuItem menuAdd;
     LinearLayout hiddenView;
     CardView cardView;
@@ -177,6 +177,7 @@ public class ProfileFragment extends Fragment {
         tvServiceType = view.findViewById(R.id.tv_service_type);
         tvCategory = view.findViewById(R.id.tv_category);
         menuAdd = view.findViewById(R.id.menu_add);
+        btnVerify = view.findViewById(R.id.btn_verify);
     }
 
     private void bindData(View view) {
@@ -202,8 +203,11 @@ public class ProfileFragment extends Fragment {
             public void success(JSONObject jsonObject) {
                 try {
                     SocialMedia socialMedia = new SocialMedia(jsonObject);
+                    tvStatus.setVisibility(View.VISIBLE);
                     if (socialMedia.getStatusVerify() == 0) {
-
+                        tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_pending_24, 0, 0, 0);
+                        tvStatus.setText("Pending");
+                        tvStatus.setTextColor(getResources().getColor(R.color.yellow));
                     } else {
                         tvFollower.setText(socialMedia.getTotalFollower() + "");
                         tvFollowing.setText(socialMedia.getTotalFollowing() + "");
@@ -285,9 +289,7 @@ public class ProfileFragment extends Fragment {
                         User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
                             @Override
                             public void success() {
-                                Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
-//                                HomeActivity homeActivity = (HomeActivity) getActivity();
-//                                homeActivity.profileFragment();
+                                update();
                             }
 
                             @Override
@@ -300,13 +302,7 @@ public class ProfileFragment extends Fragment {
                         User.updateMarketer(activity, edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
                             @Override
                             public void success() {
-                                Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
-                                user.setName(edtName.getText().toString());
-                                user.setPhone(edtPhone.getText().toString());
-                                user.setCityCode(code);
-                                Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                                HomeActivity homeActivity = (HomeActivity) activity;
-                                homeActivity.profileFragment();
+                                update();
                             }
 
                             @Override
@@ -326,6 +322,16 @@ public class ProfileFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void update(){
+        Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
+        user.setName(edtName.getText().toString());
+        user.setPhone(edtPhone.getText().toString());
+        user.setCityCode(code);
+        Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+        HomeActivity homeActivity = (HomeActivity) activity;
+        homeActivity.profileFragment();
     }
 
     public void loadCity() {

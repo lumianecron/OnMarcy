@@ -9,7 +9,7 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title="Add" />
+        android:title="Create" />
     <item
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_baseline_person_24"

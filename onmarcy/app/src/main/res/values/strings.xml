@@ -53,9 +53,14 @@
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
     <string name="category">Category</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_campaign">Create Campaign</string>
     <string name="title">Title</string>
     <string name="male">Male</string>
+    <string name="all">All</string>
+    <string name="notes">Notes</string>
+    <string name="duration">Duration</string>
+    <string name="price">Price</string>
+    <string name="create">Create</string>
+    <string name="verify">Verify</string>
 </resources>
