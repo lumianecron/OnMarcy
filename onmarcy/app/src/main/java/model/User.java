@@ -1,12 +1,16 @@
 package model;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.android.onmarcy.MainActivity;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.android.onmarcy.Global;
 
@@ -15,7 +19,10 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class User implements Parcelable {
+public class User {
+    @SerializedName("hash")
+    private String hash;
+
     @SerializedName("username")
     private String username;
 
@@ -25,64 +32,38 @@ public class User implements Parcelable {
     @SerializedName("email")
     private String email;
 
-    @SerializedName("user_type")
-    private int userType;
-
-    @SerializedName("active")
-    private boolean isActive;
-
     @SerializedName("name")
     private String name;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+    @SerializedName("phone")
+    private String phone;
 
-    public User(String username, String password, String name, String email) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
+    @SerializedName("city")
+    private int cityCode;
 
-    protected User(Parcel in) {
-        username = in.readString();
-        password = in.readString();
-        name = in.readString();
-        email = in.readString();
-    }
+    @SerializedName("city_name")
+    private String cityName;
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(username);
-        dest.writeString(password);
-        dest.writeString(name);
-        dest.writeString(email);
-    }
+    @SerializedName("user_type")
+    private int userType;
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+    @SerializedName("refferal")
+    private String refferal;
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
+    @SerializedName("active")
+    private int isActive;
 
     @NonNull
+    public String getHash() {
+        return hash;
+    }
+    public void setHash(@NonNull String hash) {
+        this.hash = hash;
+    }
+
     public String getUsername() {
         return username;
     }
-
     public void setUsername(@NonNull String username) {
         this.username = username;
     }
@@ -90,7 +71,6 @@ public class User implements Parcelable {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -98,7 +78,6 @@ public class User implements Parcelable {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -106,10 +85,27 @@ public class User implements Parcelable {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public int getCityCode() { return cityCode; }
+    public void setCityCode(int cityCode) { this.cityCode = cityCode; }
+
+    public String getCityName() { return cityName; }
+    public void setCityName(String cityName) { this.cityName = cityName; }
+
+    public int getUserType() { return userType; }
+    public void setUserType(int userType) { this.userType = userType; }
+
+    public String getRefferal() { return refferal; }
+    public void setRefferal(String refferal) { this.refferal = refferal; }
+
+    public int getIsActive() { return isActive; }
+    public void setIsActive(int isActive) { this.isActive = isActive; }
 
     public interface CallbackSelect {
         void success(JSONObject data);
@@ -124,12 +120,23 @@ public class User implements Parcelable {
     // digunakan untuk mapping
     public User(JSONObject json) {
         try {
+            this.hash = json.has("hash") ? json.getString("hash") : "";
             this.username = json.has("username") ? json.getString("username") : "";
             this.password = json.has("password") ? json.getString("password") : "";
-            this.name = json.has("name") ? json.getString("name") : "";
             this.email = json.has("email") ? json.getString("email") : "";
+            this.name = json.has("name") ? json.getString("name") : "";
+            this.phone = json.has("phone") ? json.getString("phone") : "";
+            this.cityCode = json.has("city") ? json.getInt("city") : 0;
+            this.cityName = json.has("city_name") ? json.getString("city_name") : "";
+            this.userType = json.has("user_type") ? json.getInt("user_type") : 0;
+            this.refferal = json.has("refferal") ? json.getString("refferal") : "";
         }
         catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    //LOGOUT
+    public static void logout(){
+        Global.setShared(Global.SHARED_INDEX.USER, null);
     }
 
     //SELECT
@@ -194,8 +201,8 @@ public class User implements Parcelable {
     }
 
     //INSERT
-    public static void insert(Activity activity, String username, String password, String email, Boolean useLoading, Callback callback) {
-        new insert(activity, username, password, useLoading, callback).execute("v1/login");
+    public static void insert(Activity activity, String username, String password, String email, String name, String phone, int cityCode, int userType, String refferal, Boolean useLoading, Callback callback) {
+        new insert(activity, username, password, email, name, phone, cityCode, userType, refferal, useLoading, callback).execute("v1/register");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
@@ -205,13 +212,25 @@ public class User implements Parcelable {
         final Boolean useLoading;
         final String username;
         final String password;
+        final String email;
+        final String name;
+        final String phone;
+        final int cityCode;
+        final int userType;
+        final String refferal;
 
-        private insert(Activity activity, String username, String password, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, String username, String password, String email, String name, String phone, int cityCode, int userType, String refferal, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
             this.username = username;
             this.password = password;
+            this.email = email;
+            this.name = name;
+            this.phone = phone;
+            this.cityCode = cityCode;
+            this.userType = userType;
+            this.refferal = refferal;
         }
 
         @Override
@@ -220,6 +239,12 @@ public class User implements Parcelable {
             try {
                 jsonObject.put("username", username);
                 jsonObject.put("password", password);
+                jsonObject.put("email", email);
+                jsonObject.put("name", name);
+                jsonObject.put("phone", phone);
+                jsonObject.put("city", cityCode);
+                jsonObject.put("user_type", userType);
+                jsonObject.put("refferal", refferal);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -255,38 +280,39 @@ public class User implements Parcelable {
     }
 
     //UPDATE
-    public static void update(Activity activity, String username, String password, String name, String email, Boolean useLoading, Callback callback) {
-        new update(activity, username, password, name, email, useLoading, callback).execute("api/v1/user/update.php");
+    public static void updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        new updateBrand(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_brand");
     }
 
-    private static class update extends AsyncTask<String, Void, String> {
-
+    private static class updateBrand extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
         final Callback callback;
         final Boolean useLoading;
-        final String username;
-        final String password;
         final String name;
-        final String email;
+        final String phone;
+        final int city;
 
-        private update(Activity activity, String username, String password, String name, String email, Boolean useLoading, Callback callback) {
+        private updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
-            this.username = username;
-            this.password = password;
             this.name = name;
-            this.email = email;
+            this.phone = phone;
+            this.city = city;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("username", username);
-                jsonObject.put("password", password);
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("phone", phone);
+                jsonObject.put("address", "");
+                jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
-                jsonObject.put("email", email);
+                jsonObject.put("photo", "");
+                jsonObject.put("gender", 1);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -309,9 +335,7 @@ public class User implements Parcelable {
             catch(Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
-//                callback.error();
             }
-
         }
 
         @Override
@@ -321,30 +345,40 @@ public class User implements Parcelable {
         }
     }
 
-    //DELETE
-    public static void delete(Activity activity, String username, Boolean useLoading, CallbackSelect callback) {
-        new delete(activity, username, useLoading, callback).execute("api/v1/user/delete.php");
+    //UPDATE
+    public static void updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        new updateMarketer(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_marketer");
     }
 
-    private static class delete extends AsyncTask<String, Void, String> {
-
+    private static class updateMarketer extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
-        final CallbackSelect callback;
+        final Callback callback;
         final Boolean useLoading;
-        final String username;
+        final String name;
+        final String phone;
+        final int city;
 
-        private delete(Activity activity, String username, Boolean useLoading, CallbackSelect callback) {
+        private updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
-            this.username = username;
+            this.name = name;
+            this.phone = phone;
+            this.city = city;
         }
 
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("username", username);
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("phone", phone);
+                jsonObject.put("address", "");
+                jsonObject.put("city_code", city);
+                jsonObject.put("name", name);
+                jsonObject.put("photo", "");
+                jsonObject.put("gender", 1);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -358,7 +392,7 @@ public class User implements Parcelable {
             try {
                 JSONObject json = new JSONObject(result);
                 if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success(json.getJSONObject(Global.RESPONSE_DATA));
+                    callback.success();
                 }
                 else {
                     callback.error();
@@ -367,9 +401,7 @@ public class User implements Parcelable {
             catch(Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
-//                callback.error();
             }
-
         }
 
         @Override

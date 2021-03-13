@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.User;
@@ -29,7 +33,7 @@ import model.User;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    EditText edtUsername, edtPassword;
+    TextInputEditText edtUsername, edtPassword;
     Button btnLogin;
     TextView tvJoin;
 
@@ -58,6 +62,19 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+            if (!user.getUsername().equals("")) {
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        edtUsername.setText("enjirou");
+        edtPassword.setText(("enjirou123"));
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,35 +97,26 @@ public class LoginFragment extends Fragment {
                 }
 
                 if (success) {
-                    /*String username = binding.edtUsername.getText().toString();
-                    String password = binding.edtPassword.getText().toString();
+                    String username = edtUsername.getText().toString();
+                    String password = edtPassword.getText().toString();
                     User.select(getActivity(), username, password, true, new User.CallbackSelect() {
                         @Override
                         public void success(JSONObject data) {
                             User user = new User(data);
-//                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-//                            Intent intent;
-//                            if(user.getName().equalsIgnoreCase("") && user.getEmail().equalsIgnoreCase("")){
-//                                intent = new Intent(getActivity(),  NewActivity.class);
-//                            }
-//                            else{
-//                                intent = new Intent(getActivity(),  HomeActivity.class);
-//                            }
-//                            intent.putExtra("userLogin", user);
-//                            startActivity(intent);
-//                            getActivity().finish();
+                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                            Log.d("RUNNN", "username : " + user.getUsername());
 //                            Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            startActivity(intent);
+                            getActivity().finishAffinity();
                         }
 
                         @Override
                         public void error() {
-//                            Global.showLoading(getActivity(), "INFO", "Login unsuccessful!");
                             Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
                         }
-                    });*/
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
+                    });
                 }
             }
         });

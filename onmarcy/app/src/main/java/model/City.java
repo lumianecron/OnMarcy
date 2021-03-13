@@ -42,7 +42,6 @@ public class City {
 
     public interface CallbackSelect {
         void success(JSONArray data);
-
         void error();
     }
 

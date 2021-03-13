@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.City;
+import model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +44,7 @@ import model.City;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
-    EditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
+    TextInputEditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
     TextView tvTerms;
     Spinner spCity, spType;
     CheckBox cbPolicy;
@@ -100,13 +104,14 @@ public class RegisterFragment extends Fragment {
             public void onClick(View view) {
                 boolean isValid = true;
                 int code = 0;
+                int type = 1;
                 String errorMessage = "";
 
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                     edtEmail.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 } else {
-                    if (edtEmail.getText().toString().contains("@") && edtEmail.getText().toString().contains(".")) {
+                    if (!edtEmail.getText().toString().contains("@") || !edtEmail.getText().toString().contains(".")) {
                         edtEmail.setError(getResources().getString(R.string.email_format_is_not_valid));
                         isValid = false;
                     }
@@ -135,10 +140,6 @@ public class RegisterFragment extends Fragment {
                     edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if (TextUtils.isEmpty(edtReferral.getText().toString())) {
-                    edtReferral.setError(getResources().getString(R.string.please_fill_out_this_field));
-                    isValid = false;
-                }
 
                 if (spCity.getSelectedItem() != null) {
                     for (int i = 0; i < cities.size(); i++) {
@@ -148,7 +149,11 @@ public class RegisterFragment extends Fragment {
                     }
                 }
 
-                if(!cbPolicy.isChecked() || code == 0){
+                if (spType.getSelectedItemPosition() == 1) {
+                    type = 2;
+                }
+
+                if (!cbPolicy.isChecked() || code == 0) {
                     if (!cbPolicy.isChecked()) {
                         isValid = false;
                         errorMessage = getString(R.string.popup_agreement);
@@ -168,7 +173,21 @@ public class RegisterFragment extends Fragment {
                 }
 
                 if (isValid) {
-                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+                    User.insert(getActivity(), edtUsername.getText().toString(), edtPassword.getText().toString(), edtEmail.getText().toString(), edtName.getText().toString(), edtPhone.getText().toString(), code, type, edtReferral.getText().toString(), true, new User.Callback() {
+                        @Override
+                        public void success() {
+                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+                        }
+
+                        @Override
+                        public void error() {
+                            Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                } else {
+                    Log.d("RUNNN", "attempt failed");
                 }
             }
         });
