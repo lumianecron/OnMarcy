@@ -56,7 +56,12 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.menu_add:
                         fragment = CreateCampaignFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-                        getSupportActionBar().setTitle(R.string.profile);
+                        getSupportActionBar().setTitle(R.string.create_campaign);
+                        return true;
+                    case R.id.menu_list:
+                        fragment = ListCampaignFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                        getSupportActionBar().setTitle(R.string.campaigns);
                         return true;
                 }
                 return false;

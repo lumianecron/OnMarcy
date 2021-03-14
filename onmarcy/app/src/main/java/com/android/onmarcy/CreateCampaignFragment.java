@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,27 +88,58 @@ public class CreateCampaignFragment extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String title = edtTitle.getText().toString();
-                String notes = edtNotes.getText().toString();
-                int min = Integer.parseInt(edtMin.getText().toString());
-                int max = Integer.parseInt(edtMax.getText().toString());
-                int gender = 0;
-                if(rbMale.isSelected()) gender = 1;
-                if(rbFemale.isSelected()) gender = 2;
-                if(rbAll.isSelected()) gender = 3;
-                int duration = Integer.parseInt(edtDuration.getText().toString());
-                int price = Integer.parseInt(edtPrice.getText().toString());
-                Campaign.insert(activity, 2, title, notes, min, max, gender, duration, price, false, new Campaign.Callback() {
-                    @Override
-                    public void success() {
-                        Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
-                    }
+                boolean isValid = true;
 
-                    @Override
-                    public void error() {
-                        Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (TextUtils.isEmpty(edtTitle.getText().toString())) {
+                    edtTitle.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtMax.getText().toString())) {
+                    edtMax.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtMin.getText().toString())) {
+                    edtMin.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtTime.getText().toString())) {
+                    edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtDuration.getText().toString())) {
+                    edtDuration.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtPrice.getText().toString())) {
+                    edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    String title = edtTitle.getText().toString();
+                    String notes = edtNotes.getText().toString();
+                    int min = Integer.parseInt(edtMin.getText().toString());
+                    int max = Integer.parseInt(edtMax.getText().toString());
+                    int gender = 0;
+                    if(rbMale.isSelected()) gender = 1;
+                    if(rbFemale.isSelected()) gender = 2;
+                    if(rbAll.isSelected()) gender = 3;
+                    int duration = Integer.parseInt(edtDuration.getText().toString());
+                    int price = Integer.parseInt(edtPrice.getText().toString());
+                    Campaign.insert(activity, 2, title, notes, min, max, gender, duration, price, false, new Campaign.Callback() {
+                        @Override
+                        public void success() {
+                            Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void error() {
+                            Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Log.d("RUNNN", "attempt failed");
+                }
             }
         });
     }

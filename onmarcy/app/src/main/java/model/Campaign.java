@@ -68,6 +68,78 @@ public class Campaign {
     @SerializedName("time")
     private String time;
 
+    public String getCodeString() {return codeString;}
+
+    public void setCodeString(String codeString) {this.codeString = codeString;}
+
+    public int getBrandCode() {return brandCode;}
+
+    public void setBrandCode(int brandCode) {this.brandCode = brandCode;}
+
+    public String getBrandName() {return brandName;}
+
+    public void setBrandName(String brandName) {this.brandName = brandName;}
+
+    public int getCategoryCode() {return categoryCode;}
+
+    public void setCategoryCode(int categoryCode) {this.categoryCode = categoryCode;}
+
+    public String getCategoryName() {return categoryName;}
+
+    public void setCategoryName(String categoryName) {this.categoryName = categoryName;}
+
+    public int getCityCode() {return cityCode;}
+
+    public void setCityCode(int cityCode) {this.cityCode = cityCode;}
+
+    public String getCityName() {return cityName;}
+
+    public void setCityName(String cityName) {this.cityName = cityName;}
+
+    public String getTitle() {return title;}
+
+    public void setTitle(String title) {this.title = title;}
+
+    public String getNotes() {return notes;}
+
+    public void setNotes(String notes) {this.notes = notes;}
+
+    public int getAgeMin() {return ageMin;}
+
+    public void setAgeMin(int ageMin) {this.ageMin = ageMin;}
+
+    public int getAgeMax() {return ageMax;}
+
+    public void setAgeMax(int ageMax) {this.ageMax = ageMax;}
+
+    public int getGender() {return gender;}
+
+    public void setGender(int gender) {this.gender = gender;}
+
+    public int getDuration() {return duration;}
+
+    public void setDuration(int duration) {this.duration = duration;}
+
+    public int getPrice() {return price;}
+
+    public void setPrice(int price) {this.price = price;}
+
+    public int getStatus() {return status;}
+
+    public void setStatus(int status) {this.status = status;}
+
+    public int getApproach() {return approach;}
+
+    public void setApproach(int approach) {this.approach = approach;}
+
+    public String getDate() {return date;}
+
+    public void setDate(String date) {this.date = date;}
+
+    public String getTime() {return time;}
+
+    public void setTime(String time) {this.time = time;}
+
     public interface CallbackSelect {
         void success(JSONArray data);
         void error();

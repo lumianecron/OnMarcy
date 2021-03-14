@@ -182,7 +182,7 @@ public class ProfileFragment extends Fragment {
 
     private void bindData(View view) {
         Glide.with(view.getContext())
-                .load("https://i2.wp.com/popculture.id/wp-content/uploads/2020/01/sung-jin-woo-solo-leveling.jpg?fit=770%2C513&ssl=1")
+                .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
                 .apply(new RequestOptions().override(120, 120))
                 .into(imageView);
 

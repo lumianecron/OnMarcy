@@ -11,6 +11,10 @@
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
         android:title="Create" />
     <item
+        android:id="@+id/menu_list"
+        android:icon="@drawable/ic_baseline_list_24"
+        android:title="Lists" />
+    <item
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Profile" />
