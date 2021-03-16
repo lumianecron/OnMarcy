@@ -8,12 +8,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import model.Campaign;
 
 public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.CampaignViewHolder> {
-    private ArrayList<Campaign> campaigns = new ArrayList<>();
+    private ArrayList<Campaign> campaigns;
 
     public CampaignAdapter(ArrayList<Campaign> campaigns) {
         this.campaigns = campaigns;
@@ -30,8 +32,23 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
     public void onBindViewHolder(@NonNull CampaignViewHolder holder, int position) {
         Campaign campaign = campaigns.get(position);
         holder.tvTitle.setText(campaign.getTitle());
-        holder.tvPrice.setText("Rp. " + campaign.getPrice() + ",00");
-        holder.tvPrice.setText(campaign.getStatus());
+        NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
+        holder.tvPrice.setText("Rp. " + nf.format(campaign.getPrice()) + ",00");
+        if(campaign.getStatus() == 1){
+            holder.tvStatus.setText(R.string.active);
+        }else if(campaign.getStatus() == 2){
+            holder.tvStatus.setText(R.string.in_progress);
+        }else if(campaign.getStatus() == 3){
+            holder.tvStatus.setText(R.string.completed);
+        }else if(campaign.getStatus() == 4){
+            holder.tvStatus.setText(R.string.pending);
+        }else if(campaign.getStatus() == 5){
+            holder.tvStatus.setText(R.string.accepted);
+        }else if(campaign.getStatus() == 6){
+            holder.tvStatus.setText(R.string.rejected);
+        }else{
+            holder.tvStatus.setText(R.string.inactive);
+        }
     }
 
     @Override

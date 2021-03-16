@@ -18,7 +18,7 @@ public class Campaign {
     private String codeString;
 
     @SerializedName("brand_code")
-    private int brandCode;
+    private String brandCode;
 
     @SerializedName("brand_name")
     private String brandName;
@@ -72,9 +72,9 @@ public class Campaign {
 
     public void setCodeString(String codeString) {this.codeString = codeString;}
 
-    public int getBrandCode() {return brandCode;}
+    public String getBrandCode() {return brandCode;}
 
-    public void setBrandCode(int brandCode) {this.brandCode = brandCode;}
+    public void setBrandCode(String brandCode) {this.brandCode = brandCode;}
 
     public String getBrandName() {return brandName;}
 
@@ -155,7 +155,7 @@ public class Campaign {
             this.codeString = jsonObject.has("code_string") ? jsonObject.getString("code_string") : "";
             this.categoryCode = jsonObject.has("category_code") ? jsonObject.getInt("category_code") : 0;
             this.categoryName = jsonObject.has("category_name") ? jsonObject.getString("category_name") : "";
-            this.brandCode = jsonObject.has("brand_code") ? jsonObject.getInt("brand_code") : 0;
+            this.brandCode = jsonObject.has("brand_code") ? jsonObject.getString("brand_code") : "";
             this.brandName = jsonObject.has("brand_name") ? jsonObject.getString("brand_name") : "";
             this.cityCode = jsonObject.has("city_code") ? jsonObject.getInt("city_code") : 0;
             this.cityName = jsonObject.has("city_name") ? jsonObject.getString("city_name") : "";
@@ -226,7 +226,7 @@ public class Campaign {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success(jsonObject.getJSONArray(Global.RESPONSE_DATA));
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("campaign"));
                 } else {
                     callback.error();
                 }

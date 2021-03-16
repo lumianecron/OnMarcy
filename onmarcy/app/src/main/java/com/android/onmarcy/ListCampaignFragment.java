@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -56,11 +60,28 @@ public class ListCampaignFragment extends Fragment {
         rvCampaign.setHasFixedSize(true);
         rvCampaign.setLayoutManager(new LinearLayoutManager(getContext()));
         getCampaign();
-        CampaignAdapter campaignAdapter = new CampaignAdapter(campaigns);
-        rvCampaign.setAdapter(campaignAdapter);
     }
 
     private void getCampaign(){
         //select campaign
+        Campaign.select(getActivity(), "", 1, "", 0, 0, 0, 10, new Campaign.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        campaigns.add(new Campaign(data.getJSONObject(i)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                CampaignAdapter campaignAdapter = new CampaignAdapter(campaigns);
+                rvCampaign.setAdapter(campaignAdapter);
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
