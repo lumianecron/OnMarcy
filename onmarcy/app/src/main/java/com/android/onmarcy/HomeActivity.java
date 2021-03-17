@@ -3,11 +3,11 @@ package com.android.onmarcy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -58,10 +58,10 @@ public class HomeActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
                         getSupportActionBar().setTitle(R.string.create_campaign);
                         return true;
-                    case R.id.menu_list:
-                        fragment = ListCampaignFragment.newInstance();
+                    case R.id.menu_history:
+                        fragment = HistoryFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-                        getSupportActionBar().setTitle(R.string.campaigns);
+                        getSupportActionBar().setTitle(R.string.history);
                         return true;
                 }
                 return false;

@@ -1,5 +1,6 @@
 package com.android.onmarcy;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         Campaign campaign = campaigns.get(position);
         holder.tvTitle.setText(campaign.getTitle());
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
-        holder.tvPrice.setText("Rp. " + nf.format(campaign.getPrice()) + ",00");
+        holder.tvPrice.setText(holder.itemView.getContext().getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
         if(campaign.getStatus() == 1){
             holder.tvStatus.setText(R.string.active);
         }else if(campaign.getStatus() == 2){

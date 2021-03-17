@@ -5,17 +5,17 @@
     <item
         android:id="@+id/menu_home"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title="Create" />
+        android:title="@string/create" />
     <item
-        android:id="@+id/menu_list"
+        android:id="@+id/menu_history"
         android:icon="@drawable/ic_baseline_list_24"
-        android:title="Lists" />
+        android:title="@string/history" />
     <item
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

@@ -23,20 +23,20 @@ import model.Campaign;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ListCampaignFragment#newInstance} factory method to
+ * Use the {@link HistoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListCampaignFragment extends Fragment {
+public class HistoryFragment extends Fragment {
     Activity activity;
-    RecyclerView rvCampaign;
+    RecyclerView rvHistory;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
 
-    public ListCampaignFragment() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
-    public static ListCampaignFragment newInstance() {
-        ListCampaignFragment fragment = new ListCampaignFragment();
+    public static HistoryFragment newInstance() {
+        HistoryFragment fragment = new HistoryFragment();
         return fragment;
     }
 
@@ -49,16 +49,16 @@ public class ListCampaignFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_campaign, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
-        rvCampaign = view.findViewById(R.id.rv_campaign);
-        rvCampaign.setHasFixedSize(true);
-        rvCampaign.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvHistory = view.findViewById(R.id.rv_history);
+        rvHistory.setHasFixedSize(true);
+        rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
         getCampaign();
     }
 
@@ -75,7 +75,7 @@ public class ListCampaignFragment extends Fragment {
                     }
                 }
                 CampaignAdapter campaignAdapter = new CampaignAdapter(campaigns);
-                rvCampaign.setAdapter(campaignAdapter);
+                rvHistory.setAdapter(campaignAdapter);
             }
 
             @Override

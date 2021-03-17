@@ -569,7 +569,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginHorizontal="5dp"
-                        android:background="#837F7F" />
+                        android:background="@color/gray" />
 
                     <Button
                         android:id="@+id/arrow_button"
