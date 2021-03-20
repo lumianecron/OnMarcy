@@ -70,7 +70,6 @@ public class ProfileFragment extends Fragment {
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
     Button btnSend, arrow, btnVerify;
-    MenuItem menuAdd;
     LinearLayout hiddenView;
     CardView cardView;
     private ArrayList<City> cities = new ArrayList<>();
@@ -176,7 +175,6 @@ public class ProfileFragment extends Fragment {
         tvTimePosting = view.findViewById(R.id.tv_time_posting);
         tvServiceType = view.findViewById(R.id.tv_service_type);
         tvCategory = view.findViewById(R.id.tv_category);
-        menuAdd = view.findViewById(R.id.menu_add);
         btnVerify = view.findViewById(R.id.btn_verify);
     }
 

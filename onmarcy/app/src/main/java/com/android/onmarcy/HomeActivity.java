@@ -18,7 +18,6 @@ import model.User;
 
 public class HomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    MenuItem itemAdd;
     Fragment fragment;
     private User user;
 
@@ -27,16 +26,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        itemAdd = bottomNavigationView.getMenu().findItem(R.id.menu_add);
 
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-
-        if(user.getUserType() == 2){ //Marketer
-            itemAdd.setVisible(false);
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -53,11 +47,6 @@ public class HomeActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
                         getSupportActionBar().setTitle(R.string.profile);
                         return true;
-                    case R.id.menu_add:
-                        fragment = CreateCampaignFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
-                        getSupportActionBar().setTitle(R.string.create_campaign);
-                        return true;
                     case R.id.menu_history:
                         fragment = HistoryFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
@@ -71,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             fragment = HomeFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+            getSupportActionBar().setTitle(R.string.app_name);
         }
     }
 

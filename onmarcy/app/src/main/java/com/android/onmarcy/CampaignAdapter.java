@@ -22,6 +22,16 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         this.campaigns = campaigns;
     }
 
+    public interface OnItemCallback{
+        void onItemClicked(Campaign campaign);
+    }
+
+    private OnItemCallback onItemCallback;
+
+    public void setOnItemCallback(OnItemCallback onItemCallback) {
+        this.onItemCallback = onItemCallback;
+    }
+
     @NonNull
     @Override
     public CampaignViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,6 +60,12 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         }else{
             holder.tvStatus.setText(R.string.inactive);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemCallback.onItemClicked(campaign);
+            }
+        });
     }
 
     @Override

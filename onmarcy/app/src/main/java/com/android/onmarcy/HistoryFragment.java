@@ -28,7 +28,8 @@ import model.Campaign;
  */
 public class HistoryFragment extends Fragment {
     Activity activity;
-    RecyclerView rvHistory;
+    private RecyclerView rvHistory;
+    private CampaignAdapter campaignAdapter;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
 
     public HistoryFragment() {
@@ -74,7 +75,13 @@ public class HistoryFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                CampaignAdapter campaignAdapter = new CampaignAdapter(campaigns);
+                campaignAdapter = new CampaignAdapter(campaigns);
+                campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
+                    @Override
+                    public void onItemClicked(Campaign campaign) {
+                        Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 rvHistory.setAdapter(campaignAdapter);
             }
 

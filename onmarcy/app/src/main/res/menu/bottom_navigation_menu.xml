@@ -7,10 +7,6 @@
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/home" />
     <item
-        android:id="@+id/menu_add"
-        android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title="@string/create" />
-    <item
         android:id="@+id/menu_history"
         android:icon="@drawable/ic_baseline_list_24"
         android:title="@string/history" />
