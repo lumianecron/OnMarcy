@@ -2,6 +2,7 @@ package com.android.onmarcy;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -122,6 +124,39 @@ public class ProfileFragment extends Fragment {
                         Global.showLoading(getContext(), "error", "info");
                     }
                 });
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(true);
+                builder.setTitle("INFO");
+                builder.setMessage("Please wait for at least 24 hour for your verification code in your Instagram");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        btnVerify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Toast.makeText(getActivity(), "Verification code : " + edtVerification.getText().toString(), Toast.LENGTH_SHORT).show();
+                SocialMedia.verify(getActivity(), edtVerification.getText().toString(), true, new SocialMedia.Callback() {
+                    @Override
+                    public void success() {
+                        Toast.makeText(getActivity(), "Verification success", Toast.LENGTH_SHORT).show();
+                        bindData(view);
+                    }
+
+                    @Override
+                    public void error() {
+                        Toast.makeText(getActivity(), "Verification fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -179,10 +214,15 @@ public class ProfileFragment extends Fragment {
     }
 
     private void bindData(View view) {
-        Glide.with(view.getContext())
-                .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
-                .apply(new RequestOptions().override(120, 120))
-                .into(imageView);
+//        Glide.with(view.getContext())
+//                .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
+//                .apply(new RequestOptions().override(120, 120))
+//                .into(imageView);
+
+//        Glide.with(view.getContext())
+//                .load("https://s3.zerochan.net/240/09/40/3247009.jpg")
+//                .apply(new RequestOptions().override(120, 120))
+//                .into(imageView);
 
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
@@ -196,6 +236,19 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
+        if(user.getUsername().equals("lumia")){
+            Glide.with(view.getContext())
+                    .load("https://s3.zerochan.net/240/09/40/3247009.jpg")
+                    .apply(new RequestOptions().override(120, 120))
+                    .into(imageView);
+        }
+        else if(user.getUsername().equals("enjirou")){
+            Glide.with(view.getContext())
+                    .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
+                    .apply(new RequestOptions().override(120, 120))
+                    .into(imageView);
+        }
+
         SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
             @Override
             public void success(JSONObject jsonObject) {
@@ -207,6 +260,9 @@ public class ProfileFragment extends Fragment {
                         tvStatus.setText("Pending");
                         tvStatus.setTextColor(getResources().getColor(R.color.yellow));
                     } else {
+                        tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_circle_outline_24, 0, 0, 0);
+                        tvStatus.setText("Verified");
+                        tvStatus.setTextColor(getResources().getColor(R.color.green));
                         tvFollower.setText(socialMedia.getTotalFollower() + "");
                         tvFollowing.setText(socialMedia.getTotalFollowing() + "");
                         tvUsername.setText(socialMedia.getId());
@@ -313,10 +369,29 @@ public class ProfileFragment extends Fragment {
                 }
                 break;
             case R.id.item_logout:
-                User.logout();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-                getActivity().finishAffinity();
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setCancelable(true);
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure to logout?");
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        User.logout();
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finishAffinity();
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
                 break;
         }
         return super.onOptionsItemSelected(item);

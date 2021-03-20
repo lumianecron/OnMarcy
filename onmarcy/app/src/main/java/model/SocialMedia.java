@@ -2,6 +2,7 @@ package model;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.android.onmarcy.Global;
 import com.google.gson.annotations.SerializedName;
@@ -347,6 +348,61 @@ public class SocialMedia {
                 else {
                     if(Global.RESPONSE_CODE.equals("401")) User.logout();
                     else callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    public static void verify(Activity activity, String verificationCode, Boolean useLoading, Callback callback) {
+        new verify(activity, verificationCode, useLoading, callback).execute("v1/socialmedia/verify");
+    }
+
+    private static class verify extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final Boolean useLoading;
+        final String verificationCode;
+
+        private verify(Activity activity, String verificationCode, Boolean useLoading, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.verificationCode = verificationCode;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("code", verificationCode);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success();
+                }
+                else {
+                    callback.error();
                 }
             }
             catch(Exception e) {

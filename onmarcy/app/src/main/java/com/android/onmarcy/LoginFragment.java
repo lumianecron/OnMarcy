@@ -73,8 +73,11 @@ public class LoginFragment extends Fragment {
             e.printStackTrace();
         }
 
-        edtUsername.setText("lumia");
-        edtPassword.setText(("12345678"));
+//        edtUsername.setText("lumia");
+//        edtPassword.setText(("12345678"));
+
+        edtUsername.setText("enjirou");
+        edtPassword.setText(("enjirou123"));
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
