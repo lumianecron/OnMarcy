@@ -56,16 +56,31 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
             holder.tvStatus.setText(R.string.active);
         }else if(campaign.getStatus() == 2){
             holder.tvStatus.setText(R.string.on_progress);
+            holder.linearDelete.setVisibility(View.GONE);
         }else if(campaign.getStatus() == 3){
             holder.tvStatus.setText(R.string.completed);
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
+            holder.linearResult.setVisibility(View.VISIBLE);
         }else if(campaign.getStatus() == 4){
             holder.tvStatus.setText(R.string.pending);
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
+            holder.linearResult.setVisibility(View.VISIBLE);
         }else if(campaign.getStatus() == 5){
             holder.tvStatus.setText(R.string.accepted);
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
+            holder.linearResult.setVisibility(View.VISIBLE);
         }else if(campaign.getStatus() == 6){
             holder.tvStatus.setText(R.string.rejected);
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
+            holder.linearResult.setVisibility(View.VISIBLE);
         }else{
             holder.tvStatus.setText(R.string.inactive);
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
         }
 
         holder.tvDescription.setText(campaign.getNotes());

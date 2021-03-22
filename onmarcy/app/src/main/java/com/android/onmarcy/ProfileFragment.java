@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import model.Category;
 import model.City;
 import model.SocialMedia;
 import model.User;
@@ -81,6 +82,7 @@ public class ProfileFragment extends Fragment {
     LinearLayout layoutVerification;
     MaterialCardView baseCardview;
     private ArrayList<City> cities = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
     private ArrayAdapter<City> adapter;
     private User user;
     private int code = 0;
@@ -314,6 +316,7 @@ public class ProfileFragment extends Fragment {
         spCity.setAdapter(adapter);
 
         loadCity();
+        loadCategory();
     }
 
     @Override
@@ -456,6 +459,30 @@ public class ProfileFragment extends Fragment {
                 Log.d("RUNNNNN", "idxCity : " + idx);*/
                 adapter.notifyDataSetChanged();
                 spCity.setSelection(idx, true);
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
+    }
+
+    public void loadCategory() {
+        Category.select(getActivity(), new Category.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                categories.clear();
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        Category category = new Category(data.getJSONObject(i));
+                        categories.add(category);
+//                        Log.d("RUNNNNN", "idx : " + i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.d("RUNNN", "Category count : " + categories.size());
             }
 
             @Override

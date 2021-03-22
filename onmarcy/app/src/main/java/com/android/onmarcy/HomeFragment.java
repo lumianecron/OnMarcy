@@ -197,7 +197,18 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void delete(Campaign campaign) {
-                        Toast.makeText(activity, "Delete", Toast.LENGTH_SHORT).show();
+                        Campaign.delete(activity, campaign.getCodeString(), true, new Campaign.Callback() {
+                            @Override
+                            public void success() {
+                                getFilteredCampaign(1, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+                                Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void error() {
+                                Toast.makeText(activity, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override

@@ -49,6 +49,11 @@ public class Category {
         @Override
         protected String doInBackground(String... urls) {
             JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+            }
+            catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
         }
 
@@ -66,5 +71,10 @@ public class Category {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -418,4 +418,120 @@ public class SocialMedia {
             if(useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
+
+    // UPDATE SOCIAL MEDIA
+    public static void update(Activity activity, String username, int socialmedia, int category, int city, String id, int totalPost, int totalFollower, int totalFollowing
+            , int totalComment, int totalLike, int marketAgeMin, int marketAgeMax, int marketMale, int marketFemale, String timePosting, int servicePost
+            , int serviceStory, int serviceBio, String code, Boolean useLoading, Callback callback) {
+        new update(activity, username, socialmedia, category, city, id, totalPost, totalFollower, totalFollowing, totalComment, totalLike, marketAgeMin, marketAgeMax, marketMale, marketFemale, timePosting, servicePost, serviceStory, serviceBio, code, useLoading, callback).execute("v1/socialmedia/update");
+    }
+
+    private static class update extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final Boolean useLoading;
+        final String username;
+        final int socialmedia;
+        final int category;
+        final int city;
+        final String id;
+        final int totalPost;
+        final int totalFollower;
+        final int totalFollowing;
+        final int totalComment;
+        final int totalLike;
+        final int marketAgeMin;
+        final int marketAgeMax;
+        final int marketMale;
+        final int marketFemale;
+        final String timePosting;
+        final int servicePost;
+        final int serviceStory;
+        final int serviceBio;
+        final String code;
+
+        private update(Activity activity, String username, int socialmedia, int category, int city, String id, int totalPost, int totalFollower, int totalFollowing
+                , int totalComment, int totalLike, int marketAgeMin, int marketAgeMax, int marketMale, int marketFemale, String timePosting, int servicePost
+                , int serviceStory, int serviceBio, String code, Boolean useLoading, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.username = username;
+            this.socialmedia = socialmedia;
+            this.category = category;
+            this.city = city;
+            this.id = id;
+            this.totalPost = totalPost;
+            this.totalFollower = totalFollower;
+            this.totalFollowing = totalFollowing;
+            this.totalComment = totalComment;
+            this.totalLike = totalLike;
+            this.marketAgeMin = marketAgeMin;
+            this.marketAgeMax = marketAgeMax;
+            this.marketMale = marketMale;
+            this.marketFemale = marketFemale;
+            this.timePosting = timePosting;
+            this.servicePost = servicePost;
+            this.serviceStory = serviceStory;
+            this.serviceBio = serviceBio;
+            this.code = code;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("socialmedia", socialmedia);
+                jsonObject.put("category", category);
+                jsonObject.put("city", city);
+                jsonObject.put("id", id);
+                jsonObject.put("total_post", totalPost);
+                jsonObject.put("total_follower", totalFollower);
+                jsonObject.put("total_following", totalFollowing);
+                jsonObject.put("total_comment", totalComment);
+                jsonObject.put("total_like", totalLike);
+                jsonObject.put("market_age_min", marketAgeMin);
+                jsonObject.put("market_age_max", marketAgeMax);
+                jsonObject.put("market_male", marketMale);
+                jsonObject.put("market_female", marketFemale);
+                jsonObject.put("time_posting", timePosting);
+                jsonObject.put("service_post", servicePost);
+                jsonObject.put("service_story", serviceStory);
+                jsonObject.put("service_bio", serviceBio);
+//                jsonObject.put("code", code);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success();
+                }
+                else {
+                    if(Global.RESPONSE_CODE.equals("401")) User.logout();
+                    else callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
 }
