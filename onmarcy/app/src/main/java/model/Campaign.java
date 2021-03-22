@@ -167,7 +167,7 @@ public class Campaign {
             this.duration = jsonObject.has("duration") ? jsonObject.getInt("duration") : 0;
             this.price = jsonObject.has("price") ? jsonObject.getInt("price") : 0;
             this.status = jsonObject.has("status") ? jsonObject.getInt("status") : 0;
-            this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
+//            this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
             this.time = jsonObject.has("time") ? jsonObject.getString("time") : "";
         } catch (JSONException e) {
@@ -175,8 +175,8 @@ public class Campaign {
         }
     }
 
-    public static void select(Activity activity, String codeString, int status, String date, int categoryCode, int approach, int start, int limit, CallbackSelect callback) {
-        new select(activity, codeString, status, date, categoryCode, approach, start, limit, callback).execute("v1/campaign/select");
+    public static void select(Activity activity, String codeString, int status, String date, int categoryCode, int start, int limit, CallbackSelect callback) {
+        new select(activity, codeString, status, date, categoryCode, start, limit, callback).execute("v1/campaign/select");
     }
 
     private static class select extends AsyncTask<String, Void, String> {
@@ -186,18 +186,18 @@ public class Campaign {
         final int status;
         final String date;
         final int categoryCode;
-        final int approach;
+//        final int approach;
         final int start;
         final int limit;
 
-        private select(Activity activity, String codeString, int status, String date, int categoryCode, int approach, int start, int limit, CallbackSelect callback) {
+        private select(Activity activity, String codeString, int status, String date, int categoryCode, int start, int limit, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.codeString = codeString;
             this.status = status;
             this.date = date;
             this.categoryCode = categoryCode;
-            this.approach = approach;
+//            this.approach = approach;
             this.start = start;
             this.limit = limit;
         }
@@ -212,7 +212,7 @@ public class Campaign {
                 jsonObject.put("status", status);
                 jsonObject.put("date", date);
                 jsonObject.put("category_code", categoryCode);
-                jsonObject.put("approach", approach);
+//                jsonObject.put("approach", approach);
                 jsonObject.put("start", start);
                 jsonObject.put("limit", limit);
             }

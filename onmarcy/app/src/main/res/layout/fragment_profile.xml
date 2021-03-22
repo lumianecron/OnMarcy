@@ -18,7 +18,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             tools:src="@android:color/darker_gray" />
 
         <TextView
@@ -29,16 +29,16 @@
             android:text="@string/verified"
             android:textColor="@color/green"
             android:textSize="18sp"
-            android:layout_marginBottom="40dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"/>
+            android:layout_gravity="center"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_name"
@@ -52,12 +52,14 @@
             android:layout_height="wrap_content"
             android:hint="@string/username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_username"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,13 +68,15 @@
             android:layout_height="wrap_content"
             android:hint="@string/email_address"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:enabled="false"
+                android:textColor="@color/black"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,7 +85,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/phone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_phone"
@@ -96,7 +101,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/new_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_password"
@@ -111,7 +117,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/re_enter_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_confirm"
@@ -132,20 +139,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="15dp"/>
 
         <LinearLayout
+            android:id="@+id/layout_verification"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_input_layout_instagram"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:hint="@string/type_your_instagram"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:endIconMode="clear_text">
+                app:endIconMode="clear_text"
+                android:layout_marginVertical="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_instagram"
@@ -154,44 +163,71 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btn_send"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.9"
-                android:text="@string/send" />
-        </LinearLayout>
+                android:layout_marginVertical="5dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_edt_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/choose_category"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginRight="10dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_verification"
-                android:layout_width="0dp"
+                    <AutoCompleteTextView
+                        android:id="@+id/autoComplete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_send"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.9"
+                    android:text="@string/send" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint="@string/verification_code"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:endIconMode="clear_text">
+                android:layout_marginVertical="5dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_verification"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txt_input_layout_verification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/verification_code"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_marginRight="10dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_verification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-            <Button
-                android:id="@+id/btn_verify"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.9"
-                android:text="@string/verify" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_verify"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.9"
+                    android:text="@string/verify" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">OnMarcy</string>
+
     <string-array name="types">
         <item>Brand</item>
         <item>Marketer</item>
     </string-array>
+
     <string name="url">https://api-onmarcy.genoratory.com/</string>
+
     <!--    Register-->
     <string name="email_format_is_not_valid">Email format is not valid</string>
     <string name="please_fill_out_this_field">Please fill out this field</string>
@@ -24,12 +27,14 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="popup_agreement">Please agree with our terms</string>
     <string name="register">register</string>
+
     <!--    Login-->
     <string name="login_to_your_account">LOGIN TO YOUR ACCOUNT</string>
     <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="join_us">Join us!</string>
     <string name="login">login</string>
-    <!--    Profil-->
+
+    <!--    Profile-->
     <string name="profile">Profile</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
@@ -40,7 +45,7 @@
     <string name="send">Send</string>
     <string name="submit">submit</string>
     <string name="verified">Verified</string>
-    <string name="pending">pending</string>
+    <string name="pending">Pending</string>
     <string name="total_post">Total post</string>
     <string name="total_comment">Total comment</string>
     <string name="total_like">Total like</string>
@@ -53,31 +58,68 @@
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
     <string name="category">Category</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="verify">Verify</string>
+    <string name="bio">Bio</string>
+    <string name="post">Post</string>
+    <string name="story">Story</string>
+
+    <!--    Create Campaign-->
     <string name="create_campaign">Create Campaign</string>
     <string name="title">Title</string>
     <string name="male">Male</string>
     <string name="all">All</string>
     <string name="notes">Notes</string>
+    <string name="select_time">Select Time</string>
     <string name="duration">Duration</string>
     <string name="price">Price</string>
     <string name="create">Create</string>
-    <string name="verify">Verify</string>
+
+    <!--    List Campaign-->
     <string name="campaigns">Campaigns</string>
     <string name="active">Active</string>
-    <string name="in_progress">In progress</string>
+    <string name="on_progress">On Progress</string>
     <string name="completed">Completed</string>
     <string name="accepted">Accepted</string>
     <string name="rejected">Rejected</string>
     <string name="inactive">Inactive</string>
     <string name="price_format">Rp. %1$s,00</string>
+
+    <!--    Menu Item-->
     <string name="home">Home</string>
     <string name="lists">Lists</string>
     <string name="chat">Chat</string>
     <string name="history">History</string>
+
+    <!--    Filter-->
     <string name="lowest_price">Lowest Price</string>
     <string name="highest_price">Highest Price</string>
     <string name="filter">Filter</string>
     <string name="search">Search</string>
     <string name="search_campaign">Search Campaign</string>
+
+    <!--    Confirmation Dialog-->
+    <string name="msg_back">Are you sure to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="msg_verification">Please wait for at least 24 hour for your verification code in your Instagram</string>
+    <string name="info">INFO</string>
+    <string name="ok">OK</string>
+    <string name="msg_logout">Are you sure to logout?</string>
+    <string name="confirmation">Confirmation</string>
+
+    <!--    Toast-->
+    <string name="success">Success</string>
+    <string name="fail">Fail</string>
+    <string name="login_successful">Login successful!</string>
+    <string name="login_unsuccessful">Login unsuccessful!</string>
+    <string name="error">error</string>
+    <string name="verification_success">Verification success</string>
+    <string name="verification_fail">Verification fail</string>
+    <string name="update_unsuccessful">Update unsuccessful</string>
+    <string name="update_successful">Update successful</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="content">Content</string>
+    <string name="choose_category">Choose Category</string>
+
 </resources>

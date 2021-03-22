@@ -115,7 +115,6 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     campaignAdapter.notifyDataSetChanged();
-                    rvCampaign.setAdapter(campaignAdapter);
                     return true;
                 }
 
@@ -151,7 +150,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getFilteredCampaign(int status, int lowest, int highest, int year) {
-        Campaign.select(getActivity(), "", status, "", 0, 0, 0, 10, new Campaign.CallbackSelect() {
+        Campaign.select(getActivity(), "", status, "", 0, 0, 10, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
                 temp.clear();
@@ -178,11 +177,32 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
+
                 campaignAdapter = new CampaignAdapter(temp);
                 campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
                     @Override
                     public void onItemClicked(Campaign campaign) {
                         Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void showContent(Campaign campaign) {
+                        Toast.makeText(activity, "Content", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void update(Campaign campaign) {
+                        Toast.makeText(activity, "Update", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void delete(Campaign campaign) {
+                        Toast.makeText(activity, "Delete", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void showResult(Campaign campaign) {
+                        Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
                     }
                 });
                 rvCampaign.setAdapter(campaignAdapter);
@@ -190,7 +210,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void error() {
-                Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
             }
         });
     }

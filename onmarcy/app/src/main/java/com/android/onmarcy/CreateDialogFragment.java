@@ -84,7 +84,7 @@ public class CreateDialogFragment extends DialogFragment {
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                 }
             });
-            toolbar.setTitle("Create Campaign");
+            toolbar.setTitle(R.string.create_campaign);
             toolbar.inflateMenu(R.menu.create_menu);
             toolbar.setOnMenuItemClickListener(item -> {
                 boolean isValid = true;
@@ -128,7 +128,7 @@ public class CreateDialogFragment extends DialogFragment {
                     Campaign.insert(activity, 2, title, notes, min, max, gender, duration, price, false, new Campaign.Callback() {
                         @Override
                         public void success() {
-                            Toast.makeText(activity, "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
                             dismiss();
                             Fragment fragment = HomeFragment.newInstance();
                             fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
@@ -136,7 +136,7 @@ public class CreateDialogFragment extends DialogFragment {
 
                         @Override
                         public void error() {
-                            Toast.makeText(activity, "Fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, getResources().getString(R.string.fail), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -160,7 +160,7 @@ public class CreateDialogFragment extends DialogFragment {
                         edtTime.setText(mFormat.format(currentTime.getTime()));
                     }
                 }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime.get(Calendar.MINUTE), true);
-                timePickerDialog.setTitle("Select Time");
+                timePickerDialog.setTitle(getString(R.string.select_time));
                 timePickerDialog.show();
             }
         });

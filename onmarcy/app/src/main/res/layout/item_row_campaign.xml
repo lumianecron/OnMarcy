@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -12,8 +13,53 @@
         android:layout_height="wrap_content"
         android:text="Judul"
         android:textSize="18sp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:textStyle="bold"
+        android:textColor="@color/red1"/>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="Date"
+            android:textSize="10sp"
+            android:textColor="@color/gray" />
+
+        <LinearLayout
+            android:layout_width="1.5dp"
+            android:layout_height="24dp"
+            android:background="@color/gray2"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:drawableLeft="@drawable/ic_baseline_menu_24"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="Status"
+            android:textSize="10sp"
+            android:textColor="@color/gray" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_marginBottom="5dp"
         android:textColor="@color/black"/>
 
     <TextView
@@ -24,13 +70,93 @@
         android:layout_marginBottom="5dp"
         android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/tv_status"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:text="Status"
-        android:layout_marginBottom="15dp"
-        android:textColor="@color/black"/>
+        android:layout_gravity="right"
+        android:layout_marginBottom="5dp">
+
+        <Button
+            android:id="@+id/btn_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/content"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_info_24"
+            android:textAllCaps="false"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"/>
+
+        <LinearLayout
+            android:id="@+id/linear_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="1.5dp"
+                android:layout_height="24dp"
+                android:background="@color/gray2"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/update"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_edit_24"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="1.5dp"
+                android:layout_height="24dp"
+                android:background="@color/gray2"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_delete_24"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="1.5dp"
+                android:layout_height="24dp"
+                android:background="@color/gray2"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/btn_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Result"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_baseline_info_24"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

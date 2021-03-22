@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,10 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
 
     public interface OnItemCallback{
         void onItemClicked(Campaign campaign);
+        void showContent(Campaign campaign);
+        void update(Campaign campaign);
+        void delete(Campaign campaign);
+        void showResult(Campaign campaign);
     }
 
     private OnItemCallback onItemCallback;
@@ -45,10 +51,11 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         holder.tvTitle.setText(campaign.getTitle());
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         holder.tvPrice.setText(holder.itemView.getContext().getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
+
         if(campaign.getStatus() == 1){
             holder.tvStatus.setText(R.string.active);
         }else if(campaign.getStatus() == 2){
-            holder.tvStatus.setText(R.string.in_progress);
+            holder.tvStatus.setText(R.string.on_progress);
         }else if(campaign.getStatus() == 3){
             holder.tvStatus.setText(R.string.completed);
         }else if(campaign.getStatus() == 4){
@@ -60,11 +67,28 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         }else{
             holder.tvStatus.setText(R.string.inactive);
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemCallback.onItemClicked(campaign);
-            }
+
+        holder.tvDescription.setText(campaign.getNotes());
+        holder.tvDate.setText(campaign.getDate());
+
+        holder.itemView.setOnClickListener(view -> {
+            onItemCallback.onItemClicked(campaign);
+        });
+
+        holder.btnContent.setOnClickListener(view -> {
+            onItemCallback.showContent(campaign);
+        });
+
+        holder.btnDelete.setOnClickListener(view -> {
+            onItemCallback.delete(campaign);
+        });
+
+        holder.btnUpdate.setOnClickListener(view -> {
+            onItemCallback.update(campaign);
+        });
+
+        holder.btnResult.setOnClickListener(view -> {
+            onItemCallback.showResult(campaign);
         });
     }
 
@@ -74,12 +98,23 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
     }
 
     public class CampaignViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvPrice, tvStatus;
+        LinearLayout linearUpdate, linearDelete, linearResult;
+        TextView tvTitle, tvPrice, tvStatus, tvDate, tvDescription;
+        Button btnContent, btnUpdate, btnDelete, btnResult;
         public CampaignViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvPrice = itemView.findViewById(R.id.tv_price);
             tvStatus = itemView.findViewById(R.id.tv_status);
+            tvDate = itemView.findViewById(R.id.tv_date);
+            tvDescription = itemView.findViewById(R.id.tv_description);
+            btnContent = itemView.findViewById(R.id.btn_content);
+            btnUpdate = itemView.findViewById(R.id.btn_update);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
+            btnResult = itemView.findViewById(R.id.btn_result);
+            linearUpdate = itemView.findViewById(R.id.linear_update);
+            linearDelete = itemView.findViewById(R.id.linear_delete);
+            linearResult = itemView.findViewById(R.id.linear_result);
         }
     }
 }

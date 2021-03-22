@@ -73,11 +73,11 @@ public class LoginFragment extends Fragment {
             e.printStackTrace();
         }
 
-//        edtUsername.setText("lumia");
-//        edtPassword.setText(("12345678"));
+        edtUsername.setText("lumia");
+        edtPassword.setText(("12345678"));
 
-        edtUsername.setText("enjirou");
-        edtPassword.setText(("enjirou123"));
+//        edtUsername.setText("enjirou");
+//        edtPassword.setText(("enjirou123"));
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment {
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                             Log.d("RUNNN", "username : " + user.getUsername());
 //                            Global.showLoading(getActivity(), "INFO", "Login successful!");
-                            Toast.makeText(getActivity(), "Login successful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                             startActivity(intent);
                             getActivity().finishAffinity();
@@ -117,7 +117,7 @@ public class LoginFragment extends Fragment {
 
                         @Override
                         public void error() {
-                            Toast.makeText(getActivity(), "Login unsuccessful!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.login_unsuccessful), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

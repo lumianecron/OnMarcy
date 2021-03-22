@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,6 +42,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -69,11 +72,14 @@ public class ProfileFragment extends Fragment {
     CircleImageView imageView;
     TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
     TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
+    AutoCompleteTextView autoCompleteTextView;
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
     Button btnSend, arrow, btnVerify;
     LinearLayout hiddenView;
     CardView cardView;
+    LinearLayout layoutVerification;
+    MaterialCardView baseCardview;
     private ArrayList<City> cities = new ArrayList<>();
     private ArrayAdapter<City> adapter;
     private User user;
@@ -116,20 +122,20 @@ public class ProfileFragment extends Fragment {
                 SocialMedia.insert(getActivity(), user.getUsername(), 1, 2, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
                     @Override
                     public void success() {
-                        Global.showLoading(getContext(), "success", "info");
+                        Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
                     }
 
                     @Override
                     public void error() {
-                        Global.showLoading(getContext(), "error", "info");
+                        Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
                     }
                 });
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(true);
-                builder.setTitle("INFO");
-                builder.setMessage("Please wait for at least 24 hour for your verification code in your Instagram");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.info);
+                builder.setMessage(R.string.msg_verification);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -148,13 +154,13 @@ public class ProfileFragment extends Fragment {
                 SocialMedia.verify(getActivity(), edtVerification.getText().toString(), true, new SocialMedia.Callback() {
                     @Override
                     public void success() {
-                        Toast.makeText(getActivity(), "Verification success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.verification_success), Toast.LENGTH_SHORT).show();
                         bindData(view);
                     }
 
                     @Override
                     public void error() {
-                        Toast.makeText(getActivity(), "Verification fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.verification_fail), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -211,19 +217,12 @@ public class ProfileFragment extends Fragment {
         tvServiceType = view.findViewById(R.id.tv_service_type);
         tvCategory = view.findViewById(R.id.tv_category);
         btnVerify = view.findViewById(R.id.btn_verify);
+        layoutVerification = view.findViewById(R.id.layout_verification);
+        baseCardview = view.findViewById(R.id.base_cardview);
+        autoCompleteTextView = view.findViewById(R.id.autoComplete);
     }
 
     private void bindData(View view) {
-//        Glide.with(view.getContext())
-//                .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
-//                .apply(new RequestOptions().override(120, 120))
-//                .into(imageView);
-
-//        Glide.with(view.getContext())
-//                .load("https://s3.zerochan.net/240/09/40/3247009.jpg")
-//                .apply(new RequestOptions().override(120, 120))
-//                .into(imageView);
-
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
             edtName.setText(user.getName());
@@ -236,25 +235,36 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
+        String img = "";
         if(user.getUsername().equals("lumia")){
-            Glide.with(view.getContext())
-                    .load("https://s3.zerochan.net/240/09/40/3247009.jpg")
-                    .apply(new RequestOptions().override(120, 120))
-                    .into(imageView);
+            img = "https://s3.zerochan.net/240/09/40/3247009.jpg";
+
         }
         else if(user.getUsername().equals("enjirou")){
-            Glide.with(view.getContext())
-                    .load("https://cdn.myanimelist.net/images/characters/2/373501.jpg")
-                    .apply(new RequestOptions().override(120, 120))
-                    .into(imageView);
+            img = "https://cdn.myanimelist.net/images/characters/2/373501.jpg";
         }
+        Glide.with(view.getContext())
+                .load(img)
+                .apply(new RequestOptions().override(120, 120))
+                .into(imageView);
 
+        registerForContextMenu(autoCompleteTextView);
+        autoCompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoCompleteTextView.showContextMenu();
+            }
+        });
+
+        baseCardview.setVisibility(View.GONE);
+        tvStatus.setVisibility(View.GONE);
         SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
             @Override
             public void success(JSONObject jsonObject) {
                 try {
                     SocialMedia socialMedia = new SocialMedia(jsonObject);
                     tvStatus.setVisibility(View.VISIBLE);
+
                     if (socialMedia.getStatusVerify() == 0) {
                         tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_pending_24, 0, 0, 0);
                         tvStatus.setText("Pending");
@@ -275,15 +285,17 @@ public class ProfileFragment extends Fragment {
                         tvFemale.setText(socialMedia.getMarketFemale() + "");
                         tvTimePosting.setText(socialMedia.getTimePosting() + "");
                         tvCategory.setText(socialMedia.getCategoryName());
+                        layoutVerification.setVisibility(View.GONE);
+                        baseCardview.setVisibility(View.VISIBLE);
 
                         if(socialMedia.getServiceBio() == 1){
-                            tvServiceType.setText("Bio");
+                            tvServiceType.setText(R.string.bio);
                         }
                         if(socialMedia.getServicePost() == 1){
-                            tvServiceType.setText("Post");
+                            tvServiceType.setText(R.string.post);
                         }
                         if(socialMedia.getServiceStory() == 1){
-                            tvServiceType.setText("Story");
+                            tvServiceType.setText(R.string.story);
                         }
                     }
                 } catch (Exception ex) {
@@ -302,6 +314,21 @@ public class ProfileFragment extends Fragment {
         spCity.setAdapter(adapter);
 
         loadCity();
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        activity.getMenuInflater().inflate(R.menu.context_menu_category, menu);
+        menu.setHeaderTitle("Choose Category");
+    }
+
+    String selectedCategory = "";
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        selectedCategory = item.toString();
+        Toast.makeText(activity, selectedCategory, Toast.LENGTH_SHORT).show();
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -348,7 +375,7 @@ public class ProfileFragment extends Fragment {
 
                             @Override
                             public void error() {
-                                Toast.makeText(activity, "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, getString(R.string.update_unsuccessful), Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
@@ -361,19 +388,19 @@ public class ProfileFragment extends Fragment {
 
                             @Override
                             public void error() {
-                                Toast.makeText(activity, "Update unsuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, getString(R.string.update_unsuccessful), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-                    Toast.makeText(activity, "Berhasil", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.item_logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setCancelable(true);
-                builder.setTitle("Confirmation");
-                builder.setMessage("Are you sure to logout?");
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.confirmation);
+                builder.setMessage(R.string.msg_logout);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         User.logout();
@@ -382,7 +409,7 @@ public class ProfileFragment extends Fragment {
                         getActivity().finishAffinity();
                     }
                 });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -398,7 +425,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void update(){
-        Toast.makeText(activity, "Update successful", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, getString(R.string.update_successful), Toast.LENGTH_SHORT).show();
         user.setName(edtName.getText().toString());
         user.setPhone(edtPhone.getText().toString());
         user.setCityCode(code);

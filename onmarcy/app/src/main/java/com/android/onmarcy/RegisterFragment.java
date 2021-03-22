@@ -176,13 +176,13 @@ public class RegisterFragment extends Fragment {
                     User.insert(getActivity(), edtUsername.getText().toString(), edtPassword.getText().toString(), edtEmail.getText().toString(), edtName.getText().toString(), edtPhone.getText().toString(), code, type, edtReferral.getText().toString(), true, new User.Callback() {
                         @Override
                         public void success() {
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
                         }
 
                         @Override
                         public void error() {
-                            Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
                         }
                     });
 

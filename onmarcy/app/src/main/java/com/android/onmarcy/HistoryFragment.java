@@ -60,35 +60,59 @@ public class HistoryFragment extends Fragment {
         rvHistory = view.findViewById(R.id.rv_history);
         rvHistory.setHasFixedSize(true);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
+        campaignAdapter = new CampaignAdapter(campaigns);
+        campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
+            @Override
+            public void onItemClicked(Campaign campaign) {
+                Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void showContent(Campaign campaign) {
+                Toast.makeText(activity, "Content", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void update(Campaign campaign) {
+                Toast.makeText(activity, "Update", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void delete(Campaign campaign) {
+                Toast.makeText(activity, "Delete", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void showResult(Campaign campaign) {
+                Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
+            }
+        });
+        rvHistory.setAdapter(campaignAdapter);
         getCampaign();
     }
 
     private void getCampaign(){
-        //select campaign
-        Campaign.select(getActivity(), "", 1, "", 0, 0, 0, 10, new Campaign.CallbackSelect() {
-            @Override
-            public void success(JSONArray data) {
-                for (int i = 0; i < data.length(); i++) {
-                    try {
-                        campaigns.add(new Campaign(data.getJSONObject(i)));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                campaignAdapter = new CampaignAdapter(campaigns);
-                campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
-                    @Override
-                    public void onItemClicked(Campaign campaign) {
-                        Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-                rvHistory.setAdapter(campaignAdapter);
-            }
 
-            @Override
-            public void error() {
-                Toast.makeText(activity, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        //select campaign
+        for (int i = 4; i < 7; i++) {
+            Campaign.select(getActivity(), "", i, "", 0, 0, 10, new Campaign.CallbackSelect() {
+                @Override
+                public void success(JSONArray data) {
+                    for (int j = 0; j < data.length(); j++) {
+                        try {
+                            campaigns.add(new Campaign(data.getJSONObject(j)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    campaignAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void error() {
+                    Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

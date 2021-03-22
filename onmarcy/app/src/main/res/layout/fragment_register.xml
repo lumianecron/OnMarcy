@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/email_address"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_email"
@@ -41,7 +42,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_username"
@@ -54,7 +56,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_password"
@@ -68,7 +71,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/re_enter_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_confirm"
@@ -82,7 +86,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/referral_code_optional"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_referral"
@@ -104,7 +109,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_name"
@@ -117,7 +123,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/phone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            android:layout_marginVertical="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_phone"
