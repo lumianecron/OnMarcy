@@ -56,6 +56,7 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
             holder.tvStatus.setText(R.string.active);
         }else if(campaign.getStatus() == 2){
             holder.tvStatus.setText(R.string.on_progress);
+            holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
         }else if(campaign.getStatus() == 3){
             holder.tvStatus.setText(R.string.completed);

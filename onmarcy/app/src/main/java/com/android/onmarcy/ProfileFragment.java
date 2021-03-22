@@ -400,7 +400,7 @@ public class ProfileFragment extends Fragment {
                 break;
             case R.id.item_logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setCancelable(true);
+                builder.setCancelable(false);
                 builder.setTitle(R.string.confirmation);
                 builder.setMessage(R.string.msg_logout);
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
