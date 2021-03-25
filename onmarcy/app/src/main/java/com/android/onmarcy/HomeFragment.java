@@ -3,10 +3,13 @@ package com.android.onmarcy;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -197,18 +200,36 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void delete(Campaign campaign) {
-                        Campaign.delete(activity, campaign.getCodeString(), true, new Campaign.Callback() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                        builder.setCancelable(false);
+                        builder.setTitle(R.string.confirmation);
+                        builder.setMessage(R.string.msg_delete_campaign);
+                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
-                            public void success() {
-                                getFilteredCampaign(1, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
-                                Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
-                            }
+                            public void onClick(DialogInterface dialog, int which) {
+                                Campaign.delete(activity, campaign.getCodeString(), true, new Campaign.Callback() {
+                                    @Override
+                                    public void success() {
+                                        getFilteredCampaign(1, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+                                        Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
+                                    }
 
-                            @Override
-                            public void error() {
-                                Toast.makeText(activity, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                    @Override
+                                    public void error() {
+                                        Toast.makeText(activity, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         });
+                        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
 
                     @Override

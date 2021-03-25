@@ -121,5 +121,6 @@
     <string name="update">Update</string>
     <string name="content">Content</string>
     <string name="choose_category">Choose Category</string>
+    <string name="msg_delete_campaign">Are you sure to delete this campaign?</string>
 
 </resources>
