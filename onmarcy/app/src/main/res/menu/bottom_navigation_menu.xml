@@ -8,7 +8,7 @@
         android:title="@string/home" />
     <item
         android:id="@+id/menu_history"
-        android:icon="@drawable/ic_baseline_list_24"
+        android:icon="@drawable/ic_baseline_history_24"
         android:title="@string/history" />
     <item
         android:id="@+id/menu_profile"

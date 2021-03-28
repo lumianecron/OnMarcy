@@ -73,6 +73,8 @@
     <string name="duration">Duration</string>
     <string name="price">Price</string>
     <string name="create">Create</string>
+    <string name="choose_category">Choose Category</string>
+    <string name="campaign_description">CAMPAIGN DESCRIPTION</string>
 
     <!--    List Campaign-->
     <string name="campaigns">Campaigns</string>
@@ -83,6 +85,9 @@
     <string name="rejected">Rejected</string>
     <string name="inactive">Inactive</string>
     <string name="price_format">Rp. %1$s,00</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="content">Content</string>
 
     <!--    Menu Item-->
     <string name="home">Home</string>
@@ -106,6 +111,7 @@
     <string name="ok">OK</string>
     <string name="msg_logout">Are you sure to logout?</string>
     <string name="confirmation">Confirmation</string>
+    <string name="msg_delete_campaign">Are you sure to delete this campaign?</string>
 
     <!--    Toast-->
     <string name="success">Success</string>
@@ -117,10 +123,28 @@
     <string name="verification_fail">Verification fail</string>
     <string name="update_unsuccessful">Update unsuccessful</string>
     <string name="update_successful">Update successful</string>
-    <string name="delete">Delete</string>
-    <string name="update">Update</string>
-    <string name="content">Content</string>
-    <string name="choose_category">Choose Category</string>
-    <string name="msg_delete_campaign">Are you sure to delete this campaign?</string>
+
+    <!--    Category Item-->
+    <string name="category1"><![CDATA[Business & Industry]]></string>
+    <string name="category2">Entertainment</string>
+    <string name="category3"><![CDATA[Family & Relationships]]></string>
+    <string name="category4"><![CDATA[Fitness & Wellness]]></string>
+    <string name="category5"><![CDATA[Food & Beverages]]></string>
+    <string name="category6"><![CDATA[Hobbies & Activities]]></string>
+    <string name="category7"><![CDATA[Shopping & Fashion]]></string>
+    <string name="category8"><![CDATA[Sports & Outdoors]]></string>
+    <string name="category9">Technology</string>
+
+    <!--    Content-->
+    <string name="description">Description</string>
+    <string name="brand">Brand</string>
+    <string name="instagram_username">Instagram Username</string>
+    <string name="date_posting">Date Posting</string>
+    <string name="upload_time">Upload Time</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="location">Location</string>
+    <string name="details">Details</string>
+    <string name="target_market">Target Market</string>
 
 </resources>

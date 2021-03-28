@@ -98,6 +98,10 @@ public class HomeFragment extends Fragment {
                 CreateDialogFragment.display(getParentFragmentManager());
             }
         });
+
+        if(user.getUserType() == 2){
+            floatingActionButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -153,7 +157,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void getFilteredCampaign(int status, int lowest, int highest, int year) {
-        Campaign.select(getActivity(), "", status, "", 0, 0, 10, new Campaign.CallbackSelect() {
+        Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
+                , 0, 0, 0, 0, status, "", "", 0, 10, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
                 temp.clear();
@@ -190,7 +195,10 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void showContent(Campaign campaign) {
-                        Toast.makeText(activity, "Content", Toast.LENGTH_SHORT).show();
+                        HomeActivity homeActivity = (HomeActivity) getActivity();
+                        Intent intent = new Intent(homeActivity, ContentActivity.class);
+                        intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
+                        startActivity(intent);
                     }
 
                     @Override

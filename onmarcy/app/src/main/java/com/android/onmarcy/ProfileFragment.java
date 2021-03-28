@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
 
     CircleImageView imageView;
     TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
-    TextInputLayout textInputLayoutInstagram, textInputLayoutVerification;
+    TextInputLayout textInputLayoutInstagram, textInputLayoutVerification, textInputLayoutCategory;
     AutoCompleteTextView autoCompleteTextView;
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
@@ -87,6 +87,8 @@ public class ProfileFragment extends Fragment {
     private User user;
     private int code = 0;
     private String cityName = "";
+    private String selectedCategory = "";
+    private int categoryCode = 0;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -120,32 +122,45 @@ public class ProfileFragment extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean isValid = true;
                 code = getCode(spCity.getSelectedItem().toString());
-                SocialMedia.insert(getActivity(), user.getUsername(), 1, 2, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
-                    @Override
-                    public void success() {
-                        Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
-                    }
 
-                    @Override
-                    public void error() {
-                        Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
-                    }
-                });
+                if(TextUtils.isEmpty(edtInstagram.getText().toString())){
+                    edtInstagram.setError(getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if(selectedCategory.equals("")){
+                    autoCompleteTextView.setError("Please choose category");
+                    isValid = false;
+                }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setCancelable(true);
-                builder.setTitle(R.string.info);
-                builder.setMessage(R.string.msg_verification);
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                if(isValid){
+                    SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
+                        @Override
+                        public void success() {
+                            Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
+                        }
 
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                        @Override
+                        public void error() {
+                            Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
+                        }
+                    });
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(true);
+                    builder.setTitle(R.string.info);
+                    builder.setMessage(R.string.msg_verification);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
 
@@ -222,6 +237,7 @@ public class ProfileFragment extends Fragment {
         layoutVerification = view.findViewById(R.id.layout_verification);
         baseCardview = view.findViewById(R.id.base_cardview);
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
+        textInputLayoutCategory = view.findViewById(R.id.txt_input_layout_category);
     }
 
     private void bindData(View view) {
@@ -326,11 +342,19 @@ public class ProfileFragment extends Fragment {
         menu.setHeaderTitle("Choose Category");
     }
 
-    String selectedCategory = "";
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         selectedCategory = item.toString();
-        Toast.makeText(activity, selectedCategory, Toast.LENGTH_SHORT).show();
+        textInputLayoutCategory.setPlaceholderText(selectedCategory);
+        if (selectedCategory.equals(getString(R.string.category1))) categoryCode = 1;
+        if (selectedCategory.equals(getString(R.string.category2))) categoryCode = 2;
+        if (selectedCategory.equals(getString(R.string.category3))) categoryCode = 3;
+        if (selectedCategory.equals(getString(R.string.category4))) categoryCode = 4;
+        if (selectedCategory.equals(getString(R.string.category5))) categoryCode = 5;
+        if (selectedCategory.equals(getString(R.string.category6))) categoryCode = 6;
+        if (selectedCategory.equals(getString(R.string.category7))) categoryCode = 7;
+        if (selectedCategory.equals(getString(R.string.category8))) categoryCode = 8;
+        if (selectedCategory.equals(getString(R.string.category9))) categoryCode = 9;
         return super.onContextItemSelected(item);
     }
 

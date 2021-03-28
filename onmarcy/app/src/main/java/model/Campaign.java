@@ -2,6 +2,8 @@ package model;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.android.onmarcy.Global;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
-public class Campaign {
+public class Campaign implements Parcelable {
     @SerializedName("code_string")
     private String codeString;
 
@@ -140,6 +142,66 @@ public class Campaign {
 
     public void setTime(String time) {this.time = time;}
 
+    protected Campaign(Parcel in) {
+        codeString = in.readString();
+        brandCode = in.readString();
+        brandName = in.readString();
+        categoryCode = in.readInt();
+        categoryName = in.readString();
+        cityCode = in.readInt();
+        cityName = in.readString();
+        title = in.readString();
+        notes = in.readString();
+        ageMin = in.readInt();
+        ageMax = in.readInt();
+        gender = in.readInt();
+        duration = in.readInt();
+        price = in.readInt();
+        status = in.readInt();
+        approach = in.readInt();
+        date = in.readString();
+        time = in.readString();
+    }
+
+    public static final Creator<Campaign> CREATOR = new Creator<Campaign>() {
+        @Override
+        public Campaign createFromParcel(Parcel in) {
+            return new Campaign(in);
+        }
+
+        @Override
+        public Campaign[] newArray(int size) {
+            return new Campaign[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(codeString);
+        parcel.writeString(brandCode);
+        parcel.writeString(brandName);
+        parcel.writeInt(categoryCode);
+        parcel.writeString(categoryName);
+        parcel.writeInt(cityCode);
+        parcel.writeString(cityName);
+        parcel.writeString(title);
+        parcel.writeString(notes);
+        parcel.writeInt(ageMin);
+        parcel.writeInt(ageMax);
+        parcel.writeInt(gender);
+        parcel.writeInt(duration);
+        parcel.writeInt(price);
+        parcel.writeInt(status);
+        parcel.writeInt(approach);
+        parcel.writeString(date);
+        parcel.writeString(time);
+    }
+
     public interface CallbackSelect {
         void success(JSONArray data);
         void error();
@@ -161,45 +223,74 @@ public class Campaign {
             this.cityName = jsonObject.has("city_name") ? jsonObject.getString("city_name") : "";
             this.title = jsonObject.has("title") ? jsonObject.getString("title") : "";
             this.notes = jsonObject.has("notes") ? jsonObject.getString("notes") : "";
-            this.ageMax = jsonObject.has("age_max") ? jsonObject.getInt("age_max") : 0;
-            this.ageMin = jsonObject.has("age_min") ? jsonObject.getInt("age_min") : 0;
-            this.gender = jsonObject.has("gender") ? jsonObject.getInt("gender") : 0;
+            this.ageMax = jsonObject.has("market_age_max") ? jsonObject.getInt("market_age_max") : 0;
+            this.ageMin = jsonObject.has("market_age_min") ? jsonObject.getInt("market_age_min") : 0;
+            this.gender = jsonObject.has("market_gender") ? jsonObject.getInt("market_gender") : 0;
             this.duration = jsonObject.has("duration") ? jsonObject.getInt("duration") : 0;
             this.price = jsonObject.has("price") ? jsonObject.getInt("price") : 0;
             this.status = jsonObject.has("status") ? jsonObject.getInt("status") : 0;
 //            this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
-            this.time = jsonObject.has("time") ? jsonObject.getString("time") : "";
+            this.time = jsonObject.has("time_posting") ? jsonObject.getString("time_posting") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void select(Activity activity, String codeString, int status, String date, int categoryCode, int start, int limit, CallbackSelect callback) {
-        new select(activity, codeString, status, date, categoryCode, start, limit, callback).execute("v1/campaign/select");
+    public static void select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
+            , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, CallbackSelect callback) {
+        new select(activity, codeString, categoryCode, categoryName, brandCode, brandName, cityCode, cityName, title, notes, ageMin, ageMax, gender, duration, price
+                , status, date, time,start, limit, callback).execute("v1/campaign/select");
     }
 
     private static class select extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
         final CallbackSelect callback;
         final String codeString;
+        final int categoryCode;
+        final String categoryName;
+        final String brandCode;
+        final String brandName;
+        final int cityCode;
+        final String cityName;
+        final String title;
+        final String notes;
+        final int ageMin;
+        final int ageMax;
+        final int gender;
+        final int duration;
+        final int price;
         final int status;
         final String date;
-        final int categoryCode;
+        final String time;
 //        final int approach;
         final int start;
         final int limit;
 
-        private select(Activity activity, String codeString, int status, String date, int categoryCode, int start, int limit, CallbackSelect callback) {
+        public select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
+                , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.codeString = codeString;
+            this.categoryCode = categoryCode;
+            this.categoryName = categoryName;
+            this.brandCode = brandCode;
+            this.brandName = brandName;
+            this.cityCode = cityCode;
+            this.cityName = cityName;
+            this.title = title;
+            this.notes = notes;
+            this.ageMin = ageMin;
+            this.ageMax = ageMax;
+            this.gender = gender;
+            this.duration = duration;
+            this.price = price;
             this.status = status;
             this.date = date;
-            this.categoryCode = categoryCode;
-//            this.approach = approach;
+            this.time = time;
             this.start = start;
             this.limit = limit;
+            // this.approach = approach;
         }
 
         @Override
@@ -209,12 +300,25 @@ public class Campaign {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("code_string", codeString);
+                jsonObject.put("category_code", categoryCode);
+                jsonObject.put("category_name", categoryName);
+                jsonObject.put("brand_code", brandCode);
+                jsonObject.put("brand_name", brandName);
+                jsonObject.put("city_code", cityCode);
+                jsonObject.put("city_name", cityName);
+                jsonObject.put("title", title);
+                jsonObject.put("notes", notes);
+                jsonObject.put("market_age_min", ageMin);
+                jsonObject.put("market_age_max", ageMax);
+                jsonObject.put("market_gender", gender);
+                jsonObject.put("duration", duration);
+                jsonObject.put("price", price);
                 jsonObject.put("status", status);
                 jsonObject.put("date", date);
-                jsonObject.put("category_code", categoryCode);
-//                jsonObject.put("approach", approach);
+                jsonObject.put("time_posting", time);
                 jsonObject.put("start", start);
                 jsonObject.put("limit", limit);
+                // jsonObject.put("approach", approach);
             }
             catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
@@ -236,8 +340,8 @@ public class Campaign {
         }
     }
 
-    public static void insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
-        new insert(activity, category, title, notes, ageMin, ageMax, gender, duration, price, useLoading, callback).execute("v1/campaign/insert");
+    public static void insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
+        new insert(activity, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, useLoading, callback).execute("v1/campaign/insert");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
@@ -252,8 +356,11 @@ public class Campaign {
         final int gender;
         final int duration;
         final int price;
+        final String date;
+        final String time;
+        final int cityCode;
 
-        private insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -265,6 +372,9 @@ public class Campaign {
             this.gender = gender;
             this.duration = duration;
             this.price = price;
+            this.date = date;
+            this.time = time;
+            this.cityCode = cityCode;
         }
 
         @Override
@@ -275,14 +385,14 @@ public class Campaign {
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("socialmedia_code", 1);
                 jsonObject.put("category_code", category);
-                jsonObject.put("city_code", 205);
+                jsonObject.put("city_code", cityCode);
                 jsonObject.put("title", title);
                 jsonObject.put("notes", notes);
                 jsonObject.put("age_min", ageMin);
                 jsonObject.put("age_max", ageMax);
                 jsonObject.put("gender", gender);
-                jsonObject.put("date", "2021-03-10");
-                jsonObject.put("time", "");
+                jsonObject.put("date", date);
+                jsonObject.put("time", time);
                 jsonObject.put("duration", duration);
                 jsonObject.put("price", price);
             }

@@ -74,7 +74,8 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:gravity="right">
 
         <Button
             android:id="@+id/btn_content"

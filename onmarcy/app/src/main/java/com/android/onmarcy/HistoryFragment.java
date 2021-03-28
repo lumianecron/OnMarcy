@@ -1,6 +1,7 @@
 package com.android.onmarcy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,7 +70,9 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void showContent(Campaign campaign) {
-                Toast.makeText(activity, "Content", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, ContentActivity.class);
+                intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
+                startActivity(intent);
             }
 
             @Override
@@ -95,7 +98,8 @@ public class HistoryFragment extends Fragment {
 
         //select campaign
         for (int i = 4; i < 7; i++) {
-            Campaign.select(getActivity(), "", i, "", 0, 0, 10, new Campaign.CallbackSelect() {
+            Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
+                    , 0, 0, 0, 0, i, "", "", 0, 10, new Campaign.CallbackSelect() {
                 @Override
                 public void success(JSONArray data) {
                     for (int j = 0; j < data.length(); j++) {
