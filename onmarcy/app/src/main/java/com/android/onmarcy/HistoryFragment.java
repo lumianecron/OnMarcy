@@ -17,10 +17,16 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import model.Campaign;
+import model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +38,7 @@ public class HistoryFragment extends Fragment {
     private RecyclerView rvHistory;
     private CampaignAdapter campaignAdapter;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
+    private User user;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -58,6 +65,13 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
+
+        try {
+            user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         rvHistory = view.findViewById(R.id.rv_history);
         rvHistory.setHasFixedSize(true);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -91,11 +105,13 @@ public class HistoryFragment extends Fragment {
             }
         });
         rvHistory.setAdapter(campaignAdapter);
-        getCampaign();
+
+        if(user.getUserType() == 1){ //Brand
+            getCampaign();
+        }
     }
 
     private void getCampaign(){
-
         //select campaign
         for (int i = 4; i < 7; i++) {
             Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
@@ -109,7 +125,7 @@ public class HistoryFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                    campaignAdapter.notifyDataSetChanged();
+                    filter();
                 }
 
                 @Override
@@ -118,5 +134,22 @@ public class HistoryFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void filter(){
+        Calendar calendar1 = Calendar.getInstance();
+        Calendar calendar2 = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i = 0; i < campaigns.size(); i++) {
+            try {
+                calendar2.setTime(simpleDateFormat.parse(campaigns.get(i).getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(calendar1.get(Calendar.MONTH) + 1 != calendar2.get(Calendar.MONTH) + 1 || calendar1.get(Calendar.YEAR) != calendar2.get(Calendar.YEAR)){
+                campaigns.remove(i);
+            }
+        }
+        campaignAdapter.notifyDataSetChanged();
     }
 }

@@ -428,35 +428,43 @@ public class Campaign implements Parcelable {
     }
 
     // UPDATE CAMPAIGN
-    public static void update(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
-        new update(activity, category, title, notes, ageMin, ageMax, gender, duration, price, useLoading, callback).execute("v1/campaign/update");
+    public static void update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, Boolean useLoading, Callback callback) {
+        new update(activity, codeString, username, categoryCode, cityCode, title, notes, ageMin, ageMax, gender, date, time, duration, useLoading, callback).execute("v1/campaign/update");
     }
 
     private static class update extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
         final Callback callback;
         final Boolean useLoading;
-        final int category;
+        final String codeString;
+        final String username;
+        final int categoryCode;
+        final int cityCode;
         final String title;
         final String notes;
         final int ageMin;
         final int ageMax;
         final int gender;
+        final String date;
+        final String time;
         final int duration;
-        final int price;
 
-        private update(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, Boolean useLoading, Callback callback) {
+        private update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
-            this.category = category;
+            this.codeString = codeString;
+            this.username = username;
+            this.categoryCode = categoryCode;
+            this.cityCode = cityCode;
             this.title = title;
             this.notes = notes;
             this.ageMin = ageMin;
             this.ageMax = ageMax;
             this.gender = gender;
+            this.date = date;
+            this.time = time;
             this.duration = duration;
-            this.price = price;
         }
 
         @Override
@@ -466,17 +474,18 @@ public class Campaign implements Parcelable {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("socialmedia_code", 1);
-                jsonObject.put("category_code", category);
-                jsonObject.put("city_code", 205);
+                jsonObject.put("socialmedia_username", "");
+                jsonObject.put("code_string", codeString);
+                jsonObject.put("category_code", categoryCode);
+                jsonObject.put("city_code", cityCode);
                 jsonObject.put("title", title);
                 jsonObject.put("notes", notes);
                 jsonObject.put("age_min", ageMin);
                 jsonObject.put("age_max", ageMax);
                 jsonObject.put("gender", gender);
-                jsonObject.put("date", "2021-03-10");
-                jsonObject.put("time", "");
+                jsonObject.put("date", date);
+                jsonObject.put("time", time);
                 jsonObject.put("duration", duration);
-                jsonObject.put("price", price);
             }
             catch (JSONException e) { e.printStackTrace(); }
 

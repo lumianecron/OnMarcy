@@ -146,5 +146,6 @@
     <string name="location">Location</string>
     <string name="details">Details</string>
     <string name="target_market">Target Market</string>
+    <string name="update_campaign">Update Campaign</string>
 
 </resources>

@@ -203,7 +203,10 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void update(Campaign campaign) {
-                        Toast.makeText(activity, "Update", Toast.LENGTH_SHORT).show();
+                        HomeActivity homeActivity = (HomeActivity) getActivity();
+                        Intent intent = new Intent(homeActivity, UpdateActivity.class);
+                        intent.putExtra(UpdateActivity.EXTRA_CAMPAIGN, campaign);
+                        startActivity(intent);
                     }
 
                     @Override
