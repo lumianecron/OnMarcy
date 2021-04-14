@@ -48,7 +48,6 @@ import model.User;
 public class UpdateActivity extends AppCompatActivity {
     public static final String EXTRA_CAMPAIGN = "campaign";
     private TextInputEditText edtTitle, edtNotes, edtMax, edtMin, edtDuration, edtPrice, edtTime, edtDate;
-    private TextInputLayout textInputLayoutCategory;
     private AutoCompleteTextView autoCompleteTextView;
     private RadioButton rbMale, rbFemale, rbAll;
     private SearchableSpinner spCity;
@@ -58,13 +57,15 @@ public class UpdateActivity extends AppCompatActivity {
     private ArrayAdapter<City> adapter;
     private int cityCode = 0;
     private Campaign campaign;
+    private String username_ig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        if(getIntent().hasExtra(EXTRA_CAMPAIGN)) campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
+        if (getIntent().hasExtra(EXTRA_CAMPAIGN))
+            campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
         bindView();
         bindData();
 
@@ -107,7 +108,7 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Calendar currentDate = Calendar.getInstance();
                 SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateActivity.this, new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog datePickerDialog = new DatePickerDialog(UpdateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                         currentDate.set(Calendar.DAY_OF_MONTH, date);
@@ -144,15 +145,7 @@ public class UpdateActivity extends AppCompatActivity {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         selectedCategory = item.toString();
         autoCompleteTextView.setText(selectedCategory);
-        if (selectedCategory.equals(getString(R.string.category1))) categoryCode = 1;
-        if (selectedCategory.equals(getString(R.string.category2))) categoryCode = 2;
-        if (selectedCategory.equals(getString(R.string.category3))) categoryCode = 3;
-        if (selectedCategory.equals(getString(R.string.category4))) categoryCode = 4;
-        if (selectedCategory.equals(getString(R.string.category5))) categoryCode = 5;
-        if (selectedCategory.equals(getString(R.string.category6))) categoryCode = 6;
-        if (selectedCategory.equals(getString(R.string.category7))) categoryCode = 7;
-        if (selectedCategory.equals(getString(R.string.category8))) categoryCode = 8;
-        if (selectedCategory.equals(getString(R.string.category9))) categoryCode = 9;
+        setCategoryCode(selectedCategory);
         return super.onContextItemSelected(item);
     }
 
@@ -164,7 +157,7 @@ public class UpdateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -197,10 +190,6 @@ public class UpdateActivity extends AppCompatActivity {
                     edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if(selectedCategory.equals("")){
-                    autoCompleteTextView.setError(getResources().getString(R.string.please_fill_out_this_field));
-                    isValid = false;
-                }
                 if (TextUtils.isEmpty(edtDate.getText().toString())) {
                     edtDate.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
@@ -214,7 +203,7 @@ public class UpdateActivity extends AppCompatActivity {
                     }
                 }
 
-                if(cityCode == 0){
+                if (cityCode == 0) {
                     isValid = false;
                     Toast.makeText(this, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
                 }
@@ -225,26 +214,25 @@ public class UpdateActivity extends AppCompatActivity {
                     int min = Integer.parseInt(edtMin.getText().toString());
                     int max = Integer.parseInt(edtMax.getText().toString());
                     int gender = 0;
-                    if(rbMale.isChecked()) gender = 1;
-                    if(rbFemale.isChecked()) gender = 2;
-                    if(rbAll.isChecked()) gender = 3;
+                    if (rbMale.isChecked()) gender = 1;
+                    if (rbFemale.isChecked()) gender = 2;
+                    if (rbAll.isChecked()) gender = 3;
                     int duration = Integer.parseInt(edtDuration.getText().toString());
-                    int price = Integer.parseInt(edtPrice.getText().toString());
                     String[] date = edtDate.getText().toString().split("/");
                     String formattedDate = date[2] + "-" + date[1] + "-" + date[0];
                     String time = edtTime.getText().toString();
 
-                   Campaign.update(this, campaign.getCodeString(), "", categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, false, new Campaign.Callback() {
-                       @Override
-                       public void success() {
-                           Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                       }
+                    Campaign.update(this, campaign.getCodeString(), username_ig, categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, false, new Campaign.Callback() {
+                        @Override
+                        public void success() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                        }
 
-                       @Override
-                       public void error() {
-                           Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-                       }
-                   });
+                        @Override
+                        public void error() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Log.d("RUNNN", "attempt failed");
                 }
@@ -252,7 +240,7 @@ public class UpdateActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void bindData(){
+    private void bindData() {
         edtTitle.setText(campaign.getTitle());
         edtNotes.setText(campaign.getNotes());
         autoCompleteTextView.setText(campaign.getCategoryName());
@@ -264,11 +252,30 @@ public class UpdateActivity extends AppCompatActivity {
         String[] date = campaign.getDate().split("-");
         String formattedDate = date[2] + "/" + date[1] + "/" + date[0];
         edtDate.setText(formattedDate);
-        if(campaign.getGender() == 1) rbMale.setChecked(true);
-        if(campaign.getGender() == 2) rbFemale.setChecked(true);
-        if(campaign.getGender() == 3) rbAll.setChecked(true);
+        if (campaign.getGender() == 1) rbMale.setChecked(true);
+        if (campaign.getGender() == 2) rbFemale.setChecked(true);
+        if (campaign.getGender() == 3) rbAll.setChecked(true);
         edtTime.setText(campaign.getTime());
+
         loadCity();
+        setCategoryCode(campaign.getCategoryName());
+
+        SocialMedia.select(this, new SocialMedia.CallbackSelect() {
+            @Override
+            public void success(JSONObject jsonObject) {
+                try {
+                    SocialMedia socialMedia = new SocialMedia(jsonObject);
+                    username_ig = socialMedia.getId();
+                } catch (Exception ex) {
+                    Toast.makeText(UpdateActivity.this, ex + "", Toast.LENGTH_SHORT).show();
+                    Log.d("RUNNN", ex + "");
+                }
+            }
+
+            @Override
+            public void error() {
+            }
+        });
     }
 
     public void loadCity() {
@@ -299,7 +306,19 @@ public class UpdateActivity extends AppCompatActivity {
         });
     }
 
-    private void bindView(){
+    private void setCategoryCode(String selectedCategory) {
+        if (selectedCategory.equals(getString(R.string.category1))) categoryCode = 1;
+        if (selectedCategory.equals(getString(R.string.category2))) categoryCode = 2;
+        if (selectedCategory.equals(getString(R.string.category3))) categoryCode = 3;
+        if (selectedCategory.equals(getString(R.string.category4))) categoryCode = 4;
+        if (selectedCategory.equals(getString(R.string.category5))) categoryCode = 5;
+        if (selectedCategory.equals(getString(R.string.category6))) categoryCode = 6;
+        if (selectedCategory.equals(getString(R.string.category7))) categoryCode = 7;
+        if (selectedCategory.equals(getString(R.string.category8))) categoryCode = 8;
+        if (selectedCategory.equals(getString(R.string.category9))) categoryCode = 9;
+    }
+
+    private void bindView() {
         edtTitle = findViewById(R.id.edt_title);
         edtNotes = findViewById(R.id.edt_notes);
         edtMax = findViewById(R.id.edt_max_age);
@@ -310,7 +329,6 @@ public class UpdateActivity extends AppCompatActivity {
         rbFemale = findViewById(R.id.rb_female);
         rbAll = findViewById(R.id.rb_all);
         edtTime = findViewById(R.id.edt_time);
-        textInputLayoutCategory = findViewById(R.id.txt_input_layout_category);
         autoCompleteTextView = findViewById(R.id.autoComplete);
         edtDate = findViewById(R.id.edt_date);
         spCity = findViewById(R.id.sp_city);

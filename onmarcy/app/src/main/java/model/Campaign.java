@@ -340,8 +340,8 @@ public class Campaign implements Parcelable {
         }
     }
 
-    public static void insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
-        new insert(activity, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, useLoading, callback).execute("v1/campaign/insert");
+    public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
+        new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, useLoading, callback).execute("v1/campaign/insert");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
@@ -359,8 +359,9 @@ public class Campaign implements Parcelable {
         final String date;
         final String time;
         final int cityCode;
+        final String username;
 
-        private insert(Activity activity, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -375,6 +376,7 @@ public class Campaign implements Parcelable {
             this.date = date;
             this.time = time;
             this.cityCode = cityCode;
+            this.username = username;
         }
 
         @Override
@@ -384,6 +386,7 @@ public class Campaign implements Parcelable {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("socialmedia_code", 1);
+                jsonObject.put("socialmedia_username", username);
                 jsonObject.put("category_code", category);
                 jsonObject.put("city_code", cityCode);
                 jsonObject.put("title", title);
@@ -474,7 +477,7 @@ public class Campaign implements Parcelable {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("socialmedia_code", 1);
-                jsonObject.put("socialmedia_username", "");
+                jsonObject.put("socialmedia_username", username);
                 jsonObject.put("code_string", codeString);
                 jsonObject.put("category_code", categoryCode);
                 jsonObject.put("city_code", cityCode);

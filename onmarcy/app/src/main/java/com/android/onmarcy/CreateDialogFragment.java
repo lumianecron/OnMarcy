@@ -39,6 +39,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import java.util.Locale;
 
 import model.Campaign;
 import model.City;
+import model.SocialMedia;
 
 public class CreateDialogFragment extends DialogFragment {
     public static final String TAG = "create_dialog";
@@ -64,12 +66,13 @@ public class CreateDialogFragment extends DialogFragment {
     private ArrayList<City> cities = new ArrayList<>();
     private ArrayAdapter<City> adapter;
     private int cityCode = 0;
+    private String username_ig;
 
     public CreateDialogFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
-    public static CreateDialogFragment display(FragmentManager fragmentManager){
+    public static CreateDialogFragment display(FragmentManager fragmentManager) {
         CreateDialogFragment createDialogFragment = new CreateDialogFragment(fragmentManager);
         createDialogFragment.show(fragmentManager, TAG);
         return createDialogFragment;
@@ -99,6 +102,23 @@ public class CreateDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 autoCompleteTextView.showContextMenu();
+            }
+        });
+
+        SocialMedia.select(activity, new SocialMedia.CallbackSelect() {
+            @Override
+            public void success(JSONObject jsonObject) {
+                try {
+                    SocialMedia socialMedia = new SocialMedia(jsonObject);
+                    username_ig = socialMedia.getId();
+                } catch (Exception ex) {
+                    Toast.makeText(activity, ex + "", Toast.LENGTH_SHORT).show();
+                    Log.d("RUNNN", ex + "");
+                }
+            }
+
+            @Override
+            public void error() {
             }
         });
 
@@ -145,7 +165,7 @@ public class CreateDialogFragment extends DialogFragment {
                     edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if(selectedCategory.equals("")){
+                if (selectedCategory.equals("")) {
                     autoCompleteTextView.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
@@ -161,8 +181,8 @@ public class CreateDialogFragment extends DialogFragment {
                         }
                     }
                 }
-                
-                if(cityCode == 0){
+
+                if (cityCode == 0) {
                     isValid = false;
                     Toast.makeText(activity, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
                 }
@@ -173,16 +193,16 @@ public class CreateDialogFragment extends DialogFragment {
                     int min = Integer.parseInt(edtMin.getText().toString());
                     int max = Integer.parseInt(edtMax.getText().toString());
                     int gender = 0;
-                    if(rbMale.isChecked()) gender = 1;
-                    if(rbFemale.isChecked()) gender = 2;
-                    if(rbAll.isChecked()) gender = 3;
+                    if (rbMale.isChecked()) gender = 1;
+                    if (rbFemale.isChecked()) gender = 2;
+                    if (rbAll.isChecked()) gender = 3;
                     int duration = Integer.parseInt(edtDuration.getText().toString());
                     int price = Integer.parseInt(edtPrice.getText().toString());
                     String[] date = edtDate.getText().toString().split("/");
                     String formattedDate = date[2] + "-" + date[1] + "-" + date[0];
                     String time = edtTime.getText().toString();
 
-                    Campaign.insert(activity, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, false, new Campaign.Callback() {
+                    Campaign.insert(activity, username_ig, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, false, new Campaign.Callback() {
                         @Override
                         public void success() {
                             Toast.makeText(activity, getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -227,7 +247,7 @@ public class CreateDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 Calendar currentDate = Calendar.getInstance();
                 SimpleDateFormat mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                         currentDate.set(Calendar.DAY_OF_MONTH, date);
@@ -245,7 +265,7 @@ public class CreateDialogFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if(dialog != null){
+        if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setWindowAnimations(R.style.AppTheme_Slide);
         }
@@ -307,7 +327,7 @@ public class CreateDialogFragment extends DialogFragment {
         });
     }
 
-    private void bindView(View view){
+    private void bindView(View view) {
         edtTitle = view.findViewById(R.id.edt_title);
         edtNotes = view.findViewById(R.id.edt_notes);
         edtMax = view.findViewById(R.id.edt_max_age);
