@@ -107,15 +107,18 @@ public class HistoryFragment extends Fragment {
         rvHistory.setAdapter(campaignAdapter);
 
         if(user.getUserType() == 1){ //Brand
-            getCampaign();
+            getCampaign(0);
+        }
+        if(user.getUserType() == 2){ //Marketer
+            getCampaign(1);
         }
     }
 
-    private void getCampaign(){
+    private void getCampaign(int approach){
         //select campaign
         for (int i = 4; i < 7; i++) {
             Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
-                    , 0, 0, 0, 0, i, "", "", 0, 10, new Campaign.CallbackSelect() {
+                    , 0, 0, 0, 0, i, "", "", 0, 10, approach, new Campaign.CallbackSelect() {
                 @Override
                 public void success(JSONArray data) {
                     for (int j = 0; j < data.length(); j++) {

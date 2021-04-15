@@ -6,15 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import model.Approach;
 import model.Campaign;
 
 public class ContentActivity extends AppCompatActivity {
     TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation;
+    Button btnApproach, btnCancelApproach;
     private Campaign campaign;
     public static String EXTRA_CAMPAIGN = "campaign";
 
@@ -25,10 +30,64 @@ public class ContentActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.content));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindView();
+
         if(getIntent().hasExtra(EXTRA_CAMPAIGN)){
             campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
             bindData();
+            Approach.cekApproach(ContentActivity.this, campaign.getCode(), new Approach.Callback() {
+                @Override
+                public void success() {
+                    btnApproach.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void error() {
+                    btnCancelApproach.setVisibility(View.GONE);
+                }
+            });
         }
+
+        btnApproach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Approach.approach(ContentActivity.this, campaign.getCode(), campaign.getNotes(), new Approach.Callback() {
+                    @Override
+                    public void success() {
+                        Toast.makeText(ContentActivity.this, "Approach success", Toast.LENGTH_SHORT).show();
+                        btnApproach.setVisibility(View.GONE);
+                        btnCancelApproach.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void error() {
+                        Toast.makeText(ContentActivity.this, "This campaign already approached", Toast.LENGTH_SHORT).show();
+                        btnApproach.setVisibility(View.GONE);
+                        btnCancelApproach.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
+
+        btnCancelApproach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Approach.cancelApproach(ContentActivity.this, campaign.getCode(), new Approach.Callback() {
+                    @Override
+                    public void success() {
+                        Toast.makeText(ContentActivity.this, "Approach cancel success", Toast.LENGTH_SHORT).show();
+                        btnApproach.setVisibility(View.VISIBLE);
+                        btnCancelApproach.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void error() {
+                        Toast.makeText(ContentActivity.this, "Approach cancel fail", Toast.LENGTH_SHORT).show();
+                        btnApproach.setVisibility(View.GONE);
+                        btnCancelApproach.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+        });
     }
 
     private void bindData() {
@@ -71,5 +130,7 @@ public class ContentActivity extends AppCompatActivity {
         tvAge = findViewById(R.id.tv_age);
         tvGender = findViewById(R.id.tv_gender);
         tvLocation = findViewById(R.id.tv_location);
+        btnApproach = findViewById(R.id.btn_approach);
+        btnCancelApproach = findViewById(R.id.btn_cancelApproach);
     }
 }

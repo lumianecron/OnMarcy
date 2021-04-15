@@ -16,6 +16,9 @@ import java.lang.ref.WeakReference;
 import java.util.Date;
 
 public class Campaign implements Parcelable {
+    @SerializedName("code")
+    private int code;
+
     @SerializedName("code_string")
     private String codeString;
 
@@ -142,7 +145,12 @@ public class Campaign implements Parcelable {
 
     public void setTime(String time) {this.time = time;}
 
+    public int getCode() {return code;}
+
+    public void setCode(int code) {this.code = code;}
+
     protected Campaign(Parcel in) {
+        code = in.readInt();
         codeString = in.readString();
         brandCode = in.readString();
         brandName = in.readString();
@@ -182,6 +190,7 @@ public class Campaign implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(code);
         parcel.writeString(codeString);
         parcel.writeString(brandCode);
         parcel.writeString(brandName);
@@ -214,6 +223,7 @@ public class Campaign implements Parcelable {
 
     public Campaign(JSONObject jsonObject){
         try{
+            this.code = jsonObject.has("code") ? jsonObject.getInt("code") : 0;
             this.codeString = jsonObject.has("code_string") ? jsonObject.getString("code_string") : "";
             this.categoryCode = jsonObject.has("category_code") ? jsonObject.getInt("category_code") : 0;
             this.categoryName = jsonObject.has("category_name") ? jsonObject.getString("category_name") : "";
@@ -229,7 +239,7 @@ public class Campaign implements Parcelable {
             this.duration = jsonObject.has("duration") ? jsonObject.getInt("duration") : 0;
             this.price = jsonObject.has("price") ? jsonObject.getInt("price") : 0;
             this.status = jsonObject.has("status") ? jsonObject.getInt("status") : 0;
-//            this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
+            this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
             this.time = jsonObject.has("time_posting") ? jsonObject.getString("time_posting") : "";
         } catch (JSONException e) {
@@ -238,9 +248,9 @@ public class Campaign implements Parcelable {
     }
 
     public static void select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
-            , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, CallbackSelect callback) {
+            , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, int approach, CallbackSelect callback) {
         new select(activity, codeString, categoryCode, categoryName, brandCode, brandName, cityCode, cityName, title, notes, ageMin, ageMax, gender, duration, price
-                , status, date, time,start, limit, callback).execute("v1/campaign/select");
+                , status, date, time,start, limit, approach, callback).execute("v1/campaign/select");
     }
 
     private static class select extends AsyncTask<String, Void, String> {
@@ -263,12 +273,12 @@ public class Campaign implements Parcelable {
         final int status;
         final String date;
         final String time;
-//        final int approach;
+        final int approach;
         final int start;
         final int limit;
 
         public select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
-                , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, CallbackSelect callback) {
+                , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, int approach, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.codeString = codeString;
@@ -290,7 +300,7 @@ public class Campaign implements Parcelable {
             this.time = time;
             this.start = start;
             this.limit = limit;
-            // this.approach = approach;
+            this.approach = approach;
         }
 
         @Override
@@ -318,7 +328,7 @@ public class Campaign implements Parcelable {
                 jsonObject.put("time_posting", time);
                 jsonObject.put("start", start);
                 jsonObject.put("limit", limit);
-                // jsonObject.put("approach", approach);
+                jsonObject.put("approach", approach);
             }
             catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
