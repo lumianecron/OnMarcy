@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
 
     private void getFilteredCampaign(int status, int lowest, int highest, int year) {
         Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
-                , 0, 0, 0, 0, status, "", "", 0, 10, new Campaign.CallbackSelect() {
+                , 0, 0, 0, 0, status, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
                 temp.clear();

@@ -284,7 +284,7 @@
                             android:layout_marginLeft="20dp"
                             android:text="@string/username"
                             android:textColor="@color/black1"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -294,7 +294,19 @@
                             android:layout_marginLeft="20dp"
                             android:text="@string/category"
                             android:textColor="@color/black1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp" />
+
+                        <Button
+                            android:id="@+id/btn_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit"
+                            android:textSize="15sp"
+                            app:icon="@drawable/ic_baseline_edit_24"
+                            android:textAllCaps="false"
+                            android:layout_marginLeft="20dp"
+                            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"/>
+
                     </LinearLayout>
 
                 </LinearLayout>

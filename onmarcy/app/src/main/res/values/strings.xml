@@ -147,5 +147,7 @@
     <string name="details">Details</string>
     <string name="target_market">Target Market</string>
     <string name="update_campaign">Update Campaign</string>
+    <string name="edit">Edit</string>
+    <string name="update_instagram">Update Instagram</string>
 
 </resources>

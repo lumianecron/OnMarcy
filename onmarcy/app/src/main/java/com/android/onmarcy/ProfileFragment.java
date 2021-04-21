@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment {
     AutoCompleteTextView autoCompleteTextView;
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
-    Button btnSend, arrow, btnVerify;
+    Button btnSend, arrow, btnVerify, btnEdit;
     LinearLayout hiddenView;
     CardView cardView;
     LinearLayout layoutVerification;
@@ -200,6 +200,14 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, UpdateInstagramActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void bindView(View view) {
@@ -238,6 +246,7 @@ public class ProfileFragment extends Fragment {
         baseCardview = view.findViewById(R.id.base_cardview);
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
         textInputLayoutCategory = view.findViewById(R.id.txt_input_layout_category);
+        btnEdit = view.findViewById(R.id.btn_edit);
     }
 
     private void bindData(View view) {
