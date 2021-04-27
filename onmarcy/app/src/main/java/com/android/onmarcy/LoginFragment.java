@@ -10,9 +10,12 @@ import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ import model.User;
 public class LoginFragment extends Fragment {
     TextInputEditText edtUsername, edtPassword;
     Button btnLogin;
-    TextView tvJoin;
+    TextView tvJoin, tvForgotPassword;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -123,6 +126,30 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog(getActivity());
+                forgotPasswordDialog.onMyDialogResult = new ForgotPasswordDialog.OnMyDialogResult() {
+                    @Override
+                    public void finish(String email) {
+                        User.forgotPassword(getActivity(), email, false, new User.CallbackSelect() {
+                            @Override
+                            public void success(JSONObject data) {
+                                Toast.makeText(getActivity(), "Successfully sent", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void error() {
+
+                            }
+                        });
+                    }
+                };
+                forgotPasswordDialog.show();
+            }
+        });
     }
 
     private void bindView(View view) {
@@ -130,5 +157,6 @@ public class LoginFragment extends Fragment {
         edtPassword = view.findViewById(R.id.edt_password);
         btnLogin = view.findViewById(R.id.btn_login);
         tvJoin = view.findViewById(R.id.tv_join);
+        tvForgotPassword = view.findViewById(R.id.tv_forgot_password);
     }
 }

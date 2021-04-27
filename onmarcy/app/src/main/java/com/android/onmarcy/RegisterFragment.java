@@ -176,6 +176,17 @@ public class RegisterFragment extends Fragment {
                     User.insert(getActivity(), edtUsername.getText().toString(), edtPassword.getText().toString(), edtEmail.getText().toString(), edtName.getText().toString(), edtPhone.getText().toString(), code, type, edtReferral.getText().toString(), true, new User.Callback() {
                         @Override
                         public void success() {
+                            User.verifyEmail(getActivity(), edtUsername.getText().toString(), edtEmail.getText().toString(), false, new User.CallbackSelect() {
+                                @Override
+                                public void success(JSONObject data) {
+                                    Toast.makeText(getActivity(), "Please check your email", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void error() {
+
+                                }
+                            });
                             Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
                         }

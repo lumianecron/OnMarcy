@@ -149,5 +149,6 @@
     <string name="update_campaign">Update Campaign</string>
     <string name="edit">Edit</string>
     <string name="update_instagram">Update Instagram</string>
+    <string name="forgot_password">Forgot password</string>
 
 </resources>
