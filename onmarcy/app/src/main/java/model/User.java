@@ -410,4 +410,123 @@ public class User {
             if(useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
+
+    //VERIFY EMAIL
+    public static void verifyEmail(Activity activity, String username, String email, Boolean useLoading, CallbackSelect callback) {
+        new verifyEmail(activity, username, email, useLoading, callback).execute("v1/send_email_verification");
+    }
+
+    private static class verifyEmail extends AsyncTask<String, Void, String> {
+
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final Boolean useLoading;
+        final String username;
+        final String email;
+
+        private verifyEmail(Activity activity, String username, String email, Boolean useLoading, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.username = username;
+            this.email = email;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("username", username);
+                jsonObject.put("email", email);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(json.getJSONObject(Global.RESPONSE_DATA));
+                }
+                else {
+                    callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+//                callback.error();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    //FORGOT PASSWORD
+    public static void forgotPassword(Activity activity, String email, Boolean useLoading, CallbackSelect callback) {
+        new forgotPassword(activity, email, useLoading, callback).execute("v1/send_email_forgot_pass");
+    }
+
+    private static class forgotPassword extends AsyncTask<String, Void, String> {
+
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final Boolean useLoading;
+        final String email;
+
+        private forgotPassword(Activity activity, String email, Boolean useLoading, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.email = email;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("parameter", email);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(json.getJSONObject(Global.RESPONSE_DATA));
+                }
+                else {
+                    callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+//                callback.error();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
 }
