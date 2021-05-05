@@ -11,17 +11,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import model.Approach;
 import model.Campaign;
+import model.User;
 
 public class ContentActivity extends AppCompatActivity {
     TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation;
     Button btnApproach, btnCancelApproach;
     private Campaign campaign;
     public static String EXTRA_CAMPAIGN = "campaign";
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +35,12 @@ public class ContentActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.content));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindView();
+
+        try {
+            user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if(getIntent().hasExtra(EXTRA_CAMPAIGN)){
             campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
@@ -45,6 +56,11 @@ public class ContentActivity extends AppCompatActivity {
                     btnCancelApproach.setVisibility(View.GONE);
                 }
             });
+        }
+
+        if(user.getUserType() == 1){
+            btnApproach.setVisibility(View.GONE);
+            btnCancelApproach.setVisibility(View.GONE);
         }
 
         btnApproach.setOnClickListener(new View.OnClickListener() {

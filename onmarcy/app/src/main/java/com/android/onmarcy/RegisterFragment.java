@@ -157,11 +157,6 @@ public class RegisterFragment extends Fragment {
                     if (!cbPolicy.isChecked()) {
                         isValid = false;
                         errorMessage = getString(R.string.popup_agreement);
-                        /*LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        CustomPopupWindowAgreement.errMessage = getString(R.string.popup_agreement);
-                        View popupView = inflater.inflate(R.layout.popup_window_agreement, null);
-                        final PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-                        popupWindow.showAtLocation(getView(), Gravity.BOTTOM, 0, 300);*/
                     }
 
                     if (code == 0) {

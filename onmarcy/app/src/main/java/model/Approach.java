@@ -166,7 +166,7 @@ public class Approach implements Parcelable {
     }
 
     public static void cancelApproach(Activity activity, int code, Callback callback) {
-        new cekApproach(activity, code, callback).execute("v1/campaign/approach_cancel");
+        new cancelApproach(activity, code, callback).execute("v1/campaign/approach_cancel");
     }
 
     private static class cancelApproach extends AsyncTask<String, Void, String> {

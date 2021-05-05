@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -52,6 +53,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Campaign> temp = new ArrayList<>();
     private CampaignAdapter campaignAdapter;
     private User user;
+    private TextView tvNotFound;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,6 +89,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         floatingActionButton = view.findViewById(R.id.floating_action_button);
+        tvNotFound = view.findViewById(R.id.tv_not_found);
         rvCampaign = view.findViewById(R.id.rv_campaign);
         rvCampaign.setHasFixedSize(true);
         rvCampaign.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -99,7 +102,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if(user.getUserType() == 2){
+        if (user.getUserType() == 2) {
             floatingActionButton.setVisibility(View.GONE);
         }
     }
@@ -122,6 +125,14 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     campaignAdapter.notifyDataSetChanged();
+
+                    if (temp.size() < 1) {
+                        tvNotFound.setVisibility(View.VISIBLE);
+                    } else {
+                        tvNotFound.setVisibility(View.GONE);
+                    }
+                    System.out.println("CAMPAIGNS1: " + temp.size());
+
                     return true;
                 }
 
@@ -159,102 +170,110 @@ public class HomeFragment extends Fragment {
     private void getFilteredCampaign(int status, int lowest, int highest, int year) {
         Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
                 , 0, 0, 0, 0, status, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
-            @Override
-            public void success(JSONArray data) {
-                temp.clear();
-                campaigns.clear();
-                for (int i = 0; i < data.length(); i++) {
-                    try {
-                        campaigns.add(new Campaign(data.getJSONObject(i)));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                if (year != 0) {
-                    for (int i = 0; i < campaigns.size(); i++) {
-                        int yearTemp = Integer.parseInt(campaigns.get(i).getDate().split("-")[0]);
-                        if (campaigns.get(i).getPrice() >= lowest && campaigns.get(i).getPrice() <= highest && yearTemp == year) {
-                            temp.add(campaigns.get(i));
+                    @Override
+                    public void success(JSONArray data) {
+                        temp.clear();
+                        campaigns.clear();
+                        for (int i = 0; i < data.length(); i++) {
+                            try {
+                                campaigns.add(new Campaign(data.getJSONObject(i)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                } else {
-                    for (int i = 0; i < campaigns.size(); i++) {
-                        if (campaigns.get(i).getPrice() >= lowest && campaigns.get(i).getPrice() <= highest) {
-                            temp.add(campaigns.get(i));
+
+                        if (year != 0) {
+                            for (int i = 0; i < campaigns.size(); i++) {
+                                int yearTemp = Integer.parseInt(campaigns.get(i).getDate().split("-")[0]);
+                                if (campaigns.get(i).getPrice() >= lowest && campaigns.get(i).getPrice() <= highest && yearTemp == year) {
+                                    temp.add(campaigns.get(i));
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < campaigns.size(); i++) {
+                                if (campaigns.get(i).getPrice() >= lowest && campaigns.get(i).getPrice() <= highest) {
+                                    temp.add(campaigns.get(i));
+                                }
+                            }
                         }
-                    }
-                }
 
-                campaignAdapter = new CampaignAdapter(temp);
-                campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
-                    @Override
-                    public void onItemClicked(Campaign campaign) {
-                        Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
-                    }
+                        campaignAdapter = new CampaignAdapter(temp);
 
-                    @Override
-                    public void showContent(Campaign campaign) {
-                        HomeActivity homeActivity = (HomeActivity) getActivity();
-                        Intent intent = new Intent(homeActivity, ContentActivity.class);
-                        intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
-                        startActivity(intent);
-                    }
+                        if (temp.size() < 1) {
+                            tvNotFound.setVisibility(View.VISIBLE);
+                        } else {
+                            tvNotFound.setVisibility(View.GONE);
+                        }
+                        System.out.println("CAMPAIGNS2: " + temp.size());
 
-                    @Override
-                    public void update(Campaign campaign) {
-                        HomeActivity homeActivity = (HomeActivity) getActivity();
-                        Intent intent = new Intent(homeActivity, UpdateActivity.class);
-                        intent.putExtra(UpdateActivity.EXTRA_CAMPAIGN, campaign);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void delete(Campaign campaign) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                        builder.setCancelable(false);
-                        builder.setTitle(R.string.confirmation);
-                        builder.setMessage(R.string.msg_delete_campaign);
-                        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Campaign.delete(activity, campaign.getCodeString(), true, new Campaign.Callback() {
-                                    @Override
-                                    public void success() {
-                                        getFilteredCampaign(1, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
-                                        Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
-                                    }
+                            public void onItemClicked(Campaign campaign) {
+                                Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+                            }
 
+                            @Override
+                            public void showContent(Campaign campaign) {
+                                HomeActivity homeActivity = (HomeActivity) getActivity();
+                                Intent intent = new Intent(homeActivity, ContentActivity.class);
+                                intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void update(Campaign campaign) {
+                                HomeActivity homeActivity = (HomeActivity) getActivity();
+                                Intent intent = new Intent(homeActivity, UpdateActivity.class);
+                                intent.putExtra(UpdateActivity.EXTRA_CAMPAIGN, campaign);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void delete(Campaign campaign) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                builder.setCancelable(false);
+                                builder.setTitle(R.string.confirmation);
+                                builder.setMessage(R.string.msg_delete_campaign);
+                                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void error() {
-                                        Toast.makeText(activity, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Campaign.delete(activity, campaign.getCodeString(), true, new Campaign.Callback() {
+                                            @Override
+                                            public void success() {
+                                                getFilteredCampaign(1, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+                                                Toast.makeText(activity, "Delete successful", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void error() {
+                                                Toast.makeText(activity, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
                                 });
-                            }
-                        });
-                        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
 
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void showResult(Campaign campaign) {
+                                Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        rvCampaign.setAdapter(campaignAdapter);
                     }
 
                     @Override
-                    public void showResult(Campaign campaign) {
-                        Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
+                    public void error() {
+                        Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
                     }
                 });
-                rvCampaign.setAdapter(campaignAdapter);
-            }
-
-            @Override
-            public void error() {
-                Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

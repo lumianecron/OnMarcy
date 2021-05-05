@@ -147,53 +147,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txt_input_layout_instagram"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/type_your_instagram"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:endIconMode="clear_text"
-                android:layout_marginVertical="5dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_instagram"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
             <LinearLayout
+                android:id="@+id/linear_send_instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="5dp">
+                android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txt_input_layout_category"
-                    android:layout_width="0dp"
+                    android:id="@+id/txt_input_layout_instagram"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:hint="@string/choose_category"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_marginVertical="5dp"
-                    android:layout_marginRight="10dp">
+                    android:hint="@string/type_your_instagram"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_marginVertical="5dp">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/autoComplete"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_instagram"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"/>
+                        android:layout_height="wrap_content"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Button
-                    android:id="@+id/btn_send"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="0.9"
-                    android:text="@string/send" />
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txt_input_layout_category"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="@string/choose_category"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginRight="10dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autoComplete"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/btn_send"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="0.9"
+                        android:text="@string/send" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

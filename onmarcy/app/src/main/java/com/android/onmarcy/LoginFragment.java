@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment {
 //        edtPassword.setText(("12345678"));
 
         edtUsername.setText("enjirou");
-        edtPassword.setText(("enjirou123"));
+        edtPassword.setText(("12345678"));
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override

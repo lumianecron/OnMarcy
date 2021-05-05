@@ -11,17 +11,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import model.Campaign;
+import model.User;
 
 public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.CampaignViewHolder> {
     private ArrayList<Campaign> campaigns;
+    private User user;
 
     public CampaignAdapter(ArrayList<Campaign> campaigns) {
         this.campaigns = campaigns;
+        try {
+            this.user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public interface OnItemCallback{
@@ -51,6 +61,11 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         holder.tvTitle.setText(campaign.getTitle());
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         holder.tvPrice.setText(holder.itemView.getContext().getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
+
+        if(user.getUserType() == 2){
+            holder.linearUpdate.setVisibility(View.GONE);
+            holder.linearDelete.setVisibility(View.GONE);
+        }
 
         if(campaign.getStatus() == 1){
             holder.tvStatus.setText(R.string.active);

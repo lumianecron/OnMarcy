@@ -73,6 +73,9 @@ public class Campaign implements Parcelable {
     @SerializedName("time")
     private String time;
 
+    @SerializedName("link")
+    private String link;
+
     public String getCodeString() {return codeString;}
 
     public void setCodeString(String codeString) {this.codeString = codeString;}
@@ -149,6 +152,10 @@ public class Campaign implements Parcelable {
 
     public void setCode(int code) {this.code = code;}
 
+    public String getLink() { return link; }
+
+    public void setLink(String link) { this.link = link; }
+
     protected Campaign(Parcel in) {
         code = in.readInt();
         codeString = in.readString();
@@ -169,6 +176,7 @@ public class Campaign implements Parcelable {
         approach = in.readInt();
         date = in.readString();
         time = in.readString();
+        link = in.readString();
     }
 
     public static final Creator<Campaign> CREATOR = new Creator<Campaign>() {
@@ -209,6 +217,7 @@ public class Campaign implements Parcelable {
         parcel.writeInt(approach);
         parcel.writeString(date);
         parcel.writeString(time);
+        parcel.writeString(link);
     }
 
     public interface CallbackSelect {
@@ -242,6 +251,7 @@ public class Campaign implements Parcelable {
             this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
             this.time = jsonObject.has("time_posting") ? jsonObject.getString("time_posting") : "";
+            this.link = jsonObject.has("link") ? jsonObject.getString("link") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }

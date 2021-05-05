@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -38,6 +39,7 @@ public class HistoryFragment extends Fragment {
     private RecyclerView rvHistory;
     private CampaignAdapter campaignAdapter;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
+    private TextView tvNotFound;
     private User user;
 
     public HistoryFragment() {
@@ -72,6 +74,7 @@ public class HistoryFragment extends Fragment {
             e.printStackTrace();
         }
 
+        tvNotFound = view.findViewById(R.id.tv_not_found);
         rvHistory = view.findViewById(R.id.rv_history);
         rvHistory.setHasFixedSize(true);
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -129,6 +132,10 @@ public class HistoryFragment extends Fragment {
                         }
                     }
                     filter();
+
+                    if(campaigns.size() == 0){
+                        tvNotFound.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override

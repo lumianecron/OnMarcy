@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import model.Campaign;
 import model.Category;
 import model.City;
 import model.SocialMedia;
@@ -67,9 +68,7 @@ import model.User;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-
     private Activity activity;
-
     CircleImageView imageView;
     TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
     TextInputLayout textInputLayoutInstagram, textInputLayoutVerification, textInputLayoutCategory;
@@ -77,7 +76,7 @@ public class ProfileFragment extends Fragment {
     TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
     SearchableSpinner spCity;
     Button btnSend, arrow, btnVerify, btnEdit;
-    LinearLayout hiddenView;
+    LinearLayout hiddenView, linearSendInstagram;
     CardView cardView;
     LinearLayout layoutVerification;
     MaterialCardView baseCardview;
@@ -130,28 +129,23 @@ public class ProfileFragment extends Fragment {
                     isValid = false;
                 }
                 if(selectedCategory.equals("")){
-                    autoCompleteTextView.setError("Please choose category");
+                    autoCompleteTextView.setError(getString(R.string.please_choose_category));
                     isValid = false;
                 }
 
                 if(isValid){
-                    SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 10, 100, 50, 45, 120, 20, 35, 23, 52, "20:00", 1, 0, 0, "", true, new SocialMedia.Callback() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setCancelable(false);
+                    builder.setTitle(R.string.confirmation);
+                    builder.setMessage(getString(R.string.msg_verification_ig, edtInstagram.getText().toString()));
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
-                        public void success() {
-                            Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
-                        }
-
-                        @Override
-                        public void error() {
-                            Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
+                        public void onClick(DialogInterface dialog, int which) {
+                            registerInstagramAccount();
+                            linearSendInstagram.setVisibility(View.GONE);
                         }
                     });
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setCancelable(true);
-                    builder.setTitle(R.string.info);
-                    builder.setMessage(R.string.msg_verification);
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -247,6 +241,7 @@ public class ProfileFragment extends Fragment {
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
         textInputLayoutCategory = view.findViewById(R.id.txt_input_layout_category);
         btnEdit = view.findViewById(R.id.btn_edit);
+        linearSendInstagram = view.findViewById(R.id.linear_send_instagram);
     }
 
     private void bindData(View view) {
@@ -294,23 +289,24 @@ public class ProfileFragment extends Fragment {
 
                     if (socialMedia.getStatusVerify() == 0) {
                         tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_pending_24, 0, 0, 0);
-                        tvStatus.setText("Pending");
+                        tvStatus.setText(getString(R.string.pending));
                         tvStatus.setTextColor(getResources().getColor(R.color.yellow));
+                        linearSendInstagram.setVisibility(View.GONE);
                     } else {
                         tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_circle_outline_24, 0, 0, 0);
-                        tvStatus.setText("Verified");
+                        tvStatus.setText(getString(R.string.verified));
                         tvStatus.setTextColor(getResources().getColor(R.color.green));
-                        tvFollower.setText(socialMedia.getTotalFollower() + "");
-                        tvFollowing.setText(socialMedia.getTotalFollowing() + "");
+                        tvFollower.setText(String.valueOf(socialMedia.getTotalFollower()));
+                        tvFollowing.setText(String.valueOf(socialMedia.getTotalFollowing()));
                         tvUsername.setText(socialMedia.getId());
-                        tvTotalPost.setText(socialMedia.getTotalPost() + "");
-                        tvTotalComment.setText(socialMedia.getTotalComment() + "");
-                        tvTotalLike.setText(socialMedia.getTotalLike() + "");
-                        tvMinAge.setText(socialMedia.getMarketAgeMin() + "");
-                        tvMaxAge.setText(socialMedia.getMarketAgeMax() + "");
-                        tvMale.setText(socialMedia.getMarketMale() + "");
-                        tvFemale.setText(socialMedia.getMarketFemale() + "");
-                        tvTimePosting.setText(socialMedia.getTimePosting() + "");
+                        tvTotalPost.setText(String.valueOf(socialMedia.getTotalPost()));
+                        tvTotalComment.setText(String.valueOf(socialMedia.getTotalComment()));
+                        tvTotalLike.setText(String.valueOf(socialMedia.getTotalLike()));
+                        tvMinAge.setText(String.valueOf(socialMedia.getMarketAgeMin()));
+                        tvMaxAge.setText(String.valueOf(socialMedia.getMarketAgeMax()));
+                        tvMale.setText(String.valueOf(socialMedia.getMarketMale()));
+                        tvFemale.setText(String.valueOf(socialMedia.getMarketFemale()));
+                        tvTimePosting.setText(String.valueOf(socialMedia.getTimePosting()));
                         tvCategory.setText(socialMedia.getCategoryName());
                         layoutVerification.setVisibility(View.GONE);
                         baseCardview.setVisibility(View.VISIBLE);
@@ -348,7 +344,7 @@ public class ProfileFragment extends Fragment {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         activity.getMenuInflater().inflate(R.menu.context_menu_category, menu);
-        menu.setHeaderTitle("Choose Category");
+        menu.setHeaderTitle(getString(R.string.choose_category));
     }
 
     @Override
@@ -454,10 +450,41 @@ public class ProfileFragment extends Fragment {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
+                break;
+            case R.id.item_pending_campaign:
+                Intent intent = new Intent(activity, PendingCampaignActivity.class);
+                startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void registerInstagramAccount(){
+        SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 0, 0, 0, 0, 0, 0, 0, 0, 0, "0", 1, 0, 0, "", true, new SocialMedia.Callback() {
+            @Override
+            public void success() {
+                Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
+            }
+
+            @Override
+            public void error() {
+                Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(true);
+        builder.setTitle(R.string.info);
+        builder.setMessage(R.string.msg_verification);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void update(){

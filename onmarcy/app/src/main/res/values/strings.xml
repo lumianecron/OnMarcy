@@ -33,6 +33,7 @@
     <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="join_us">Join us!</string>
     <string name="login">login</string>
+    <string name="forgot_password">Forgot password</string>
 
     <!--    Profile-->
     <string name="profile">Profile</string>
@@ -62,6 +63,10 @@
     <string name="bio">Bio</string>
     <string name="post">Post</string>
     <string name="story">Story</string>
+    <string name="edit">Edit</string>
+    <string name="update_instagram">Update Instagram</string>
+    <string name="pending_campaign">Pending Campaign</string>
+    <string name="please_choose_category">Please choose category</string>
 
     <!--    Create Campaign-->
     <string name="create_campaign">Create Campaign</string>
@@ -88,6 +93,7 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="content">Content</string>
+    <string name="no_result_found">No Result Found</string>
 
     <!--    Menu Item-->
     <string name="home">Home</string>
@@ -112,6 +118,7 @@
     <string name="msg_logout">Are you sure to logout?</string>
     <string name="confirmation">Confirmation</string>
     <string name="msg_delete_campaign">Are you sure to delete this campaign?</string>
+    <string name="msg_verification_ig">Are you sure %1$s is your Instagram account?</string>
 
     <!--    Toast-->
     <string name="success">Success</string>
@@ -147,8 +154,5 @@
     <string name="details">Details</string>
     <string name="target_market">Target Market</string>
     <string name="update_campaign">Update Campaign</string>
-    <string name="edit">Edit</string>
-    <string name="update_instagram">Update Instagram</string>
-    <string name="forgot_password">Forgot password</string>
 
 </resources>
