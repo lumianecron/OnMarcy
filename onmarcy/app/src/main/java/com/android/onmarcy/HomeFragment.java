@@ -131,7 +131,6 @@ public class HomeFragment extends Fragment {
                     } else {
                         tvNotFound.setVisibility(View.GONE);
                     }
-                    System.out.println("CAMPAIGNS1: " + temp.size());
 
                     return true;
                 }
@@ -204,7 +203,6 @@ public class HomeFragment extends Fragment {
                         } else {
                             tvNotFound.setVisibility(View.GONE);
                         }
-                        System.out.println("CAMPAIGNS2: " + temp.size());
 
                         campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
                             @Override
