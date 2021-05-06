@@ -21,8 +21,9 @@ import org.json.JSONObject;
 import model.User;
 
 public class HomeActivity extends AppCompatActivity {
-    BottomNavigationView bottomNavigationView;
-    Fragment fragment;
+    public static String TAG = "action_activity_to_profile_fragment";
+    private BottomNavigationView bottomNavigationView;
+    private Fragment fragment;
     private User user;
 
     @Override
@@ -90,6 +91,10 @@ public class HomeActivity extends AppCompatActivity {
             fragment = HomeFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
             getSupportActionBar().setTitle(R.string.app_name);
+        }
+
+        if(getIntent().hasExtra(TAG)){
+            bottomNavigationView.setSelectedItemId(R.id.menu_profile);
         }
     }
 

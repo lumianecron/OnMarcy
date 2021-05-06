@@ -367,6 +367,10 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.profile_menu, menu);
+        if(user.getUserType() == 2){
+            MenuItem menuItem = menu.findItem(R.id.item_pending_campaign);
+            menuItem.setVisible(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 

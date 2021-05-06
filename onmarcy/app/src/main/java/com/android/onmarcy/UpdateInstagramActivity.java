@@ -108,12 +108,15 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     codeSocialMedia = socialMedia.getCode() + "";
                     if(socialMedia.getServiceBio() == 1){
                         autoCompleteTextView.setText(R.string.bio);
+                        bioService = 1;
                     }
                     if(socialMedia.getServicePost() == 1){
                         autoCompleteTextView.setText(R.string.post);
+                        postService = 1;
                     }
                     if(socialMedia.getServiceStory() == 1){
                         autoCompleteTextView.setText(R.string.story);
+                        storyService = 1;
                     }
                 } catch (Exception ex) {
                     Toast.makeText(UpdateInstagramActivity.this, ex + "", Toast.LENGTH_SHORT).show();
@@ -196,6 +199,10 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+                if(postService == 0 && bioService == 0 && storyService == 0){
+                    autoCompleteTextView.setError(getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
 
                 if (isValid) {
                     // do something
@@ -221,7 +228,11 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                             @Override
                             public void success() {
                                 Toast.makeText(UpdateInstagramActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                                UpdateInstagramActivity.super.onBackPressed();
+//                                UpdateInstagramActivity.super.onBackPressed();
+                                Intent intent = new Intent(UpdateInstagramActivity.this, HomeActivity.class);
+                                intent.putExtra(HomeActivity.TAG, true);
+                                startActivity(intent);
+                                finishAffinity();
                             }
 
                             @Override
