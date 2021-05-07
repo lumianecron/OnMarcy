@@ -53,6 +53,9 @@ public class User {
     @SerializedName("active")
     private int isActive;
 
+    @SerializedName("photo")
+    private String photoUrl;
+
     @NonNull
     public String getHash() {
         return hash;
@@ -142,6 +145,10 @@ public class User {
         this.isActive = isActive;
     }
 
+    public String getPhotoUrl() { return photoUrl; }
+
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+
     public interface CallbackSelect {
         void success(JSONObject data);
 
@@ -167,6 +174,7 @@ public class User {
             this.cityName = json.has("city_name") ? json.getString("city_name") : "";
             this.userType = json.has("user_type") ? json.getInt("user_type") : 0;
             this.refferal = json.has("refferal") ? json.getString("refferal") : "";
+            this.photoUrl = json.has("photo") ? json.getString("photo") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }

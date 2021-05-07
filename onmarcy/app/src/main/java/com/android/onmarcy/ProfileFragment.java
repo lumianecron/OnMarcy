@@ -1,10 +1,16 @@
 package com.android.onmarcy;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -13,12 +19,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.util.Base64;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -34,6 +43,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -52,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +72,8 @@ import model.Category;
 import model.City;
 import model.SocialMedia;
 import model.User;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,6 +101,15 @@ public class ProfileFragment extends Fragment {
     private String cityName = "";
     private String selectedCategory = "";
     private int categoryCode = 0;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private String base64String = "";
+    private int permission = 0;
+    private Button btnAddPhoto;
+    private View view;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -115,8 +137,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bindView(view);
-        bindData(view);
+        this.view = view;
+        bindView();
+        bindData();
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +189,7 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void success() {
                         Toast.makeText(getActivity(), getString(R.string.verification_success), Toast.LENGTH_SHORT).show();
-                        bindData(view);
+                        bindData();
                     }
 
                     @Override
@@ -202,9 +225,16 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        btnAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verifyStoragePermissions(activity);
+            }
+        });
     }
 
-    private void bindView(View view) {
+    private void bindView() {
         imageView = view.findViewById(R.id.image_view);
         edtName = view.findViewById(R.id.edt_name);
         edtUsername = view.findViewById(R.id.edt_username);
@@ -242,9 +272,10 @@ public class ProfileFragment extends Fragment {
         textInputLayoutCategory = view.findViewById(R.id.txt_input_layout_category);
         btnEdit = view.findViewById(R.id.btn_edit);
         linearSendInstagram = view.findViewById(R.id.linear_send_instagram);
+        btnAddPhoto = view.findViewById(R.id.btn_add_photo);
     }
 
-    private void bindData(View view) {
+    private void bindData() {
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
             edtName.setText(user.getName());
@@ -253,22 +284,15 @@ public class ProfileFragment extends Fragment {
             edtPhone.setText(user.getPhone());
             code = user.getCityCode();
             cityName = user.getCityName();
+
+            if(user.getPhotoUrl().equals("")){
+                setImage("");
+            }else{
+                setImage(user.getPhotoUrl());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        String img = "";
-        if(user.getUsername().equals("lumia")){
-            img = "https://s3.zerochan.net/240/09/40/3247009.jpg";
-
-        }
-        else if(user.getUsername().equals("enjirou")){
-            img = "https://cdn.myanimelist.net/images/characters/2/373501.jpg";
-        }
-        Glide.with(view.getContext())
-                .load(img)
-                .apply(new RequestOptions().override(120, 120))
-                .into(imageView);
 
         registerForContextMenu(autoCompleteTextView);
         autoCompleteTextView.setOnClickListener(new View.OnClickListener() {
@@ -565,5 +589,124 @@ public class ProfileFragment extends Fragment {
             }
         }
         return cities.get(index).getCode();
+    }
+
+    private void setImage(String img){
+        if(img.equals("")){
+            Glide.with(view.getContext())
+                    .load(R.drawable.person)
+                    .apply(new RequestOptions().override(120, 120))
+                    .into(imageView);
+        }else{
+            Glide.with(view.getContext())
+                    .load(img)
+                    .apply(new RequestOptions().override(120, 120))
+                    .into(imageView);
+        }
+    }
+
+    public void selectImage() {
+        final CharSequence[] options = { "Choose from Gallery", "Remove photo", "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Insert Picture");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 1);
+                }else if (options[item].equals("Remove photo")) {
+                    User.uploadPicture(activity, "", false, new User.CallbackSelect() {
+                        @Override
+                        public void success(JSONObject data) {
+                            User user = new User(data);
+                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                            setImage(user.getPhotoUrl());
+                        }
+
+                        @Override
+                        public void error() {
+
+                        }
+                    });
+                }
+                else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+        permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        }else{
+            selectImage();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            selectImage();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                Uri selectedImage = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor c = activity.getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                thumbnail = getResizedBitmap(thumbnail, 400);
+                Bitmap finalThumbnail = thumbnail;
+                User.uploadPicture(activity, BitMapToString(thumbnail), false, new User.CallbackSelect() {
+                    @Override
+                    public void success(JSONObject data) {
+                        User user = new User(data);
+                        Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                        setImage(user.getPhotoUrl());
+                    }
+
+                    @Override
+                    public void error() {
+
+                    }
+                });
+            }
+        }
+    }
+
+    public String BitMapToString(Bitmap userImage1) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        userImage1.compress(Bitmap.CompressFormat.PNG, 60, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        base64String = Base64.encodeToString(b, Base64.DEFAULT);
+        return base64String;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 }
