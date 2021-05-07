@@ -57,6 +57,7 @@ public class User {
     public String getHash() {
         return hash;
     }
+
     public void setHash(@NonNull String hash) {
         this.hash = hash;
     }
@@ -64,6 +65,7 @@ public class User {
     public String getUsername() {
         return username;
     }
+
     public void setUsername(@NonNull String username) {
         this.username = username;
     }
@@ -71,6 +73,7 @@ public class User {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -78,6 +81,7 @@ public class User {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -85,35 +89,68 @@ public class User {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getPhone() {
+        return phone;
+    }
 
-    public int getCityCode() { return cityCode; }
-    public void setCityCode(int cityCode) { this.cityCode = cityCode; }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-    public String getCityName() { return cityName; }
-    public void setCityName(String cityName) { this.cityName = cityName; }
+    public int getCityCode() {
+        return cityCode;
+    }
 
-    public int getUserType() { return userType; }
-    public void setUserType(int userType) { this.userType = userType; }
+    public void setCityCode(int cityCode) {
+        this.cityCode = cityCode;
+    }
 
-    public String getRefferal() { return refferal; }
-    public void setRefferal(String refferal) { this.refferal = refferal; }
+    public String getCityName() {
+        return cityName;
+    }
 
-    public int getIsActive() { return isActive; }
-    public void setIsActive(int isActive) { this.isActive = isActive; }
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public String getRefferal() {
+        return refferal;
+    }
+
+    public void setRefferal(String refferal) {
+        this.refferal = refferal;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
 
     public interface CallbackSelect {
         void success(JSONObject data);
+
         void error();
     }
 
     public interface Callback {
         void success();
+
         void error();
     }
 
@@ -130,12 +167,13 @@ public class User {
             this.cityName = json.has("city_name") ? json.getString("city_name") : "";
             this.userType = json.has("user_type") ? json.getInt("user_type") : 0;
             this.refferal = json.has("refferal") ? json.getString("refferal") : "";
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        catch (JSONException e) { e.printStackTrace(); }
     }
 
     //LOGOUT
-    public static void logout(){
+    public static void logout() {
         Global.setShared(Global.SHARED_INDEX.USER, null);
     }
 
@@ -166,8 +204,9 @@ public class User {
             try {
                 jsonObject.put("username", username);
                 jsonObject.put("password", password);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -175,17 +214,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success(json.getJSONObject(Global.RESPONSE_DATA));
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
 //                callback.error();
@@ -196,7 +233,7 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 
@@ -245,8 +282,9 @@ public class User {
                 jsonObject.put("city", cityCode);
                 jsonObject.put("user_type", userType);
                 jsonObject.put("refferal", refferal);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -254,17 +292,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success();
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
 //                callback.error();
@@ -275,7 +311,7 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 
@@ -313,8 +349,9 @@ public class User {
                 jsonObject.put("name", name);
                 jsonObject.put("photo", "");
                 jsonObject.put("gender", 1);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -322,17 +359,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success();
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
             }
@@ -341,7 +376,7 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 
@@ -379,8 +414,9 @@ public class User {
                 jsonObject.put("name", name);
                 jsonObject.put("photo", "");
                 jsonObject.put("gender", 1);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -388,17 +424,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success();
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
             }
@@ -407,7 +441,7 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 
@@ -438,8 +472,9 @@ public class User {
             try {
                 jsonObject.put("username", username);
                 jsonObject.put("email", email);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -447,17 +482,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success(json.getJSONObject(Global.RESPONSE_DATA));
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
 //                callback.error();
@@ -468,7 +501,7 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 
@@ -496,8 +529,9 @@ public class User {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("parameter", email);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
 
             return Global.executePost(urls[0], jsonObject, 3000);
         }
@@ -505,17 +539,15 @@ public class User {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
+            if (useLoading) Global.hideLoading();
             try {
                 JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
                     callback.success(json.getJSONObject(Global.RESPONSE_DATA));
-                }
-                else {
+                } else {
                     callback.error();
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 Global.showLoading(activity.get(), "", e.getMessage());
                 e.printStackTrace();
 //                callback.error();
@@ -526,7 +558,66 @@ public class User {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    //UPLOAD PICTURE
+    public static void uploadPicture(Activity activity, String photo, Boolean useLoading, CallbackSelect callback) {
+        new uploadPicture(activity, photo, useLoading, callback).execute("v1/profile/upload_picture");
+    }
+
+    private static class uploadPicture extends AsyncTask<String, Void, String> {
+
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final Boolean useLoading;
+        final String photo;
+
+        private uploadPicture(Activity activity, String photo, Boolean useLoading, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.photo = photo;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("image", photo);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if (json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(json.getJSONObject(Global.RESPONSE_DATA));
+                } else {
+                    callback.error();
+                }
+            } catch (Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+//                callback.error();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (useLoading) Global.showLoading(activity.get(), "", "Loading");
         }
     }
 }
