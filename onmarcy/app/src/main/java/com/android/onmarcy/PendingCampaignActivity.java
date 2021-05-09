@@ -45,7 +45,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
         pendingCampaignAdapter.setOnItemCallBack(new PendingCampaignAdapter.OnItemCallBack() {
             @Override
             public void onLinkClicked(Campaign campaign) {
-                WebDialogFragment.display((PendingCampaignActivity.this).getSupportFragmentManager(), "https://hentaifox.com/gallery/83149/");
+                WebDialogFragment.display((PendingCampaignActivity.this).getSupportFragmentManager(), campaign.getLink());
             }
         });
 

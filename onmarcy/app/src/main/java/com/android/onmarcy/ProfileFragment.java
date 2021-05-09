@@ -452,7 +452,6 @@ public class ProfileFragment extends Fragment {
                             }
                         });
                     }
-                    Toast.makeText(activity, getString(R.string.success), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.item_logout:
@@ -622,6 +621,7 @@ public class ProfileFragment extends Fragment {
                             User user = new User(data);
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                             setImage(user.getPhotoUrl());
+                            System.out.println("TES1: " + user.getUsername());
                         }
 
                         @Override
@@ -669,13 +669,13 @@ public class ProfileFragment extends Fragment {
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 thumbnail = getResizedBitmap(thumbnail, 400);
-                Bitmap finalThumbnail = thumbnail;
                 User.uploadPicture(activity, BitMapToString(thumbnail), false, new User.CallbackSelect() {
                     @Override
                     public void success(JSONObject data) {
                         User user = new User(data);
                         Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                         setImage(user.getPhotoUrl());
+                        System.out.println("TES2: " + user.getUsername());
                     }
 
                     @Override

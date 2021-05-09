@@ -7,7 +7,7 @@
     </string-array>
 
     <string name="url">https://api-onmarcy.genoratory.com/</string>
-    <string name="url_host">hentaifox.com</string>
+    <string name="url_host">checkout.xendit.co</string>
 
     <!--    Register-->
     <string name="email_format_is_not_valid">Email format is not valid</string>

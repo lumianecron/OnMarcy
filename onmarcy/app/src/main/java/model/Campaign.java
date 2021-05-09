@@ -73,7 +73,7 @@ public class Campaign implements Parcelable {
     @SerializedName("time")
     private String time;
 
-    @SerializedName("link")
+    @SerializedName("pay_link")
     private String link;
 
     public String getCodeString() {return codeString;}
@@ -251,7 +251,7 @@ public class Campaign implements Parcelable {
             this.approach = jsonObject.has("approach") ? jsonObject.getInt("approach") : 0;
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
             this.time = jsonObject.has("time_posting") ? jsonObject.getString("time_posting") : "";
-            this.link = jsonObject.has("link") ? jsonObject.getString("link") : "";
+            this.link = jsonObject.has("pay_link") ? jsonObject.getString("pay_link") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }
