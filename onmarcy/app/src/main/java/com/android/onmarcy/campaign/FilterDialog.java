@@ -1,4 +1,4 @@
-package com.android.onmarcy;
+package com.android.onmarcy.campaign;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 
+import com.android.onmarcy.R;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,7 +25,7 @@ public class FilterDialog extends Dialog {
     private int status;
     private int lowest, highest;
     private int year;
-    OnMyDialogResult onMyDialogResult;
+    public OnMyDialogResult onMyDialogResult;
 
     public FilterDialog(@NonNull Context context, int type) {
         super(context);

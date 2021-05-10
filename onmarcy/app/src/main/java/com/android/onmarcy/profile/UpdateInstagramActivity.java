@@ -1,25 +1,24 @@
-package com.android.onmarcy;
+package com.android.onmarcy.profile;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.onmarcy.HomeActivity;
+import com.android.onmarcy.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONObject;
@@ -29,7 +28,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import model.SocialMedia;
-import model.User;
 
 public class UpdateInstagramActivity extends AppCompatActivity {
     private TextInputEditText edtFollowers, edtFollowing, edtTotalPost, edtTotalComment, edtTotalLike, edtMin, edtMax, edtMale, edtFemale, edtTime;

@@ -25,16 +25,16 @@ package="com.android.onmarcy">
         <nav-graph android:value="@navigation/main_navigation" />
     </activity>
     <activity
-        android:name=".ContentActivity"
+        android:name=".campaign.ContentActivity"
         android:screenOrientation="portrait"></activity>
     <activity
-        android:name=".UpdateActivity"
+        android:name=".campaign.UpdateActivity"
         android:screenOrientation="portrait"></activity>
     <activity
-        android:name=".UpdateInstagramActivity"
+        android:name=".profile.UpdateInstagramActivity"
         android:screenOrientation="portrait"></activity>
     <activity
-        android:name=".PendingCampaignActivity"
+        android:name=".campaign.PendingCampaignActivity"
         android:screenOrientation="portrait"></activity>
     <activity
         android:name=".HomeActivity"

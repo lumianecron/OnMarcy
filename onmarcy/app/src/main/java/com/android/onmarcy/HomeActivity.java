@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.android.onmarcy.campaign.HistoryFragment;
+import com.android.onmarcy.campaign.HomeFragment;
+import com.android.onmarcy.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
@@ -98,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    void profileFragment(){
+    public void profileFragment(){
         fragment = ProfileFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         getSupportActionBar().setTitle(R.string.profile);

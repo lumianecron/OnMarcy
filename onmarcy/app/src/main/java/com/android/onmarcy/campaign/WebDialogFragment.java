@@ -1,4 +1,4 @@
-package com.android.onmarcy;
+package com.android.onmarcy.campaign;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.android.onmarcy.R;
 
 public class WebDialogFragment extends DialogFragment {
     public static final String TAG = "create_dialog";

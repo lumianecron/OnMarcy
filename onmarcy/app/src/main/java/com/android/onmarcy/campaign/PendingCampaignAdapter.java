@@ -1,4 +1,4 @@
-package com.android.onmarcy;
+package com.android.onmarcy.campaign;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.onmarcy.R;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
