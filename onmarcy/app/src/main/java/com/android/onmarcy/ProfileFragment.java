@@ -110,6 +110,7 @@ public class ProfileFragment extends Fragment {
     private int permission = 0;
     private Button btnAddPhoto;
     private View view;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -605,23 +606,35 @@ public class ProfileFragment extends Fragment {
     }
 
     public void selectImage() {
-        final CharSequence[] options = { "Choose from Gallery", "Remove photo", "Cancel" };
+        final CharSequence[] options = { getString(R.string.take_a_photo), getString(R.string.choose_from_gallery), getString(R.string.remove_photo), getString(R.string.cancel) };
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Insert Picture");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Choose from Gallery")) {
+                if (options[item].equals(getString(R.string.take_a_photo))) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                        {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+                        }
+                        else
+                        {
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                            startActivityForResult(cameraIntent, 1);
+                        }
+                    }
+                }else if (options[item].equals(getString(R.string.choose_from_gallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 1);
-                }else if (options[item].equals("Remove photo")) {
+                    startActivityForResult(intent, 2);
+                }else if (options[item].equals(getString(R.string.remove_photo))) {
                     User.uploadPicture(activity, "", false, new User.CallbackSelect() {
                         @Override
                         public void success(JSONObject data) {
                             User user = new User(data);
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                             setImage(user.getPhotoUrl());
-                            System.out.println("TES1: " + user.getUsername());
                         }
 
                         @Override
@@ -630,7 +643,7 @@ public class ProfileFragment extends Fragment {
                         }
                     });
                 }
-                else if (options[item].equals("Cancel")) {
+                else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -660,6 +673,22 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                photo = getResizedBitmap(photo, 400);
+                User.uploadPicture(activity, BitMapToString(photo), false, new User.CallbackSelect() {
+                    @Override
+                    public void success(JSONObject data) {
+                        User user = new User(data);
+                        Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                        setImage(user.getPhotoUrl());
+                    }
+
+                    @Override
+                    public void error() {
+
+                    }
+                });
+            }else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
                 Cursor c = activity.getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -675,7 +704,6 @@ public class ProfileFragment extends Fragment {
                         User user = new User(data);
                         Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
                         setImage(user.getPhotoUrl());
-                        System.out.println("TES2: " + user.getUsername());
                     }
 
                     @Override

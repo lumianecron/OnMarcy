@@ -157,5 +157,9 @@
     <string name="update_campaign">Update Campaign</string>
 
     <string name="payment">Payment</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="remove_photo">Remove photo</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
