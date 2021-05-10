@@ -360,6 +360,47 @@ public class Campaign implements Parcelable {
         }
     }
 
+    public static void selectPending(Activity activity, CallbackSelect callback) {
+        new selectPending(activity, callback).execute("v1/campaign/select_pending");
+    }
+
+    private static class selectPending extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+
+        public selectPending(Activity activity, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("status", 4);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("campaign"));
+                } else {
+                    callback.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
         new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, useLoading, callback).execute("v1/campaign/insert");
     }
