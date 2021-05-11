@@ -2,6 +2,7 @@ package com.android.onmarcy.profile;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.onmarcy.CropActivity;
 import com.android.onmarcy.Global;
 import com.android.onmarcy.HomeActivity;
 import com.android.onmarcy.MainActivity;
@@ -59,6 +61,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -107,6 +111,7 @@ public class ProfileFragment extends Fragment {
     private View view;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private String photoURL = "";
+    private Uri imageUri;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -137,6 +142,18 @@ public class ProfileFragment extends Fragment {
         this.view = view;
         bindView();
         bindData();
+
+        if(activity.getIntent().hasExtra(CropActivity.TAG)){
+            imageUri = Uri.parse(activity.getIntent().getStringExtra(CropActivity.TAG));
+            Bitmap thumbnail = null;
+            try {
+                thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
+                thumbnail = getResizedBitmap(thumbnail, 400);
+                uploadPicture(BitMapToString(thumbnail));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -615,7 +632,7 @@ public class ProfileFragment extends Fragment {
     public void selectImage() {
         final CharSequence[] options = { getString(R.string.take_a_photo), getString(R.string.choose_from_gallery), getString(R.string.remove_photo), getString(R.string.cancel) };
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Insert Picture");
+        builder.setTitle(R.string.insert_picture);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -627,8 +644,14 @@ public class ProfileFragment extends Fragment {
                         }
                         else
                         {
+                            ContentValues values = new ContentValues();
+                            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                            imageUri = activity.getContentResolver().insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                             startActivityForResult(cameraIntent, 1);
                         }
                     }
@@ -659,7 +682,19 @@ public class ProfileFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            selectImage();
+            if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, "New Picture");
+                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                imageUri = activity.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(cameraIntent, 1);
+            } else {
+                selectImage();
+            }
         }
     }
 
@@ -668,9 +703,14 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                photo = getResizedBitmap(photo, 400);
-                uploadPicture(BitMapToString(photo));
+                try {
+//                    Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
+//                    thumbnail = getResizedBitmap(thumbnail, 400);
+//                    uploadPicture(BitMapToString(thumbnail));
+                    cropImage(imageUri);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
@@ -679,11 +719,18 @@ public class ProfileFragment extends Fragment {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                thumbnail = getResizedBitmap(thumbnail, 400);
-                uploadPicture(BitMapToString(thumbnail));
+//                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+//                thumbnail = getResizedBitmap(thumbnail, 400);
+//                uploadPicture(BitMapToString(thumbnail));
+                cropImage(Uri.fromFile(new File(picturePath)));
             }
         }
+    }
+
+    private void cropImage(Uri imageUri){
+        Intent intent = new Intent(activity, CropActivity.class);
+        intent.putExtra(CropActivity.TAG, imageUri.toString());
+        startActivity(intent);
     }
 
     private void uploadPicture(String img){

@@ -162,5 +162,9 @@
     <string name="remove_photo">Remove photo</string>
     <string name="cancel">Cancel</string>
     <string name="msg_choose_service">Please choose at least 1 service type</string>
+    <string name="insert_picture">Insert Picture</string>
+    <string name="msg_save_changes">Save changes?</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
 
 </resources>
