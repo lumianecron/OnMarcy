@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -31,8 +32,7 @@ import model.SocialMedia;
 
 public class UpdateInstagramActivity extends AppCompatActivity {
     private TextInputEditText edtFollowers, edtFollowing, edtTotalPost, edtTotalComment, edtTotalLike, edtMin, edtMax, edtMale, edtFemale, edtTime;
-    private AutoCompleteTextView autoCompleteTextView;
-    private String selectedService;
+    private CheckBox cbBio, cbPost, cbStory;
     private String codeSocialMedia;
     private int bioService = 0, postService = 0, storyService = 0;
 
@@ -44,14 +44,6 @@ public class UpdateInstagramActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.update_instagram);
         bindView();
         bindData();
-
-        registerForContextMenu(autoCompleteTextView);
-        autoCompleteTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                autoCompleteTextView.showContextMenu();
-            }
-        });
 
         edtTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +75,9 @@ public class UpdateInstagramActivity extends AppCompatActivity {
         edtMale = findViewById(R.id.edt_male);
         edtFemale = findViewById(R.id.edt_female);
         edtTime = findViewById(R.id.edt_time);
-        autoCompleteTextView = findViewById(R.id.auto_complete);
+        cbBio = findViewById(R.id.cb_bio);
+        cbPost = findViewById(R.id.cb_post);
+        cbStory = findViewById(R.id.cb_story);
     }
 
     private void bindData(){
@@ -105,15 +99,15 @@ public class UpdateInstagramActivity extends AppCompatActivity {
 
                     codeSocialMedia = socialMedia.getCode() + "";
                     if(socialMedia.getServiceBio() == 1){
-                        autoCompleteTextView.setText(R.string.bio);
+                        cbBio.setChecked(true);
                         bioService = 1;
                     }
                     if(socialMedia.getServicePost() == 1){
-                        autoCompleteTextView.setText(R.string.post);
+                        cbPost.setChecked(true);
                         postService = 1;
                     }
                     if(socialMedia.getServiceStory() == 1){
-                        autoCompleteTextView.setText(R.string.story);
+                        cbStory.setChecked(true);
                         storyService = 1;
                     }
                 } catch (Exception ex) {
@@ -127,23 +121,6 @@ public class UpdateInstagramActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.context_menu_services, menu);
-        menu.setHeaderTitle("Choose Service");
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        selectedService = item.toString();
-        if(selectedService.equalsIgnoreCase("Bio")) bioService = 1;
-        if(selectedService.equalsIgnoreCase("Post")) postService = 1;
-        if(selectedService.equalsIgnoreCase("Story")) storyService = 1;
-        autoCompleteTextView.setText(selectedService);
-        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -197,13 +174,15 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if(postService == 0 && bioService == 0 && storyService == 0){
-                    autoCompleteTextView.setError(getString(R.string.please_fill_out_this_field));
+                if(!cbBio.isChecked() && !cbPost.isChecked() && !cbStory.isChecked()){
+                    Toast.makeText(this, getString(R.string.msg_choose_service), Toast.LENGTH_SHORT).show();
                     isValid = false;
                 }
 
                 if (isValid) {
-                    // do something
+                    bioService = (cbBio.isChecked()) ? 1 : 0;
+                    postService = (cbPost.isChecked()) ? 1 : 0;
+                    storyService = (cbStory.isChecked()) ? 1 : 0;
                     SocialMedia.update_info(UpdateInstagramActivity.this,
                         "",
                         1,

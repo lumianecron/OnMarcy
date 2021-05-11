@@ -355,7 +355,6 @@ public class User {
                 jsonObject.put("address", "");
                 jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
-                jsonObject.put("photo", "");
                 jsonObject.put("gender", 1);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -420,7 +419,6 @@ public class User {
                 jsonObject.put("address", "");
                 jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
-                jsonObject.put("photo", "");
                 jsonObject.put("gender", 1);
             } catch (JSONException e) {
                 e.printStackTrace();

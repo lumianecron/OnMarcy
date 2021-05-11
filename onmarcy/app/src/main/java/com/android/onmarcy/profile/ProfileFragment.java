@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +87,7 @@ public class ProfileFragment extends Fragment {
     CardView cardView;
     LinearLayout layoutVerification;
     MaterialCardView baseCardview;
+
     private ArrayList<City> cities = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayAdapter<City> adapter;
@@ -104,6 +106,7 @@ public class ProfileFragment extends Fragment {
     private Button btnAddPhoto;
     private View view;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private String photoURL = "";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -284,6 +287,10 @@ public class ProfileFragment extends Fragment {
             }else{
                 setImage(user.getPhotoUrl());
             }
+
+            if(photoURL.equals("")){
+                photoURL = user.getPhotoUrl();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -329,15 +336,21 @@ public class ProfileFragment extends Fragment {
                         layoutVerification.setVisibility(View.GONE);
                         baseCardview.setVisibility(View.VISIBLE);
 
+                        String txtService = "";
+                        ArrayList<String> services = new ArrayList<>();
                         if(socialMedia.getServiceBio() == 1){
-                            tvServiceType.setText(R.string.bio);
+                            services.add(getString(R.string.bio));
                         }
                         if(socialMedia.getServicePost() == 1){
-                            tvServiceType.setText(R.string.post);
+                            services.add(getString(R.string.post));
                         }
                         if(socialMedia.getServiceStory() == 1){
-                            tvServiceType.setText(R.string.story);
+                            services.add(getString(R.string.story));
                         }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            txtService = String.join(", ", services);
+                        }
+                        tvServiceType.setText(txtService);
                     }
                 } catch (Exception ex) {
                     Toast.makeText(getActivity(), ex + "", Toast.LENGTH_SHORT).show();
@@ -484,12 +497,12 @@ public class ProfileFragment extends Fragment {
         SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 0, 0, 0, 0, 0, 0, 0, 0, 0, "0", 1, 0, 0, "", true, new SocialMedia.Callback() {
             @Override
             public void success() {
-                Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
+//                Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
             }
 
             @Override
             public void error() {
-                Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
+//                Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
             }
         });
 
@@ -513,6 +526,7 @@ public class ProfileFragment extends Fragment {
         user.setName(edtName.getText().toString());
         user.setPhone(edtPhone.getText().toString());
         user.setCityCode(code);
+        user.setPhotoUrl(photoURL);
         Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
         HomeActivity homeActivity = (HomeActivity) activity;
         homeActivity.profileFragment();
@@ -622,19 +636,7 @@ public class ProfileFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
                 }else if (options[item].equals(getString(R.string.remove_photo))) {
-                    User.uploadPicture(activity, "", false, new User.CallbackSelect() {
-                        @Override
-                        public void success(JSONObject data) {
-                            User user = new User(data);
-                            Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                            setImage(user.getPhotoUrl());
-                        }
-
-                        @Override
-                        public void error() {
-
-                        }
-                    });
+                    uploadPicture("");
                 }
                 else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
@@ -668,19 +670,7 @@ public class ProfileFragment extends Fragment {
             if (requestCode == 1) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 photo = getResizedBitmap(photo, 400);
-                User.uploadPicture(activity, BitMapToString(photo), false, new User.CallbackSelect() {
-                    @Override
-                    public void success(JSONObject data) {
-                        User user = new User(data);
-                        Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                        setImage(user.getPhotoUrl());
-                    }
-
-                    @Override
-                    public void error() {
-
-                    }
-                });
+                uploadPicture(BitMapToString(photo));
             }else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
@@ -691,21 +681,26 @@ public class ProfileFragment extends Fragment {
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 thumbnail = getResizedBitmap(thumbnail, 400);
-                User.uploadPicture(activity, BitMapToString(thumbnail), false, new User.CallbackSelect() {
-                    @Override
-                    public void success(JSONObject data) {
-                        User user = new User(data);
-                        Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                        setImage(user.getPhotoUrl());
-                    }
-
-                    @Override
-                    public void error() {
-
-                    }
-                });
+                uploadPicture(BitMapToString(thumbnail));
             }
         }
+    }
+
+    private void uploadPicture(String img){
+        User.uploadPicture(activity, img, false, new User.CallbackSelect() {
+            @Override
+            public void success(JSONObject data) {
+                User user = new User(data);
+                Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
+                setImage(user.getPhotoUrl());
+                photoURL = user.getPhotoUrl();
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     public String BitMapToString(Bitmap userImage1) {

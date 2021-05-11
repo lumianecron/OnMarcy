@@ -161,5 +161,6 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="remove_photo">Remove photo</string>
     <string name="cancel">Cancel</string>
+    <string name="msg_choose_service">Please choose at least 1 service type</string>
 
 </resources>
