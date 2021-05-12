@@ -59,7 +59,7 @@ import model.SocialMedia;
 
 public class UpdateActivity extends AppCompatActivity {
     public static final String EXTRA_CAMPAIGN = "campaign";
-    private TextInputEditText edtTitle, edtNotes, edtMax, edtMin, edtDuration, edtPrice, edtTime, edtDate, edtUsername, edtCaption, edtBio;
+    private TextInputEditText edtTitle, edtNotes, edtMax, edtMin, edtDuration, edtPrice, edtTime, edtDate, edtCaption, edtBio;
     private ImageButton btnPost, btnStory;
     private Button btnPreviewPost, btnPreviewStory;
     private AutoCompleteTextView autoCompleteTextView;
@@ -230,71 +230,68 @@ public class UpdateActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                startActivity(intent);
-                finishAffinity();
+                finish();
                 break;
             case R.id.item_update:
                 boolean isValid = true;
 
-//                if (TextUtils.isEmpty(edtTitle.getText().toString())) {
-//                    edtTitle.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtMax.getText().toString())) {
-//                    edtMax.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtMin.getText().toString())) {
-//                    edtMin.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtTime.getText().toString())) {
-//                    edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtDuration.getText().toString())) {
-//                    edtDuration.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtPrice.getText().toString())) {
-//                    edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//                if (TextUtils.isEmpty(edtDate.getText().toString())) {
-//                    edtDate.setError(getResources().getString(R.string.please_fill_out_this_field));
-//                    isValid = false;
-//                }
-//
-//                if (spCity.getSelectedItem() != null) {
-//                    for (int i = 0; i < cities.size(); i++) {
-//                        if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
-//                            cityCode = cities.get(i).getCode();
-//                        }
-//                    }
-//                }
-//
-//                if (cityCode == 0) {
-//                    isValid = false;
-//                    Toast.makeText(this, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
-//                }
+                if (TextUtils.isEmpty(edtTitle.getText().toString())) {
+                    edtTitle.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtMax.getText().toString())) {
+                    edtMax.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtMin.getText().toString())) {
+                    edtMin.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtTime.getText().toString())) {
+                    edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtDuration.getText().toString())) {
+                    edtDuration.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtPrice.getText().toString())) {
+                    edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+                if (TextUtils.isEmpty(edtDate.getText().toString())) {
+                    edtDate.setError(getResources().getString(R.string.please_fill_out_this_field));
+                    isValid = false;
+                }
+
+                if (spCity.getSelectedItem() != null) {
+                    for (int i = 0; i < cities.size(); i++) {
+                        if (cities.get(i).getName().equals(spCity.getSelectedItem().toString())) {
+                            cityCode = cities.get(i).getCode();
+                        }
+                    }
+                }
+
+                if (cityCode == 0) {
+                    isValid = false;
+                    Toast.makeText(this, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
+                }
 
                 if (isValid) {
-//                    String title = edtTitle.getText().toString();
-//                    String notes = edtNotes.getText().toString();
-//                    int min = Integer.parseInt(edtMin.getText().toString());
-//                    int max = Integer.parseInt(edtMax.getText().toString());
-//                    int gender = 0;
-//                    if (rbMale.isChecked()) gender = 1;
-//                    if (rbFemale.isChecked()) gender = 2;
-//                    if (rbAll.isChecked()) gender = 3;
-//                    int duration = Integer.parseInt(edtDuration.getText().toString());
-//                    String[] date = edtDate.getText().toString().split("/");
-//                    String formattedDate = date[2] + "-" + date[1] + "-" + date[0];
-//                    String time = edtTime.getText().toString();
-//                    String username = edtUsername.getText().toString();
-//                    String caption = edtCaption.getText().toString();
-//                    String bio = edtBio.getText().toString();
+                    String title = edtTitle.getText().toString();
+                    String notes = edtNotes.getText().toString();
+                    int min = Integer.parseInt(edtMin.getText().toString());
+                    int max = Integer.parseInt(edtMax.getText().toString());
+                    int gender = 0;
+                    if (rbMale.isChecked()) gender = 1;
+                    if (rbFemale.isChecked()) gender = 2;
+                    if (rbAll.isChecked()) gender = 3;
+                    int duration = Integer.parseInt(edtDuration.getText().toString());
+                    String[] date = edtDate.getText().toString().split("/");
+                    String formattedDate = date[2] + "-" + date[1] + "-" + date[0];
+                    String time = edtTime.getText().toString();
+                    String caption = edtCaption.getText().toString();
+                    String bio = edtBio.getText().toString();
 
                     if (picturePathListPost.size() < limitPost) {
                         int total = limitPost - picturePathListPost.size();
@@ -316,22 +313,47 @@ public class UpdateActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-//                    Campaign.update(this, campaign.getCodeString(), username_ig, categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, false, new Campaign.Callback() {
-//                        @Override
-//                        public void success() {
-//                            Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void error() {
-//                            Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
+                    Campaign.update(this, campaign.getCodeString(), username_ig, categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, false, new Campaign.Callback() {
+                        @Override
+                        public void success() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void error() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    Campaign.updateContent(this, campaign.getCodeString(), username_ig, caption, getArrayOfPath(base64StringPost), getArrayOfPath(base64StringStory), bio, false, new Campaign.Callback() {
+                        @Override
+                        public void success() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void error() {
+                            Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Log.d("RUNNN", "attempt failed");
                 }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String[] getArrayOfPath(ArrayList<String> base64String){
+        String[] arr = new String[base64String.size()];
+        for (int i = 0; i < base64String.size(); i++) {
+            arr[i] = base64String.get(i);
+        }
+
+        return arr;
     }
 
     private void convertToBase64() throws IOException {
@@ -341,6 +363,7 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListPost.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
+                thumbnail = getResizedBitmap(thumbnail, 400);
                 base64StringPost.add(BitMapToString(thumbnail));
             }
         }
@@ -351,12 +374,10 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListStory.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
+                thumbnail = getResizedBitmap(thumbnail, 400);
                 base64StringStory.add(BitMapToString(thumbnail));
             }
         }
-
-        System.out.println(base64StringPost.size());
-        System.out.println(base64StringStory.size());
     }
 
     private void setButtonPreview() {
@@ -484,6 +505,21 @@ public class UpdateActivity extends AppCompatActivity {
         return base64String;
     }
 
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
     private void bindData() {
         edtTitle.setText(campaign.getTitle());
         edtNotes.setText(campaign.getNotes());
@@ -576,7 +612,6 @@ public class UpdateActivity extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.autoComplete);
         edtDate = findViewById(R.id.edt_date);
         spCity = findViewById(R.id.sp_city);
-        edtUsername = findViewById(R.id.edt_username);
         edtCaption = findViewById(R.id.edt_caption);
         edtBio = findViewById(R.id.edt_bio);
         btnPost = findViewById(R.id.btn_post);

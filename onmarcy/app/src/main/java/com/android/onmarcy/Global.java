@@ -109,7 +109,7 @@ public class Global {
 
             // 6. set httpPost Entity
             httpPost.setEntity(stringEntity);
-            Log.wtf("PARAMETER", new Gson().toJson(_jsonObject));
+//            Log.wtf("PARAMETER", new Gson().toJson(_jsonObject));
 
             // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json");

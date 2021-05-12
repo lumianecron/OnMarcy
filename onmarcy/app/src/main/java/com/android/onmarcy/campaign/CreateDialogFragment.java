@@ -69,7 +69,7 @@ import model.SocialMedia;
 
 public class CreateDialogFragment extends DialogFragment {
     public static final String TAG = "create_dialog";
-    private TextInputEditText edtTitle, edtNotes, edtMax, edtMin, edtDuration, edtPrice, edtTime, edtDate, edtUsername, edtCaption, edtBio;
+    private TextInputEditText edtTitle, edtNotes, edtMax, edtMin, edtDuration, edtPrice, edtTime, edtDate, edtCaption, edtBio;
     private ImageButton btnPost, btnStory;
     private Button btnPreviewPost, btnPreviewStory;
     private TextInputLayout textInputLayoutCategory;
@@ -240,7 +240,6 @@ public class CreateDialogFragment extends DialogFragment {
                     String[] date = edtDate.getText().toString().split("/");
                     String formattedDate = date[2] + "-" + date[1] + "-" + date[0];
                     String time = edtTime.getText().toString();
-                    String username = edtUsername.getText().toString();
                     String caption = edtCaption.getText().toString();
                     String bio = edtBio.getText().toString();
 
@@ -264,7 +263,7 @@ public class CreateDialogFragment extends DialogFragment {
                         e.printStackTrace();
                     }
 
-                    Campaign.insert(activity, username_ig, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, false, new Campaign.Callback() {
+                    Campaign.insert(activity, username_ig, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, caption, getArrayOfPath(base64StringPost), getArrayOfPath(base64StringStory), bio, false, new Campaign.Callback() {
                         @Override
                         public void success() {
                             Toast.makeText(activity, getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
@@ -373,6 +372,15 @@ public class CreateDialogFragment extends DialogFragment {
         }
     }
 
+    private String[] getArrayOfPath(ArrayList<String> base64String){
+        String[] arr = new String[base64String.size()];
+        for (int i = 0; i < base64String.size(); i++) {
+            arr[i] = base64String.get(i);
+        }
+
+        return arr;
+    }
+
     private void convertToBase64() throws IOException {
         for (int i = 0; i < picturePathListPost.size(); i++) {
             if (picturePathListPost.get(i).equals("")) {
@@ -380,6 +388,7 @@ public class CreateDialogFragment extends DialogFragment {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListPost.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
+                thumbnail = getResizedBitmap(thumbnail, 400);
                 base64StringPost.add(BitMapToString(thumbnail));
             }
         }
@@ -390,6 +399,7 @@ public class CreateDialogFragment extends DialogFragment {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListStory.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
+                thumbnail = getResizedBitmap(thumbnail, 400);
                 base64StringStory.add(BitMapToString(thumbnail));
             }
         }
@@ -520,6 +530,21 @@ public class CreateDialogFragment extends DialogFragment {
         return base64String;
     }
 
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -591,7 +616,6 @@ public class CreateDialogFragment extends DialogFragment {
         autoCompleteTextView = view.findViewById(R.id.autoComplete);
         edtDate = view.findViewById(R.id.edt_date);
         spCity = view.findViewById(R.id.sp_city);
-        edtUsername = view.findViewById(R.id.edt_username);
         edtCaption = view.findViewById(R.id.edt_caption);
         edtBio = view.findViewById(R.id.edt_bio);
         btnPost = view.findViewById(R.id.btn_post);

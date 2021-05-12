@@ -80,7 +80,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
 
             @Override
             public void error() {
-
+                tvNotFound.setVisibility(View.VISIBLE);
             }
         });
     }
