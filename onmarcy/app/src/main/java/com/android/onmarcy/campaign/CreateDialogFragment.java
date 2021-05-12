@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.onmarcy.HomeActivity;
 import com.android.onmarcy.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -61,6 +63,10 @@ public class CreateDialogFragment extends DialogFragment {
     private ArrayAdapter<City> adapter;
     private int cityCode = 0;
     private String username_ig;
+
+    public CreateDialogFragment() {
+
+    }
 
     public CreateDialogFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;

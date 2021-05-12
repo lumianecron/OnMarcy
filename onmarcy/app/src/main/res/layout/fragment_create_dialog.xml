@@ -41,10 +41,139 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/upload_content"
+                    android:textColor="@color/red1"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/caption"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_caption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_post"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_baseline_add_to_photos_24"
+                        android:background="@drawable/custom_border_rectangle"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/post"
+                            android:textSize="18sp"
+                            android:textColor="@color/red1"
+                            android:layout_marginLeft="10dp"
+                            android:layout_gravity="center_vertical"/>
+
+                        <Button
+                            android:id="@+id/btn_preview_post"
+                            android:layout_width="85dp"
+                            android:layout_height="40dp"
+                            android:text="@string/preview"
+                            android:textSize="10sp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_story"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_baseline_add_to_photos_24"
+                        android:background="@drawable/custom_border_rectangle"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/story"
+                            android:textSize="18sp"
+                            android:textColor="@color/red1"
+                            android:layout_marginLeft="10dp"/>
+
+                        <Button
+                            android:id="@+id/btn_preview_story"
+                            android:layout_width="85dp"
+                            android:layout_height="40dp"
+                            android:text="@string/preview"
+                            android:textSize="10sp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/link_in_bio"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_marginVertical="5dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/campaign_description"
                     android:textColor="@color/red1"
                     android:textSize="18sp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -145,7 +274,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TARGET MARKET"
+                    android:text="@string/TARGET_MARKET"
                     android:textColor="@color/red1"
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp"

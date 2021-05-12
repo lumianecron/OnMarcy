@@ -68,6 +68,7 @@
     <string name="update_instagram">Update Instagram</string>
     <string name="pending_campaign">Pending Campaign</string>
     <string name="please_choose_category">Please choose category</string>
+    <string name="msg_choose_service">Please choose at least 1 service type</string>
 
     <!--    Create Campaign-->
     <string name="create_campaign">Create Campaign</string>
@@ -155,16 +156,22 @@
     <string name="details">Details</string>
     <string name="target_market">Target Market</string>
     <string name="update_campaign">Update Campaign</string>
+    <string name="TARGET_MARKET">TARGET MARKET</string>
 
     <string name="payment">Payment</string>
+
+    <!--    Photo-->
     <string name="take_a_photo">Take a Photo</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="remove_photo">Remove photo</string>
     <string name="cancel">Cancel</string>
-    <string name="msg_choose_service">Please choose at least 1 service type</string>
     <string name="insert_picture">Insert Picture</string>
     <string name="msg_save_changes">Save changes?</string>
     <string name="save">Save</string>
     <string name="discard">Discard</string>
+    <string name="upload_content">UPLOAD CONTENT</string>
+    <string name="caption">Caption</string>
+    <string name="link_in_bio">Link In Bio</string>
+    <string name="preview">Preview</string>
 
 </resources>

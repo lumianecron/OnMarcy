@@ -198,7 +198,6 @@ public class ProfileFragment extends Fragment {
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getActivity(), "Verification code : " + edtVerification.getText().toString(), Toast.LENGTH_SHORT).show();
                 SocialMedia.verify(getActivity(), edtVerification.getText().toString(), true, new SocialMedia.Callback() {
                     @Override
                     public void success() {

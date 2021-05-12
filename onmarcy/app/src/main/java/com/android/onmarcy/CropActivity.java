@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,10 @@ import com.steelkiwi.cropiwa.AspectRatio;
 import com.steelkiwi.cropiwa.CropIwaView;
 import com.steelkiwi.cropiwa.config.CropIwaSaveConfig;
 import com.steelkiwi.cropiwa.config.InitialPosition;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CropActivity extends AppCompatActivity {
     public static final String TAG = "img_uri";
@@ -89,7 +94,7 @@ public class CropActivity extends AppCompatActivity {
     }
 
     private void save(){
-        cropView.crop(new CropIwaSaveConfig.Builder(savedImageURI)
+        cropView.crop(new CropIwaSaveConfig.Builder(destinationUri())
                 .setCompressFormat(Bitmap.CompressFormat.PNG)
                 .setQuality(100)
                 .build());
@@ -99,5 +104,17 @@ public class CropActivity extends AppCompatActivity {
             intent.putExtra(TAG, bitmapUri.toString());
             startActivity(intent);
         });
+    }
+
+    private Uri destinationUri(){
+        String folderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/OnMarcy/";
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            File wallpaperDirectory = new File(folderPath);
+            wallpaperDirectory.mkdirs();
+        }
+        File newFile = new File(folderPath, new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg");
+        Uri relativePath = Uri.fromFile(newFile);
+        return relativePath;
     }
 }

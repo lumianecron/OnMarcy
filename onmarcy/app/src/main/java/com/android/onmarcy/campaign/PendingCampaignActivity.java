@@ -46,40 +46,42 @@ public class PendingCampaignActivity extends AppCompatActivity {
         });
 
         getPendingCampaigns();
-
-        if(campaigns.size() < 1){
-            tvNotFound.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void getPendingCampaigns(){
+    private void getPendingCampaigns() {
         Campaign.selectPending(this, new Campaign.CallbackSelect() {
-                    @Override
-                    public void success(JSONArray data) {
-                        campaigns.clear();
-                        for (int i = 0; i < data.length(); i++) {
-                            try {
-                                campaigns.add(new Campaign(data.getJSONObject(i)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        pendingCampaignAdapter.notifyDataSetChanged();
+            @Override
+            public void success(JSONArray data) {
+                campaigns.clear();
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        campaigns.add(new Campaign(data.getJSONObject(i)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }
+                pendingCampaignAdapter.notifyDataSetChanged();
 
-                    @Override
-                    public void error() {
+                if (campaigns.size() < 1) {
+                    tvNotFound.setVisibility(View.VISIBLE);
+                } else {
+                    tvNotFound.setVisibility(View.GONE);
+                }
+            }
 
-                    }
+            @Override
+            public void error() {
+
+            }
         });
     }
 }

@@ -19,12 +19,25 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.onmarcy.R;
 
+import java.util.ArrayList;
+
 public class WebDialogFragment extends DialogFragment {
     public static final String TAG = "create_dialog";
+    public static final String STATE_LINK = "link";
     private FragmentManager fragmentManager;
     private WebView webView;
     private Toolbar toolbar;
     private String link;
+
+    public WebDialogFragment() {
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_LINK, link);
+    }
 
     public WebDialogFragment(FragmentManager fragmentManager, String link) {
         this.fragmentManager = fragmentManager;
@@ -41,6 +54,9 @@ public class WebDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
+        if (savedInstanceState != null) {
+            link = savedInstanceState.getString(STATE_LINK);
+        }
     }
 
     @Override
