@@ -478,8 +478,8 @@ public class Campaign implements Parcelable {
     }
 
     // INSERT CAMPAIGN
-    public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
-        new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, useLoading, callback).execute("v1/campaign/insert");
+    public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
+        new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, caption, posts, stories, bio, useLoading, callback).execute("v1/campaign/insert");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
@@ -498,8 +498,12 @@ public class Campaign implements Parcelable {
         final String time;
         final int cityCode;
         final String username;
+        final String caption;
+        final String[] posts;
+        final String[] stories;
+        final String bio;
 
-        private insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -515,6 +519,10 @@ public class Campaign implements Parcelable {
             this.time = time;
             this.cityCode = cityCode;
             this.username = username;
+            this.caption = caption;
+            this.posts = posts;
+            this.stories = stories;
+            this.bio = bio;
         }
 
         @Override
@@ -536,6 +544,21 @@ public class Campaign implements Parcelable {
                 jsonObject.put("time", time);
                 jsonObject.put("duration", duration);
                 jsonObject.put("price", price);
+                jsonObject.put("caption", caption);
+                jsonObject.put("post1", posts[0]);
+                jsonObject.put("post2", posts[1]);
+                jsonObject.put("post3", posts[2]);
+                jsonObject.put("post4", posts[3]);
+                jsonObject.put("post5", posts[4]);
+                jsonObject.put("post6", posts[5]);
+                jsonObject.put("post7", posts[6]);
+                jsonObject.put("post8", posts[7]);
+                jsonObject.put("post9", posts[8]);
+                jsonObject.put("post10", posts[9]);
+                jsonObject.put("story1", stories[0]);
+                jsonObject.put("story2", stories[1]);
+                jsonObject.put("story3", stories[2]);
+                jsonObject.put("bio", bio);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
