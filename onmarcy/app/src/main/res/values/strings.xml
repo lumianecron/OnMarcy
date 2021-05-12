@@ -173,5 +173,6 @@
     <string name="caption">Caption</string>
     <string name="link_in_bio">Link In Bio</string>
     <string name="preview">Preview</string>
+    <string name="msg_limit">The limit is %1$d photos</string>
 
 </resources>
