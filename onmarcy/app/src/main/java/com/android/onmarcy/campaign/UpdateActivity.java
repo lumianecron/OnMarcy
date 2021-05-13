@@ -2,6 +2,7 @@ package com.android.onmarcy.campaign;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -17,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -35,6 +37,7 @@ import android.widget.RadioButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.onmarcy.HomeActivity;
 import com.android.onmarcy.MainActivity;
 import com.android.onmarcy.PreviewActivity;
 import com.android.onmarcy.R;
@@ -226,6 +229,7 @@ public class UpdateActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -277,11 +281,16 @@ public class UpdateActivity extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
                 }
 
+                int max = (!edtMax.getText().toString().equals("")) ? Integer.parseInt(edtMax.getText().toString()) : 0;
+                int min = (!edtMin.getText().toString().equals("")) ? Integer.parseInt(edtMin.getText().toString()) : 0;
+                if(max < min){
+                    edtMax.setError(getString(R.string.msg_age));
+                    isValid = false;
+                }
+
                 if (isValid) {
                     String title = edtTitle.getText().toString();
                     String notes = edtNotes.getText().toString();
-                    int min = Integer.parseInt(edtMin.getText().toString());
-                    int max = Integer.parseInt(edtMax.getText().toString());
                     int gender = 0;
                     if (rbMale.isChecked()) gender = 1;
                     if (rbFemale.isChecked()) gender = 2;
@@ -337,7 +346,7 @@ public class UpdateActivity extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                    Intent intent = new Intent(UpdateActivity.this, HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -363,7 +372,7 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListPost.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 400);
+                thumbnail = getResizedBitmap(thumbnail, 150);
                 base64StringPost.add(BitMapToString(thumbnail));
             }
         }
@@ -374,7 +383,7 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListStory.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 400);
+                thumbnail = getResizedBitmap(thumbnail, 150);
                 base64StringStory.add(BitMapToString(thumbnail));
             }
         }

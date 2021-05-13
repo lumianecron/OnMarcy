@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PreviewActivity"
-    android:padding="20dp">
+    tools:context=".PreviewActivity">
 
     <ImageSwitcher
         android:id="@+id/image_switcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
+
 </LinearLayout>

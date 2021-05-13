@@ -96,6 +96,7 @@
     <string name="update">Update</string>
     <string name="content">Content</string>
     <string name="no_result_found">No Result Found</string>
+    <string name="date">%1$s-%2$s-%3$s</string>
 
     <!--    Menu Item-->
     <string name="home">Home</string>
@@ -174,5 +175,14 @@
     <string name="link_in_bio">Link In Bio</string>
     <string name="preview">Preview</string>
     <string name="msg_limit">The limit is %1$d photos</string>
+    <string name="your_task">Your Task</string>
+    <string name="logout">Logout</string>
+    <string name="msg_age">Maximum age must be higher</string>
+    <string name="upload_screenshot">Upload Screenshot</string>
+    <string name="result">Result</string>
+    <string name="total_save">Total save</string>
+    <string name="total_reach">Total reach</string>
+    <string name="total_engagement">Total engagement</string>
+    <string name="total_impression">Total impression</string>
 
 </resources>

@@ -101,8 +101,13 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
             holder.linearDelete.setVisibility(View.GONE);
         }
 
+        if(campaign.getNotes().equals("")){
+            holder.tvDescription.setVisibility(View.GONE);
+        }
         holder.tvDescription.setText(campaign.getNotes());
-        holder.tvDate.setText(campaign.getDate());
+
+        String[] date = campaign.getDate().split("-");
+        holder.tvDate.setText(holder.itemView.getContext().getString(R.string.date, date[2], date[1], date[0]));
 
         holder.itemView.setOnClickListener(view -> {
             onItemCallback.onItemClicked(campaign);

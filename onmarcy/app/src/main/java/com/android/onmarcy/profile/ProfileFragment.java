@@ -48,6 +48,7 @@ import com.android.onmarcy.HomeActivity;
 import com.android.onmarcy.MainActivity;
 import com.android.onmarcy.campaign.PendingCampaignActivity;
 import com.android.onmarcy.R;
+import com.android.onmarcy.campaign.TaskActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
@@ -143,7 +144,7 @@ public class ProfileFragment extends Fragment {
         bindView();
         bindData();
 
-        if(activity.getIntent().hasExtra(CropActivity.TAG)){
+        if (activity.getIntent().hasExtra(CropActivity.TAG)) {
             imageUri = Uri.parse(activity.getIntent().getStringExtra(CropActivity.TAG));
             Bitmap thumbnail = null;
             try {
@@ -161,16 +162,16 @@ public class ProfileFragment extends Fragment {
                 boolean isValid = true;
                 code = getCode(spCity.getSelectedItem().toString());
 
-                if(TextUtils.isEmpty(edtInstagram.getText().toString())){
+                if (TextUtils.isEmpty(edtInstagram.getText().toString())) {
                     edtInstagram.setError(getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if(selectedCategory.equals("")){
+                if (selectedCategory.equals("")) {
                     autoCompleteTextView.setError(getString(R.string.please_choose_category));
                     isValid = false;
                 }
 
-                if(isValid){
+                if (isValid) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setCancelable(false);
                     builder.setTitle(R.string.confirmation);
@@ -298,13 +299,13 @@ public class ProfileFragment extends Fragment {
             code = user.getCityCode();
             cityName = user.getCityName();
 
-            if(user.getPhotoUrl().equals("")){
+            if (user.getPhotoUrl().equals("")) {
                 setImage("");
-            }else{
+            } else {
                 setImage(user.getPhotoUrl());
             }
 
-            if(photoURL.equals("")){
+            if (photoURL.equals("")) {
                 photoURL = user.getPhotoUrl();
             }
         } catch (JSONException e) {
@@ -354,13 +355,13 @@ public class ProfileFragment extends Fragment {
 
                         String txtService = "";
                         ArrayList<String> services = new ArrayList<>();
-                        if(socialMedia.getServiceBio() == 1){
+                        if (socialMedia.getServiceBio() == 1) {
                             services.add(getString(R.string.bio));
                         }
-                        if(socialMedia.getServicePost() == 1){
+                        if (socialMedia.getServicePost() == 1) {
                             services.add(getString(R.string.post));
                         }
-                        if(socialMedia.getServiceStory() == 1){
+                        if (socialMedia.getServiceStory() == 1) {
                             services.add(getString(R.string.story));
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -414,16 +415,22 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.profile_menu, menu);
-        if(user.getUserType() == 2){
-            MenuItem menuItem = menu.findItem(R.id.item_pending_campaign);
-            menuItem.setVisible(false);
+        MenuItem menuItem;
+
+        if (user.getUserType() == 2) {
+            menuItem = menu.findItem(R.id.item_pending_campaign);
+        } else {
+            menuItem = menu.findItem(R.id.item_your_task);
         }
+
+        menuItem.setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         boolean isValid = true;
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.item_save:
                 if (TextUtils.isEmpty(edtName.getText().toString())) {
@@ -502,14 +509,18 @@ public class ProfileFragment extends Fragment {
                 dialog.show();
                 break;
             case R.id.item_pending_campaign:
-                Intent intent = new Intent(activity, PendingCampaignActivity.class);
+                intent = new Intent(activity, PendingCampaignActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.item_your_task:
+                intent = new Intent(activity, TaskActivity.class);
                 startActivity(intent);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void registerInstagramAccount(){
+    private void registerInstagramAccount() {
         SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 0, 0, 0, 0, 0, 0, 0, 0, 0, "0", 1, 0, 0, "", true, new SocialMedia.Callback() {
             @Override
             public void success() {
@@ -537,7 +548,7 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void update(){
+    private void update() {
         Toast.makeText(activity, getString(R.string.update_successful), Toast.LENGTH_SHORT).show();
         user.setName(edtName.getText().toString());
         user.setPhone(edtPhone.getText().toString());
@@ -614,13 +625,13 @@ public class ProfileFragment extends Fragment {
         return cities.get(index).getCode();
     }
 
-    private void setImage(String img){
-        if(img.equals("")){
+    private void setImage(String img) {
+        if (img.equals("")) {
             Glide.with(view.getContext())
                     .load(R.drawable.person)
                     .apply(new RequestOptions().override(120, 120))
                     .into(imageView);
-        }else{
+        } else {
             Glide.with(view.getContext())
                     .load(img)
                     .apply(new RequestOptions().override(120, 120))
@@ -629,7 +640,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void selectImage() {
-        final CharSequence[] options = { getString(R.string.take_a_photo), getString(R.string.choose_from_gallery), getString(R.string.remove_photo), getString(R.string.cancel) };
+        final CharSequence[] options = {getString(R.string.take_a_photo), getString(R.string.choose_from_gallery), getString(R.string.remove_photo), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(R.string.insert_picture);
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -637,12 +648,9 @@ public class ProfileFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals(getString(R.string.take_a_photo))) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                        {
+                        if (activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-                        }
-                        else
-                        {
+                        } else {
                             ContentValues values = new ContentValues();
                             values.put(MediaStore.Images.Media.TITLE, "New Picture");
                             values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
@@ -654,13 +662,12 @@ public class ProfileFragment extends Fragment {
                             startActivityForResult(cameraIntent, 1);
                         }
                     }
-                }else if (options[item].equals(getString(R.string.choose_from_gallery))) {
+                } else if (options[item].equals(getString(R.string.choose_from_gallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
-                }else if (options[item].equals(getString(R.string.remove_photo))) {
+                } else if (options[item].equals(getString(R.string.remove_photo))) {
                     uploadPicture("");
-                }
-                else if (options[item].equals(getString(R.string.cancel))) {
+                } else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -672,7 +679,7 @@ public class ProfileFragment extends Fragment {
         permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
-        }else{
+        } else {
             selectImage();
         }
     }
@@ -710,9 +717,9 @@ public class ProfileFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else if (requestCode == 2) {
+            } else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
+                String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = activity.getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
@@ -726,13 +733,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void cropImage(Uri imageUri){
+    private void cropImage(Uri imageUri) {
         Intent intent = new Intent(activity, CropActivity.class);
         intent.putExtra(CropActivity.TAG, imageUri.toString());
         startActivity(intent);
     }
 
-    private void uploadPicture(String img){
+    private void uploadPicture(String img) {
         User.uploadPicture(activity, img, false, new User.CallbackSelect() {
             @Override
             public void success(JSONObject data) {
@@ -761,7 +768,7 @@ public class ProfileFragment extends Fragment {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);

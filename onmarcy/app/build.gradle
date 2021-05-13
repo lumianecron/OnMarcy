@@ -46,6 +46,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -63,4 +64,5 @@ dependencies {
     api 'com.google.android.material:material:1.1.0-alpha06'
     implementation "androidx.cardview:cardview:1.0.0"
     compile 'com.steelkiwi:cropiwa:1.0.3'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }

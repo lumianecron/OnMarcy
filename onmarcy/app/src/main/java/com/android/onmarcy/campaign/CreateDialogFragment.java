@@ -226,11 +226,16 @@ public class CreateDialogFragment extends DialogFragment {
                     Toast.makeText(activity, getString(R.string.please_choose_city), Toast.LENGTH_SHORT).show();
                 }
 
+                int max = (!edtMax.getText().toString().equals("")) ? Integer.parseInt(edtMax.getText().toString()) : 0;
+                int min = (!edtMin.getText().toString().equals("")) ? Integer.parseInt(edtMin.getText().toString()) : 0;
+                if(max < min){
+                    edtMax.setError(getString(R.string.msg_age));
+                    isValid = false;
+                }
+
                 if (isValid) {
                     String title = edtTitle.getText().toString();
                     String notes = edtNotes.getText().toString();
-                    int min = Integer.parseInt(edtMin.getText().toString());
-                    int max = Integer.parseInt(edtMax.getText().toString());
                     int gender = 0;
                     if (rbMale.isChecked()) gender = 1;
                     if (rbFemale.isChecked()) gender = 2;

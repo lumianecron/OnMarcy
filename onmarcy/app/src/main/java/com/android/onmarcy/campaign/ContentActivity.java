@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.android.onmarcy.Global;
 import com.android.onmarcy.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -109,21 +110,38 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void bindData() {
-        tvTitle.setText(campaign.getTitle());
-        tvDescription.setText(campaign.getNotes());
-        NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
-        tvPrice.setText(getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
-        tvBrand.setText(campaign.getBrandName());
-        tvDate.setText(campaign.getDate());
-        tvTime.setText(campaign.getTime());
-        tvDuration.setText(campaign.getDuration() + "");
-        tvCategory.setText(campaign.getCategoryName());
-        tvAge.setText(campaign.getAgeMin() + " - " + campaign.getAgeMax());
-        int gender = campaign.getGender();
-        if(gender == 1) tvGender.setText(getString(R.string.male));
-        if(gender == 2) tvGender.setText(getString(R.string.female));
-        if(gender == 3) tvGender.setText(getString(R.string.all));
-        tvLocation.setText(campaign.getCityName());
+        Campaign.detail(this, campaign.getCode(), campaign.getCodeString(), new Campaign.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                try {
+                    Campaign campaign = new Campaign(data.getJSONObject(0));
+                    tvTitle.setText(campaign.getTitle());
+                    tvDescription.setText(campaign.getNotes());
+                    tvInstagram.setText(campaign.getBrandCode());
+                    NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
+                    tvPrice.setText(getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
+                    tvBrand.setText(campaign.getBrandName());
+                    String[] date = campaign.getDate().split("-");
+                    tvDate.setText(getString(R.string.date, date[2], date[1], date[0]));
+                    tvTime.setText(campaign.getTime());
+                    tvDuration.setText(campaign.getDuration() + "");
+                    tvCategory.setText(campaign.getCategoryName());
+                    tvAge.setText(campaign.getAgeMin() + " - " + campaign.getAgeMax());
+                    int gender = campaign.getGender();
+                    if(gender == 1) tvGender.setText(getString(R.string.male));
+                    if(gender == 2) tvGender.setText(getString(R.string.female));
+                    if(gender == 3) tvGender.setText(getString(R.string.all));
+                    tvLocation.setText(campaign.getCityName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     @Override
