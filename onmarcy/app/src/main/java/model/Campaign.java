@@ -287,94 +287,94 @@ public class Campaign implements Parcelable {
     }
 
     public static void select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
-            , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, int approach, CallbackSelect callback) {
-        new select(activity, codeString, categoryCode, categoryName, brandCode, brandName, cityCode, cityName, title, notes, ageMin, ageMax, gender, duration, price
-                , status, date, time,start, limit, approach, callback).execute("v1/campaign/select");
-    }
-
-    private static class select extends AsyncTask<String, Void, String> {
-        final WeakReference<Activity> activity;
-        final CallbackSelect callback;
-        final String codeString;
-        final int categoryCode;
-        final String categoryName;
-        final String brandCode;
-        final String brandName;
-        final int cityCode;
-        final String cityName;
-        final String title;
-        final String notes;
-        final int ageMin;
-        final int ageMax;
-        final int gender;
-        final int duration;
-        final int price;
-        final int status;
-        final String date;
-        final String time;
-        final int approach;
-        final int start;
-        final int limit;
-
-        public select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
                 , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, int approach, CallbackSelect callback) {
-            this.activity = new WeakReference<>(activity);
-            this.callback = callback;
-            this.codeString = codeString;
-            this.categoryCode = categoryCode;
-            this.categoryName = categoryName;
-            this.brandCode = brandCode;
-            this.brandName = brandName;
-            this.cityCode = cityCode;
-            this.cityName = cityName;
-            this.title = title;
-            this.notes = notes;
-            this.ageMin = ageMin;
-            this.ageMax = ageMax;
-            this.gender = gender;
-            this.duration = duration;
-            this.price = price;
-            this.status = status;
-            this.date = date;
-            this.time = time;
-            this.start = start;
-            this.limit = limit;
-            this.approach = approach;
+            new Campaign.select(activity, codeString, categoryCode, categoryName, brandCode, brandName, cityCode, cityName, title, notes, ageMin, ageMax, gender, duration, price
+                    , status, date, time,start, limit, approach, callback).execute("v1/campaign/select");
         }
 
-        @Override
-        protected String doInBackground(String... urls) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
-                jsonObject.put("hash", user.getHash());
-                jsonObject.put("code_string", codeString);
-                jsonObject.put("category_code", categoryCode);
-                jsonObject.put("category_name", categoryName);
-                jsonObject.put("brand_code", brandCode);
-                jsonObject.put("brand_name", brandName);
-                jsonObject.put("city_code", cityCode);
-                jsonObject.put("city_name", cityName);
-                jsonObject.put("title", title);
-                jsonObject.put("notes", notes);
-                jsonObject.put("market_age_min", ageMin);
-                jsonObject.put("market_age_max", ageMax);
-                jsonObject.put("market_gender", gender);
-                jsonObject.put("duration", duration);
-                jsonObject.put("price", price);
-                jsonObject.put("status", status);
-                jsonObject.put("date", date);
-                jsonObject.put("time_posting", time);
-                jsonObject.put("start", start);
-                jsonObject.put("limit", limit);
-                jsonObject.put("approach", approach);
+        private static class select extends AsyncTask<String, Void, String> {
+            final WeakReference<Activity> activity;
+            final CallbackSelect callback;
+            final String codeString;
+            final int categoryCode;
+            final String categoryName;
+            final String brandCode;
+            final String brandName;
+            final int cityCode;
+            final String cityName;
+            final String title;
+            final String notes;
+            final int ageMin;
+            final int ageMax;
+            final int gender;
+            final int duration;
+            final int price;
+            final int status;
+            final String date;
+            final String time;
+            final int approach;
+            final int start;
+            final int limit;
+
+            public select(Activity activity, String codeString, int categoryCode, String categoryName, String brandCode, String brandName, int cityCode, String cityName, String title
+                    , String notes, int ageMin, int ageMax, int gender, int duration, int price, int status, String date, String time, int start, int limit, int approach, CallbackSelect callback) {
+                this.activity = new WeakReference<>(activity);
+                this.callback = callback;
+                this.codeString = codeString;
+                this.categoryCode = categoryCode;
+                this.categoryName = categoryName;
+                this.brandCode = brandCode;
+                this.brandName = brandName;
+                this.cityCode = cityCode;
+                this.cityName = cityName;
+                this.title = title;
+                this.notes = notes;
+                this.ageMin = ageMin;
+                this.ageMax = ageMax;
+                this.gender = gender;
+                this.duration = duration;
+                this.price = price;
+                this.status = status;
+                this.date = date;
+                this.time = time;
+                this.start = start;
+                this.limit = limit;
+                this.approach = approach;
             }
-            catch (JSONException e) { e.printStackTrace(); }
-            return Global.executePost(urls[0], jsonObject, 3000);
-        }
 
-        @Override
-        protected void onPostExecute(String result) {
+            @Override
+            protected String doInBackground(String... urls) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                    jsonObject.put("hash", user.getHash());
+                    jsonObject.put("code_string", codeString);
+                    jsonObject.put("category_code", categoryCode);
+                    jsonObject.put("category_name", categoryName);
+                    jsonObject.put("brand_code", brandCode);
+                    jsonObject.put("brand_name", brandName);
+                    jsonObject.put("city_code", cityCode);
+                    jsonObject.put("city_name", cityName);
+                    jsonObject.put("title", title);
+                    jsonObject.put("notes", notes);
+                    jsonObject.put("market_age_min", ageMin);
+                    jsonObject.put("market_age_max", ageMax);
+                    jsonObject.put("market_gender", gender);
+                    jsonObject.put("duration", duration);
+                    jsonObject.put("price", price);
+                    jsonObject.put("status", status);
+                    jsonObject.put("date", date);
+                    jsonObject.put("time_posting", time);
+                    jsonObject.put("start", start);
+                    jsonObject.put("limit", limit);
+                    jsonObject.put("approach", approach);
+                }
+                catch (JSONException e) { e.printStackTrace(); }
+                return Global.executePost(urls[0], jsonObject, 3000);
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
             super.onPostExecute(result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
@@ -592,8 +592,8 @@ public class Campaign implements Parcelable {
     }
 
     // UPDATE CAMPAIGN
-    public static void update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, Boolean useLoading, Callback callback) {
-        new update(activity, codeString, username, categoryCode, cityCode, title, notes, ageMin, ageMax, gender, date, time, duration, useLoading, callback).execute("v1/campaign/update");
+    public static void update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, String caption, String bio, Boolean useLoading, Callback callback) {
+        new update(activity, codeString, username, categoryCode, cityCode, title, notes, ageMin, ageMax, gender, date, time, duration, caption, bio, useLoading, callback).execute("v1/campaign/update");
     }
 
     private static class update extends AsyncTask<String, Void, String> {
@@ -612,8 +612,10 @@ public class Campaign implements Parcelable {
         final String date;
         final String time;
         final int duration;
+        final String caption;
+        final String bio;
 
-        private update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, Boolean useLoading, Callback callback) {
+        private update(Activity activity, String codeString, String username, int categoryCode, int cityCode, String title, String notes, int ageMin, int ageMax, int gender, String date, String time, int duration, String caption, String bio, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -629,6 +631,8 @@ public class Campaign implements Parcelable {
             this.date = date;
             this.time = time;
             this.duration = duration;
+            this.caption = caption;
+            this.bio = bio;
         }
 
         @Override
@@ -650,6 +654,8 @@ public class Campaign implements Parcelable {
                 jsonObject.put("date", date);
                 jsonObject.put("time", time);
                 jsonObject.put("duration", duration);
+                jsonObject.put("caption", caption);
+                jsonObject.put("bio", bio);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -733,6 +739,69 @@ public class Campaign implements Parcelable {
                 jsonObject.put("story2", stories[1]);
                 jsonObject.put("story3", stories[2]);
                 jsonObject.put("bio", bio);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success();
+                } else {
+                    callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    // UPLOAD CONTENT PICTURE
+    public static void uploadContentPicture(Activity activity, String codeString, String content, String image, Boolean useLoading, Callback callback) {
+        new uploadContentPicture(activity, codeString, content, image, useLoading, callback).execute("v1/campaign/upload_content_picture");
+    }
+
+    private static class uploadContentPicture extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final Boolean useLoading;
+        final String codeString;
+        final String content;
+        final String image;
+
+        private uploadContentPicture(Activity activity, String codeString, String content, String image, Boolean useLoading, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.codeString = codeString;
+            this.content = content;
+            this.image = image;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("code_string", codeString);
+                jsonObject.put("content", content);
+                jsonObject.put("image", image);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -899,6 +968,110 @@ public class Campaign implements Parcelable {
         protected void onPreExecute() {
             super.onPreExecute();
             if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    // CHOOSE MARKETER
+    public static void chooseMarketer(Activity activity, int code, String username, Boolean useLoading, Callback callback) {
+        new chooseMarketer(activity, code, username, useLoading, callback).execute("v1/campaign/choose_marketer");
+    }
+
+    private static class chooseMarketer extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final Boolean useLoading;
+        final int code;
+        final String username;
+
+        private chooseMarketer(Activity activity, int code, String username, Boolean useLoading, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.code = code;
+            this.username = username;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("campaign", code);
+                jsonObject.put("username", username);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success();
+                } else {
+                    callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
+    // SELECT USER APPROACH
+    public static void selectUserApproach(Activity activity, int code, CallbackSelect callback) {
+        new selectUserApproach(activity, code, callback).execute("v1/campaign/select_user_approach");
+    }
+
+    private static class selectUserApproach extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final int code;
+
+        public selectUserApproach(Activity activity, int code, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.code = code;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("code", code);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("campaign"));
+                } else {
+                    callback.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
