@@ -3,7 +3,9 @@ package com.android.onmarcy.campaign;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -145,10 +147,22 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.view_marketer_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.item_view_marketer:
+                Intent intent = new Intent(ContentActivity.this, ViewMarketerActivity.class);
+                intent.putExtra(ViewMarketerActivity.EXTRA_CODE, campaign.getCode());
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

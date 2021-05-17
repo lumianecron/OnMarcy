@@ -478,13 +478,13 @@ public class Campaign implements Parcelable {
     }
 
     // INSERT CAMPAIGN
-    public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
-        new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, caption, posts, stories, bio, useLoading, callback).execute("v1/campaign/insert");
+    public static void insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String bio, Boolean useLoading, CallbackSelect callback) {
+        new insert(activity, username, category, title, notes, ageMin, ageMax, gender, duration, price, date, time, cityCode, caption, bio, useLoading, callback).execute("v1/campaign/insert");
     }
 
     private static class insert extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
-        final Callback callback;
+        final CallbackSelect callback;
         final Boolean useLoading;
         final int category;
         final String title;
@@ -499,11 +499,9 @@ public class Campaign implements Parcelable {
         final int cityCode;
         final String username;
         final String caption;
-        final String[] posts;
-        final String[] stories;
         final String bio;
 
-        private insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
+        private insert(Activity activity, String username, int category, String title, String notes, int ageMin, int ageMax, int gender, int duration, int price, String date, String time, int cityCode, String caption, String bio, Boolean useLoading, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
@@ -520,8 +518,6 @@ public class Campaign implements Parcelable {
             this.cityCode = cityCode;
             this.username = username;
             this.caption = caption;
-            this.posts = posts;
-            this.stories = stories;
             this.bio = bio;
         }
 
@@ -545,19 +541,6 @@ public class Campaign implements Parcelable {
                 jsonObject.put("duration", duration);
                 jsonObject.put("price", price);
                 jsonObject.put("caption", caption);
-                jsonObject.put("post1", posts[0]);
-                jsonObject.put("post2", posts[1]);
-                jsonObject.put("post3", posts[2]);
-                jsonObject.put("post4", posts[3]);
-                jsonObject.put("post5", posts[4]);
-                jsonObject.put("post6", posts[5]);
-                jsonObject.put("post7", posts[6]);
-                jsonObject.put("post8", posts[7]);
-                jsonObject.put("post9", posts[8]);
-                jsonObject.put("post10", posts[9]);
-                jsonObject.put("story1", stories[0]);
-                jsonObject.put("story2", stories[1]);
-                jsonObject.put("story3", stories[2]);
                 jsonObject.put("bio", bio);
             }
             catch (JSONException e) { e.printStackTrace(); }
@@ -570,9 +553,9 @@ public class Campaign implements Parcelable {
             super.onPostExecute(result);
             if(useLoading) Global.hideLoading();
             try {
-                JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success();
+                JSONObject jsonObject = new JSONObject(result);
+                if(jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("campaign"));
                 } else {
                     callback.error();
                 }
@@ -655,89 +638,6 @@ public class Campaign implements Parcelable {
                 jsonObject.put("time", time);
                 jsonObject.put("duration", duration);
                 jsonObject.put("caption", caption);
-                jsonObject.put("bio", bio);
-            }
-            catch (JSONException e) { e.printStackTrace(); }
-
-            return Global.executePost(urls[0], jsonObject, 3000);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if(useLoading) Global.hideLoading();
-            try {
-                JSONObject json = new JSONObject(result);
-                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success();
-                } else {
-                    callback.error();
-                }
-            }
-            catch(Exception e) {
-                Global.showLoading(activity.get(), "", e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
-        }
-    }
-
-    // UPDATE CONTENT CAMPAIGN
-    public static void updateContent(Activity activity, String codeString, String username, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
-        new updateContent(activity, codeString, username, caption, posts, stories, bio, useLoading, callback).execute("v1/campaign/update");
-    }
-
-    private static class updateContent extends AsyncTask<String, Void, String> {
-        final WeakReference<Activity> activity;
-        final Callback callback;
-        final Boolean useLoading;
-        final String codeString;
-        final String username;
-        final String caption;
-        final String[] posts;
-        final String[] stories;
-        final String bio;
-
-        private updateContent(Activity activity, String codeString, String username, String caption, String[] posts, String[] stories, String bio, Boolean useLoading, Callback callback) {
-            this.activity = new WeakReference<>(activity);
-            this.callback = callback;
-            this.useLoading = useLoading;
-            this.codeString = codeString;
-            this.username = username;
-            this.caption = caption;
-            this.posts = posts;
-            this.stories = stories;
-            this.bio = bio;
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
-                jsonObject.put("hash", user.getHash());
-                jsonObject.put("code_string", codeString);
-                jsonObject.put("socialmedia_username", username);
-                jsonObject.put("caption", caption);
-                jsonObject.put("post1", posts[0]);
-                jsonObject.put("post2", posts[1]);
-                jsonObject.put("post3", posts[2]);
-                jsonObject.put("post4", posts[3]);
-                jsonObject.put("post5", posts[4]);
-                jsonObject.put("post6", posts[5]);
-                jsonObject.put("post7", posts[6]);
-                jsonObject.put("post8", posts[7]);
-                jsonObject.put("post9", posts[8]);
-                jsonObject.put("post10", posts[9]);
-                jsonObject.put("story1", stories[0]);
-                jsonObject.put("story2", stories[1]);
-                jsonObject.put("story3", stories[2]);
                 jsonObject.put("bio", bio);
             }
             catch (JSONException e) { e.printStackTrace(); }
@@ -997,7 +897,7 @@ public class Campaign implements Parcelable {
             try {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
-                jsonObject.put("campaign", code);
+                jsonObject.put("campaign_code", code);
                 jsonObject.put("username", username);
             }
             catch (JSONException e) { e.printStackTrace(); }
@@ -1053,7 +953,7 @@ public class Campaign implements Parcelable {
             try {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
-                jsonObject.put("code", code);
+                jsonObject.put("campaign_code", code);
             }
             catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
@@ -1065,7 +965,7 @@ public class Campaign implements Parcelable {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
-                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("campaign"));
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("marketer"));
                 } else {
                     callback.error();
                 }

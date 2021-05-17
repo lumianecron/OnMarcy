@@ -268,9 +268,41 @@ public class CreateDialogFragment extends DialogFragment {
                         e.printStackTrace();
                     }
 
-                    Campaign.insert(activity, username_ig, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, caption, getArrayOfPath(base64StringPost), getArrayOfPath(base64StringStory), bio, false, new Campaign.Callback() {
+                    Campaign.insert(activity, username_ig, categoryCode, title, notes, min, max, gender, duration, price, formattedDate, time, cityCode, caption, bio, false, new Campaign.CallbackSelect() {
                         @Override
-                        public void success() {
+                        public void success(JSONArray data) {
+                            try {
+                                Campaign campaign = new Campaign(data.getJSONObject(0));
+                                for (int i = 0; i < base64StringPost.size(); i++) {
+                                    int ctr = i + 1;
+                                    String content = "post" + ctr;
+                                    Campaign.uploadContentPicture(activity, campaign.getCodeString(), content, base64StringPost.get(i), false, new Campaign.Callback() {
+                                        @Override
+                                        public void success() {
+                                        }
+
+                                        @Override
+                                        public void error() {
+                                        }
+                                    });
+                                }
+
+                                for (int i = 0; i < base64StringStory.size(); i++) {
+                                    int ctr = i + 1;
+                                    String content = "story" + ctr;
+                                    Campaign.uploadContentPicture(activity, campaign.getCodeString(), content, base64StringStory.get(i), false, new Campaign.Callback() {
+                                        @Override
+                                        public void success() {
+                                        }
+
+                                        @Override
+                                        public void error() {
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             Toast.makeText(activity, getResources().getString(R.string.success), Toast.LENGTH_SHORT).show();
                             dismiss();
                             Fragment fragment = HomeFragment.newInstance();
@@ -393,7 +425,7 @@ public class CreateDialogFragment extends DialogFragment {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListPost.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 400);
+                thumbnail = getResizedBitmap(thumbnail, 600);
                 base64StringPost.add(BitMapToString(thumbnail));
             }
         }
@@ -404,7 +436,7 @@ public class CreateDialogFragment extends DialogFragment {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListStory.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 400);
+                thumbnail = getResizedBitmap(thumbnail, 600);
                 base64StringStory.add(BitMapToString(thumbnail));
             }
         }

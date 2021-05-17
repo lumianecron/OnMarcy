@@ -97,6 +97,7 @@
     <string name="content">Content</string>
     <string name="no_result_found">No Result Found</string>
     <string name="date">%1$s-%2$s-%3$s</string>
+    <string name="datetime">%1$s-%2$s-%3$s %4$s:%5$s</string>
 
     <!--    Menu Item-->
     <string name="home">Home</string>
@@ -184,5 +185,7 @@
     <string name="total_reach">Total reach</string>
     <string name="total_engagement">Total engagement</string>
     <string name="total_impression">Total impression</string>
+    <string name="accept">Accept</string>
+    <string name="list_marketer">List Marketer</string>
 
 </resources>

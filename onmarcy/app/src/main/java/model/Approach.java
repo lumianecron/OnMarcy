@@ -21,6 +21,9 @@ public class Approach implements Parcelable {
     @SerializedName("notes")
     private String notes;
 
+    @SerializedName("date")
+    private String date;
+
     public int getCode() { return code; }
 
     public void setCode(int code) { this.code = code; }
@@ -29,9 +32,14 @@ public class Approach implements Parcelable {
 
     public void setNotes(String notes) { this.notes = notes; }
 
+    public String getDate() {return date; }
+
+    public void setDate(String date) {this.date = date; }
+
     protected Approach(Parcel in) {
         code = in.readInt();
         notes = in.readString();
+        date = in.readString();
     }
 
     public static final Creator<Approach> CREATOR = new Creator<Approach>() {
@@ -53,6 +61,7 @@ public class Approach implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(code);
         parcel.writeString(notes);
+        parcel.writeString(date);
     }
 
     public interface CallbackSelect {
@@ -69,6 +78,7 @@ public class Approach implements Parcelable {
         try{
             this.code = jsonObject.has("code") ? jsonObject.getInt("code") : 0;
             this.notes = jsonObject.has("notes") ? jsonObject.getString("notes") : "";
+            this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }

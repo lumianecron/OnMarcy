@@ -322,21 +322,36 @@ public class UpdateActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Campaign.update(this, campaign.getCodeString(), username_ig, categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, false, new Campaign.Callback() {
+                    Campaign.update(this, campaign.getCodeString(), username_ig, categoryCode, cityCode, title, notes, min, max, gender, formattedDate, time, duration, caption, bio, false, new Campaign.Callback() {
                         @Override
                         public void success() {
-                            Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-                        }
+                            for (int i = 0; i < base64StringPost.size(); i++) {
+                                int ctr = i + 1;
+                                String content = "post" + ctr;
+                                Campaign.uploadContentPicture(UpdateActivity.this, campaign.getCodeString(), content, base64StringPost.get(i), false, new Campaign.Callback() {
+                                    @Override
+                                    public void success() {
+                                    }
 
-                        @Override
-                        public void error() {
-                            Toast.makeText(UpdateActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                    @Override
+                                    public void error() {
+                                    }
+                                });
+                            }
 
-                    Campaign.updateContent(this, campaign.getCodeString(), username_ig, caption, getArrayOfPath(base64StringPost), getArrayOfPath(base64StringStory), bio, false, new Campaign.Callback() {
-                        @Override
-                        public void success() {
+                            for (int i = 0; i < base64StringStory.size(); i++) {
+                                int ctr = i + 1;
+                                String content = "story" + ctr;
+                                Campaign.uploadContentPicture(UpdateActivity.this, campaign.getCodeString(), content, base64StringStory.get(i), false, new Campaign.Callback() {
+                                    @Override
+                                    public void success() {
+                                    }
+
+                                    @Override
+                                    public void error() {
+                                    }
+                                });
+                            }
                             Toast.makeText(UpdateActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
                         }
 
@@ -372,7 +387,7 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListPost.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 150);
+                thumbnail = getResizedBitmap(thumbnail, 600);
                 base64StringPost.add(BitMapToString(thumbnail));
             }
         }
@@ -383,7 +398,7 @@ public class UpdateActivity extends AppCompatActivity {
             } else {
                 Uri imageUri = Uri.fromFile(new File(picturePathListStory.get(i)));
                 Bitmap thumbnail = MediaStore.Images.Media.getBitmap(UpdateActivity.this.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 150);
+                thumbnail = getResizedBitmap(thumbnail, 600);
                 base64StringStory.add(BitMapToString(thumbnail));
             }
         }
