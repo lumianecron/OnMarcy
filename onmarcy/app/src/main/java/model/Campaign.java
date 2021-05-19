@@ -974,4 +974,48 @@ public class Campaign implements Parcelable {
             }
         }
     }
+
+    // SELECT MARKETER TASK
+    public static void selectMarketerTask(Activity activity, int code, CallbackSelect callback) {
+        new selectMarketerTask(activity, code, callback).execute("v1/campaign/select_marketer_task");
+    }
+
+    private static class selectMarketerTask extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final int code;
+
+        public selectMarketerTask(Activity activity, int code, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.code = code;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("campaign_code", code);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA).getJSONArray("task"));
+                } else {
+                    callback.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
