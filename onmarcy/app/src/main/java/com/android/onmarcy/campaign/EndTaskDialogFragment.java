@@ -160,10 +160,25 @@ public class EndTaskDialogFragment extends DialogFragment {
                     int engagement = Integer.parseInt(edtEngagement.getText().toString());
                     int reach = Integer.parseInt(edtReach.getText().toString());
 
-                    Campaign.insertResult(activity, campaign.getCode(), like, comment, save, impression, reach, engagement, notes, base64StringList, false, new Campaign.Callback() {
+                    Campaign.insertResult(activity, campaign.getCode(), like, comment, save, impression, reach, engagement, notes, false, new Campaign.Callback() {
                         @Override
                         public void success() {
+                            for (int i = 0; i < base64StringList.length; i++) {
+                                int ctr = i + 1;
+                                String result = "result" + ctr;
+                                Campaign.uploadResultPicture(activity, campaign.getCode(), result, base64StringList[i], false, new Campaign.Callback() {
+                                    @Override
+                                    public void success() {}
+
+                                    @Override
+                                    public void error() {}
+                                });
+                            }
                             Toast.makeText(activity, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(activity, TaskActivity.class);
+                            startActivity(intent);
+                            dismiss();
+                            activity.finish();
                         }
 
                         @Override
@@ -237,6 +252,7 @@ public class EndTaskDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ContentActivity.class);
                 intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
+                intent.putExtra(ContentActivity.EXTRA_APPROVAL, true);
                 startActivity(intent);
             }
         });
@@ -332,7 +348,7 @@ public class EndTaskDialogFragment extends DialogFragment {
                 Bitmap thumbnail;
                 try {
                     thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), resultUri);
-                    thumbnail = getResizedBitmap(thumbnail, 400);
+                    thumbnail = getResizedBitmap(thumbnail, 600);
                     if (mode == 1) base64StringList[0] = BitMapToString(thumbnail);
                     if (mode == 2) base64StringList[1] = BitMapToString(thumbnail);
                     if (mode == 3) base64StringList[2] = BitMapToString(thumbnail);

@@ -91,6 +91,7 @@ public class HistoryFragment extends Fragment {
             public void showContent(Campaign campaign) {
                 Intent intent = new Intent(activity, ContentActivity.class);
                 intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
+                intent.putExtra(ContentActivity.EXTRA_APPROVAL, true);
                 startActivity(intent);
             }
 

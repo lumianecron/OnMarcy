@@ -26,6 +26,7 @@ import model.Campaign;
 
 public class TaskActivity extends AppCompatActivity {
     private ArrayList<Campaign> campaigns = new ArrayList<>();
+    private ArrayList<Campaign> temp = new ArrayList<>();
     private RecyclerView rvCampaign;
     private TextView tvNotFound;
     private TaskAdapter taskAdapter;
@@ -54,36 +55,35 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void getTask() {
-        Campaign.select(this, "", 0, "", "", "", 0, "", "", "", 0
-                , 0, 0, 0, 0, 1, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
-                    @Override
-                    public void success(JSONArray data) {
-                        campaigns.clear();
-                        for (int i = 0; i < data.length(); i++) {
-                            try {
-                                campaigns.add(new Campaign(data.getJSONObject(i)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+        campaigns.clear();
+        Campaign.selectMarketerTask(this, new Campaign.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                for (int i = 0; i < data.length(); i++) {
+                    try {
+                        campaigns.add(new Campaign(data.getJSONObject(i)));
                         taskAdapter.notifyDataSetChanged();
 
-                        if (campaigns.size() == 0) {
-                            tvNotFound.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNotFound.setVisibility(View.GONE);
-                        }
+                        setVisibility();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }
+            }
 
-                    @Override
-                    public void error() {
-                        if (campaigns.size() == 0) {
-                            tvNotFound.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNotFound.setVisibility(View.GONE);
-                        }
-                    }
-                });
+            @Override
+            public void error() {
+                setVisibility();
+            }
+        });
+    }
+
+    private void setVisibility(){
+        if (campaigns.size() == 0) {
+            tvNotFound.setVisibility(View.VISIBLE);
+        } else {
+            tvNotFound.setVisibility(View.GONE);
+        }
     }
 
     @Override

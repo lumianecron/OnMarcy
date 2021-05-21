@@ -734,6 +734,68 @@ public class Campaign implements Parcelable {
         }
     }
 
+    public static void uploadResultPicture(Activity activity, int campaignCode, String result, String image, Boolean useLoading, Callback callback) {
+        new uploadResultPicture(activity, campaignCode, result, image, useLoading, callback).execute("v1/campaign/upload_result_picture");
+    }
+
+    private static class uploadResultPicture extends AsyncTask<String, Void, String> {
+        final WeakReference<Activity> activity;
+        final Callback callback;
+        final Boolean useLoading;
+        final int campaignCode;
+        final String result;
+        final String image;
+
+        private uploadResultPicture(Activity activity, int campaignCode, String result, String image, Boolean useLoading, Callback callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.useLoading = useLoading;
+            this.campaignCode = campaignCode;
+            this.result = result;
+            this.image = image;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+                jsonObject.put("hash", user.getHash());
+                jsonObject.put("campaign_code", campaignCode);
+                jsonObject.put("result", result);
+                jsonObject.put("image", image);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(useLoading) Global.hideLoading();
+            try {
+                JSONObject json = new JSONObject(result);
+                if(json.getBoolean(Global.RESPONSE_SUCCESS)) {
+                    callback.success();
+                } else {
+                    callback.error();
+                }
+            }
+            catch(Exception e) {
+                Global.showLoading(activity.get(), "", e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(useLoading) Global.showLoading(activity.get(), "", "Loading");
+        }
+    }
+
     // DELETE CAMPAIGN
     public static void delete(Activity activity, String codeString, Boolean useLoading, Callback callback) {
         new delete(activity, codeString, useLoading, callback).execute("v1/campaign/delete");
@@ -792,8 +854,8 @@ public class Campaign implements Parcelable {
     }
 
     // INSERT RESULT CAMPAIGN
-    public static void insertResult(Activity activity, int code, int like, int comment, int save, int impression, int reach, int engagement, String notes, String[] proofs, Boolean useLoading, Callback callback) {
-        new insertResult(activity, code, like, comment, save, impression, reach, engagement, notes, proofs, useLoading, callback).execute("v1/campaign/result");
+    public static void insertResult(Activity activity, int code, int like, int comment, int save, int impression, int reach, int engagement, String notes, Boolean useLoading, Callback callback) {
+        new insertResult(activity, code, like, comment, save, impression, reach, engagement, notes, useLoading, callback).execute("v1/campaign/result");
     }
 
     private static class insertResult extends AsyncTask<String, Void, String> {
@@ -802,25 +864,25 @@ public class Campaign implements Parcelable {
         final Boolean useLoading;
         final int code;
         final int like;
+        final int comment;
         final int save;
         final int impression;
         final int reach;
         final int engagement;
         final String notes;
-        final String[] proofs;
 
-        private insertResult(Activity activity, int code, int like, int comment, int save, int impression, int reach, int engagement, String notes, String[] proofs, Boolean useLoading, Callback callback) {
+        private insertResult(Activity activity, int code, int like, int comment, int save, int impression, int reach, int engagement, String notes, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
             this.code = code;
             this.like = like;
+            this.comment = comment;
             this.save = save;
             this.impression = impression;
             this.reach = reach;
             this.engagement = engagement;
             this.notes = notes;
-            this.proofs = proofs;
         }
 
         @Override
@@ -830,15 +892,13 @@ public class Campaign implements Parcelable {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
                 jsonObject.put("campaign_code", code);
-                jsonObject.put("like", code);
-                jsonObject.put("save", code);
-                jsonObject.put("impression", code);
-                jsonObject.put("reach", code);
-                jsonObject.put("engagement", code);
+                jsonObject.put("like", like);
+                jsonObject.put("comment", comment);
+                jsonObject.put("save", save);
+                jsonObject.put("impression", impression);
+                jsonObject.put("reach", reach);
+                jsonObject.put("engagement", engagement);
                 jsonObject.put("notes", notes);
-                jsonObject.put("proof_post", proofs[0]);
-                jsonObject.put("proof_story", proofs[1]);
-                jsonObject.put("proof_bio", proofs[2]);
             }
             catch (JSONException e) { e.printStackTrace(); }
 
@@ -976,19 +1036,17 @@ public class Campaign implements Parcelable {
     }
 
     // SELECT MARKETER TASK
-    public static void selectMarketerTask(Activity activity, int code, CallbackSelect callback) {
-        new selectMarketerTask(activity, code, callback).execute("v1/campaign/select_marketer_task");
+    public static void selectMarketerTask(Activity activity, CallbackSelect callback) {
+        new selectMarketerTask(activity, callback).execute("v1/campaign/select_marketer_task");
     }
 
     private static class selectMarketerTask extends AsyncTask<String, Void, String> {
         final WeakReference<Activity> activity;
         final CallbackSelect callback;
-        final int code;
 
-        public selectMarketerTask(Activity activity, int code, CallbackSelect callback) {
+        public selectMarketerTask(Activity activity/*, int code*/, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
-            this.code = code;
         }
 
         @Override
@@ -997,7 +1055,6 @@ public class Campaign implements Parcelable {
             try {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
-                jsonObject.put("campaign_code", code);
             }
             catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);

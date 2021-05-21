@@ -31,6 +31,7 @@ public class ContentActivity extends AppCompatActivity {
     Button btnApproach, btnCancelApproach;
     private Campaign campaign;
     public static String EXTRA_CAMPAIGN = "campaign";
+    public static final String EXTRA_APPROVAL = "approval";
     private User user;
 
     @Override
@@ -47,9 +48,10 @@ public class ContentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(getIntent().hasExtra(EXTRA_CAMPAIGN)){
+        if (getIntent().hasExtra(EXTRA_CAMPAIGN)) {
             campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
             bindData();
+            setVisibility();
             Approach.cekApproach(ContentActivity.this, campaign.getCode(), new Approach.Callback() {
                 @Override
                 public void success() {
@@ -61,11 +63,6 @@ public class ContentActivity extends AppCompatActivity {
                     btnCancelApproach.setVisibility(View.GONE);
                 }
             });
-        }
-
-        if(user.getUserType() == 1){
-            btnApproach.setVisibility(View.GONE);
-            btnCancelApproach.setVisibility(View.GONE);
         }
 
         btnApproach.setOnClickListener(new View.OnClickListener() {
@@ -130,9 +127,9 @@ public class ContentActivity extends AppCompatActivity {
                     tvCategory.setText(campaign.getCategoryName());
                     tvAge.setText(campaign.getAgeMin() + " - " + campaign.getAgeMax());
                     int gender = campaign.getGender();
-                    if(gender == 1) tvGender.setText(getString(R.string.male));
-                    if(gender == 2) tvGender.setText(getString(R.string.female));
-                    if(gender == 3) tvGender.setText(getString(R.string.all));
+                    if (gender == 1) tvGender.setText(getString(R.string.male));
+                    if (gender == 2) tvGender.setText(getString(R.string.female));
+                    if (gender == 3) tvGender.setText(getString(R.string.all));
                     tvLocation.setText(campaign.getCityName());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -146,6 +143,13 @@ public class ContentActivity extends AppCompatActivity {
         });
     }
 
+    private void setVisibility(){
+        if (user.getUserType() == 1 || getIntent().hasExtra(EXTRA_APPROVAL)) {
+            btnApproach.setVisibility(View.GONE);
+            btnCancelApproach.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.view_marketer_menu, menu);
@@ -154,7 +158,7 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;

@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.onmarcy.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,12 +61,12 @@ public class MarketerAdapter extends RecyclerView.Adapter<MarketerAdapter.Market
         if (user.getPhotoUrl().equals("")) {
             Glide.with(holder.itemView.getContext())
                     .load(R.drawable.person)
-                    .apply(new RequestOptions().override(70, 70))
+                    .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                     .into(holder.imgMarketer);
         } else {
             Glide.with(holder.itemView.getContext())
                     .load(user.getPhotoUrl())
-                    .apply(new RequestOptions().override(70, 70))
+                    .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                     .into(holder.imgMarketer);
         }
         String[] arr = approach.getDate().split(" ");

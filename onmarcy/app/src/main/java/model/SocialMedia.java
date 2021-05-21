@@ -257,6 +257,48 @@ public class SocialMedia {
         }
     }
 
+    public static void detail(Activity activity, String username, CallbackSelect callback) {
+        new detail(activity, username, callback).execute("v1/socialmedia/select");
+    }
+
+    private static class detail extends AsyncTask<String, Void, String>{
+        final WeakReference<Activity> activity;
+        final CallbackSelect callback;
+        final String username;
+
+        private detail(Activity activity, String username, CallbackSelect callback) {
+            this.activity = new WeakReference<>(activity);
+            this.callback = callback;
+            this.username = username;
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("username", username);
+                jsonObject.put("socialmedia", 1);
+            }
+            catch (JSONException e) { e.printStackTrace(); }
+            return Global.executePost(urls[0], jsonObject, 3000);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try{
+                JSONObject jsonObject = new JSONObject(result);
+                if(jsonObject.getBoolean(Global.RESPONSE_SUCCESS)){
+                    callback.success(jsonObject.getJSONObject(Global.RESPONSE_DATA));
+                }else{
+                    callback.error();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void insert(Activity activity, String username, int socialmedia, int category, int city, String id, int totalPost, int totalFollower, int totalFollowing
             , int totalComment, int totalLike, int marketAgeMin, int marketAgeMax, int marketMale, int marketFemale, String timePosting, int servicePost
             , int serviceStory, int serviceBio, String code, Boolean useLoading, Callback callback) {

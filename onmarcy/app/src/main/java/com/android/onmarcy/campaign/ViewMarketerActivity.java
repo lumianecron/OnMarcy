@@ -55,7 +55,11 @@ public class ViewMarketerActivity extends AppCompatActivity {
         marketerAdapter.setOnItemCallback(new MarketerAdapter.OnItemCallback() {
             @Override
             public void onItemClicked(User user) {
-                // do something
+                Intent intent = new Intent(ViewMarketerActivity.this, DetailMarketerActivity.class);
+                intent.putExtra(DetailMarketerActivity.EXTRA_USERNAME, user.getUsername());
+                intent.putExtra(DetailMarketerActivity.EXTRA_NAME, user.getName());
+                intent.putExtra(DetailMarketerActivity.EXTRA_PHOTO, user.getPhotoUrl());
+                startActivity(intent);
             }
 
             @Override
@@ -77,12 +81,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
         });
 
         getMarketer();
-
-        if(users.size() < 1){
-            tvNotFound.setVisibility(View.VISIBLE);
-        }else{
-            tvNotFound.setVisibility(View.GONE);
-        }
+        setVisibility();
     }
 
     private void getMarketer(){
@@ -100,13 +99,23 @@ public class ViewMarketerActivity extends AppCompatActivity {
                     }
                 }
                 marketerAdapter.notifyDataSetChanged();
+
+                setVisibility();
             }
 
             @Override
             public void error() {
-
+                setVisibility();
             }
         });
+    }
+
+    private void setVisibility(){
+        if(users.size() < 1){
+            tvNotFound.setVisibility(View.VISIBLE);
+        }else{
+            tvNotFound.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -50,7 +50,9 @@ import com.android.onmarcy.campaign.PendingCampaignActivity;
 import com.android.onmarcy.R;
 import com.android.onmarcy.campaign.TaskActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -149,7 +151,7 @@ public class ProfileFragment extends Fragment {
             Bitmap thumbnail = null;
             try {
                 thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
-                thumbnail = getResizedBitmap(thumbnail, 400);
+                thumbnail = getResizedBitmap(thumbnail, 600);
                 uploadPicture(BitMapToString(thumbnail));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -629,12 +631,12 @@ public class ProfileFragment extends Fragment {
         if (img.equals("")) {
             Glide.with(view.getContext())
                     .load(R.drawable.person)
-                    .apply(new RequestOptions().override(120, 120))
+                    .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                     .into(imageView);
         } else {
             Glide.with(view.getContext())
                     .load(img)
-                    .apply(new RequestOptions().override(120, 120))
+                    .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                     .into(imageView);
         }
     }
