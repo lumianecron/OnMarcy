@@ -198,12 +198,8 @@
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/result"
-            android:textColor="@color/red1"
-            android:textSize="18sp" />
+            style="@style/subtitle"
+            android:text="@string/result" />
 
         <TextView
             android:layout_width="wrap_content"

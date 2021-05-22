@@ -2,21 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingHorizontal="10dp"
     android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Judul"
-        android:textSize="18sp"
+        style="@style/subtitle"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="10dp"
-        android:textStyle="bold"
-        android:textColor="@color/red1"/>
+        android:text="-"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_date"
@@ -27,28 +25,28 @@
         android:drawablePadding="5dp"
         android:gravity="center"
         android:text="Date"
-        android:textSize="11sp"
-        android:textColor="@color/gray" />
+        android:textColor="@color/gray"
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
         android:layout_marginBottom="5dp"
-        android:textColor="@color/black"/>
+        android:text="-"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rp. 0,00-"
-        android:textColor="@color/black"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:text="-"
+        android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray"/>
+        android:background="@color/gray" />
 
 </LinearLayout>

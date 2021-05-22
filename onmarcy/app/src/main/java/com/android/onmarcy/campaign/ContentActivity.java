@@ -3,12 +3,17 @@ package com.android.onmarcy.campaign;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +32,10 @@ import model.Campaign;
 import model.User;
 
 public class ContentActivity extends AppCompatActivity {
-    TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation;
-    Button btnApproach, btnCancelApproach;
+    private TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation, tvViewComments;
+    private Button btnApproach, btnCancelApproach;
+    private EditText edtMsg;
+    private ImageView btnSend;
     private Campaign campaign;
     public static String EXTRA_CAMPAIGN = "campaign";
     public static final String EXTRA_APPROVAL = "approval";
@@ -190,5 +197,8 @@ public class ContentActivity extends AppCompatActivity {
         tvLocation = findViewById(R.id.tv_location);
         btnApproach = findViewById(R.id.btn_approach);
         btnCancelApproach = findViewById(R.id.btn_cancelApproach);
+        edtMsg = findViewById(R.id.edt_msg);
+        btnSend = findViewById(R.id.btn_send);
+        tvViewComments = findViewById(R.id.tv_view_comments);
     }
 }

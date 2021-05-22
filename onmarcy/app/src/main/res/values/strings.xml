@@ -193,6 +193,9 @@
     <string name="list_marketer">List Marketer</string>
     <string name="detail_result">Detail Result</string>
     <string name="view_details">View Details</string>
-
+    <string name="add_a_comment">Add a comment</string>
+    <string name="comment">Comment</string>
+    <string name="approach">Approach</string>
+    <string name="view_comments">View comments</string>
 
 </resources>

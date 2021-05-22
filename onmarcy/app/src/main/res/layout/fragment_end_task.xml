@@ -93,11 +93,8 @@
                     android:background="@color/gray"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/subtitle"
                     android:text="@string/upload_screenshot"
-                    android:textColor="@color/red1"
-                    android:textSize="18sp"
                     android:layout_marginVertical="10dp"/>
 
                 <LinearLayout
@@ -213,11 +210,8 @@
                 </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/subtitle"
                     android:text="@string/result"
-                    android:textColor="@color/red1"
-                    android:textSize="18sp"
                     android:layout_marginVertical="10dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
