@@ -1085,7 +1085,7 @@ public class Campaign implements Parcelable {
         final WeakReference<Activity> activity;
         final CallbackSelect callback;
 
-        public selectCampaignResult(Activity activity/*, int code*/, CallbackSelect callback) {
+        public selectCampaignResult(Activity activity, CallbackSelect callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
         }

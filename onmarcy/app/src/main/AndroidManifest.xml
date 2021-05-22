@@ -59,6 +59,9 @@ package="com.android.onmarcy">
         android:name=".campaign.DetailMarketerActivity"
         android:screenOrientation="portrait"></activity>
     <activity
+        android:name=".PreviewActivity2"
+        android:screenOrientation="portrait"></activity>
+    <activity
         android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
         android:theme="@style/Base.Theme.AppCompat" />
     <activity

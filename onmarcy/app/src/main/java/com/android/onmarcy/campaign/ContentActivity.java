@@ -115,7 +115,11 @@ public class ContentActivity extends AppCompatActivity {
                 try {
                     Campaign campaign = new Campaign(data.getJSONObject(0));
                     tvTitle.setText(campaign.getTitle());
-                    tvDescription.setText(campaign.getNotes());
+                    if (campaign.getNotes().equals("")) {
+                        tvDescription.setText("-");
+                    } else {
+                        tvDescription.setText(campaign.getNotes());
+                    }
                     tvInstagram.setText(campaign.getBrandCode());
                     NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
                     tvPrice.setText(getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));

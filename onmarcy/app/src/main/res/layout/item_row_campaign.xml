@@ -148,7 +148,7 @@
                 android:id="@+id/btn_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Result"
+                android:text="@string/view_result"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_baseline_info_24"
                 android:textAllCaps="false"

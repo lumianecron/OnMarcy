@@ -91,7 +91,6 @@ public class HistoryFragment extends Fragment {
             public void showContent(Campaign campaign) {
                 Intent intent = new Intent(activity, ContentActivity.class);
                 intent.putExtra(ContentActivity.EXTRA_CAMPAIGN, campaign);
-                intent.putExtra(ContentActivity.EXTRA_APPROVAL, true);
                 startActivity(intent);
             }
 
@@ -107,24 +106,26 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void showResult(Campaign campaign) {
-                Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, ViewResultActivity.class);
+                intent.putExtra(ViewResultActivity.EXTRA_CAMPAIGN, campaign);
+                startActivity(intent);
             }
         });
         rvHistory.setAdapter(campaignAdapter);
 
         if(user.getUserType() == 1){ //Brand
-            getCampaign(0);
+            getCampaignBrand();
         }
         if(user.getUserType() == 2){ //Marketer
-            getCampaign(1);
+            getCampaignMarketer();
         }
     }
 
-    private void getCampaign(int approach){
+    private void getCampaignBrand(){
         //select campaign
-        for (int i = 4; i < 7; i++) {
-            Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
-                    , 0, 0, 0, 0, i, "", "", 0, 10, approach, new Campaign.CallbackSelect() {
+        for (int i = 5; i < 7; i++) {
+            Campaign.select(activity, "", 0, "", "", "", 0, "", "", "", 0
+                    , 0, 0, 0, 0, i, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
                 @Override
                 public void success(JSONArray data) {
                     for (int j = 0; j < data.length(); j++) {
@@ -147,6 +148,31 @@ public class HistoryFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void getCampaignMarketer(){
+        Campaign.selectCampaignResult(activity, new Campaign.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                for (int j = 0; j < data.length(); j++) {
+                    try {
+                        campaigns.add(new Campaign(data.getJSONObject(j)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                filter();
+
+                if(campaigns.size() == 0){
+                    tvNotFound.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void filter(){

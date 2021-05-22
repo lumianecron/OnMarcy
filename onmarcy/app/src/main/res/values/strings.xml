@@ -69,6 +69,7 @@
     <string name="pending_campaign">Pending Campaign</string>
     <string name="please_choose_category">Please choose category</string>
     <string name="msg_choose_service">Please choose at least 1 service type</string>
+    <string name="logout">Logout</string>
 
     <!--    Create Campaign-->
     <string name="create_campaign">Create Campaign</string>
@@ -82,6 +83,7 @@
     <string name="create">Create</string>
     <string name="choose_category">Choose Category</string>
     <string name="campaign_description">CAMPAIGN DESCRIPTION</string>
+    <string name="msg_age">Maximum age must be higher</string>
 
     <!--    List Campaign-->
     <string name="campaigns">Campaigns</string>
@@ -95,6 +97,7 @@
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="content">Content</string>
+    <string name="view_result">View Result</string>
     <string name="no_result_found">No Result Found</string>
     <string name="date">%1$s-%2$s-%3$s</string>
     <string name="datetime">%1$s-%2$s-%3$s %4$s:%5$s</string>
@@ -176,9 +179,10 @@
     <string name="link_in_bio">Link In Bio</string>
     <string name="preview">Preview</string>
     <string name="msg_limit">The limit is %1$d photos</string>
+
     <string name="your_task">Your Task</string>
-    <string name="logout">Logout</string>
-    <string name="msg_age">Maximum age must be higher</string>
+
+    <!--    Proof-->
     <string name="upload_screenshot">Upload Screenshot</string>
     <string name="result">Result</string>
     <string name="total_save">Total save</string>
@@ -187,5 +191,8 @@
     <string name="total_impression">Total impression</string>
     <string name="accept">Accept</string>
     <string name="list_marketer">List Marketer</string>
+    <string name="detail_result">Detail Result</string>
+    <string name="view_details">View Details</string>
+
 
 </resources>
