@@ -40,6 +40,7 @@ public class ContentActivity extends AppCompatActivity {
     public static String EXTRA_CAMPAIGN = "campaign";
     public static final String EXTRA_APPROVAL = "approval";
     private User user;
+    private int totalComments = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,10 @@ public class ContentActivity extends AppCompatActivity {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        if(totalComments == 0){
+            tvViewComments.setVisibility(View.GONE);
         }
 
         if (getIntent().hasExtra(EXTRA_CAMPAIGN)) {
@@ -111,6 +116,27 @@ public class ContentActivity extends AppCompatActivity {
                         btnCancelApproach.setVisibility(View.VISIBLE);
                     }
                 });
+            }
+        });
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String msg = edtMsg.getText().toString();
+
+                if(!msg.equals("")){
+                    // do something
+                    edtMsg.setText("");
+                }
+            }
+        });
+
+        tvViewComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, ViewCommentsActivity.class);
+                intent.putExtra(ViewCommentsActivity.TAG, campaign.getCode());
+                startActivity(intent);
             }
         });
     }

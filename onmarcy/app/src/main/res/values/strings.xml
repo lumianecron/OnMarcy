@@ -197,5 +197,6 @@
     <string name="comment">Comment</string>
     <string name="approach">Approach</string>
     <string name="view_comments">View comments</string>
+    <string name="comments">Comments</string>
 
 </resources>

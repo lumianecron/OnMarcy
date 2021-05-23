@@ -38,7 +38,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import model.Campaign;
 import model.SocialMedia;
@@ -109,9 +116,101 @@ public class HomeFragment extends Fragment {
         if (user.getUserType() == 1) {
             checkStatus();
         }
+
+        System.out.println(getIntervalDateTime("2020-07-23"));
     }
 
-    private void checkStatus(){
+    private String getIntervalDateTime(String date){
+        String[] arrDate = date.split("-");
+        String myString = getString(R.string.date, arrDate[2], arrDate[1], arrDate[0]) + " " + "08:00";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        Date datetime;
+        Date currentDatetime;
+        String text = "";
+
+        try {
+            datetime = simpleDateFormat.parse(myString);
+
+            DateFormat mFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault());
+            Calendar calendar = Calendar.getInstance();
+            String currentTime = mFormat.format(calendar.getTime());
+            currentDatetime = mFormat.parse(currentTime);
+
+            long diff = currentDatetime.getTime() - datetime.getTime();
+            long diffSeconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+            long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+            long diffHours = TimeUnit.MILLISECONDS.toHours(diff);
+            long diffDays = TimeUnit.MILLISECONDS.toDays(diff);
+            long diffWeeks = diff / (7 * 24 * 60 * 60 * 1000);
+            long diffMonths = (diff / (7 * 24 * 60 * 60 * 1000) / 4);
+            long diffYears = diff / (7 * 24 * 60 * 60 * 1000) / (4 * 12);
+
+            boolean isMinute = false;
+            boolean isHour = false;
+            boolean isDay = false;
+            boolean isWeek = false;
+            boolean isMonth = false;
+            boolean isYear = false;
+
+            if (diffSeconds < 60) {
+                text = diffSeconds + " seconds ago";
+            } else if (diffSeconds > 60) {
+                isMinute = true;
+            }
+
+            if (diffMinutes < 2 && isMinute) {
+                text = diffMinutes + " minute ago";
+            } else if (diffMinutes > 1 && diffMinutes < 60 && isMinute) {
+                text = diffMinutes + " minutes ago";
+            } else if (diffMinutes > 59) {
+                isHour = true;
+            }
+
+            if (diffHours < 2 && isHour) {
+                text = diffHours + " hour ago";
+            } else if (diffHours > 1 && diffHours < 24 && isHour) {
+                text = diffHours + " hours ago";
+            } else if (diffHours > 23) {
+                isDay = true;
+            }
+
+            if (diffDays < 2 && isDay) {
+                text = diffDays + " day ago";
+            } else if (diffDays > 1 && diffDays < 7 && isDay) {
+                text = diffDays + " days ago";
+            } else if (diffDays > 6 && isDay) {
+                isWeek = true;
+            }
+
+            if (diffWeeks < 2 && isWeek) {
+                text = diffWeeks + " week ago";
+            } else if (diffWeeks > 1 && diffWeeks < 4 && isWeek) {
+                text = diffWeeks + " weeks ago";
+            } else if (diffWeeks > 3 && isWeek) {
+                isMonth = true;
+            }
+
+            if (diffMonths < 2 && isMonth) {
+                text = diffMonths + " month ago";
+            } else if (diffMonths > 1 && diffMonths < 12 && isMonth) {
+                text = diffMonths + " months ago";
+            } else if (diffMonths > 11 && isMonth) {
+                isYear = true;
+            }
+
+            if (diffYears < 2 && isYear) {
+                text = diffYears + " year ago";
+            } else if (diffYears > 1 && isYear) {
+                text = diffYears + " years ago";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return text;
+    }
+
+    private void checkStatus() {
         SocialMedia.select(getActivity(), new SocialMedia.CallbackSelect() {
             @Override
             public void success(JSONObject jsonObject) {
@@ -120,7 +219,7 @@ public class HomeFragment extends Fragment {
 
                     if (socialMedia.getStatusVerify() == 0) {
                         floatingActionButton.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         floatingActionButton.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception ex) {
