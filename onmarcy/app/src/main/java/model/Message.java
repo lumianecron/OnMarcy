@@ -27,6 +27,49 @@ public class Message {
     @SerializedName("date")
     private String date;
 
+    @SerializedName("photo")
+    private String photoUrl;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
     public interface CallbackSelect {
         void success(JSONArray data);
         void error();
@@ -43,6 +86,7 @@ public class Message {
             this.username = jsonObject.has("username") ? jsonObject.getString("username") : "";
             this.message = jsonObject.has("message") ? jsonObject.getString("message") : "";
             this.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
+            this.photoUrl = jsonObject.has("photo") ? jsonObject.getString("photo") : "";
         } catch (JSONException e) {
             e.printStackTrace();
         }

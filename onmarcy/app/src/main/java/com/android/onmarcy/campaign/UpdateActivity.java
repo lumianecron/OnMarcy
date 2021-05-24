@@ -580,6 +580,24 @@ public class UpdateActivity extends AppCompatActivity {
             public void error() {
             }
         });
+
+        Campaign.detail(this, campaign.getCode(), campaign.getCodeString(), new Campaign.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                try {
+                    Campaign campaign = new Campaign(data.getJSONObject(0));
+                    edtCaption.setText(campaign.caption);
+                    edtBio.setText(campaign.bio);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
     }
 
     public void loadCity() {

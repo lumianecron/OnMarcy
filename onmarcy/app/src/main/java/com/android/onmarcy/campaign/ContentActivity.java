@@ -13,27 +13,38 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.onmarcy.Global;
+import com.android.onmarcy.PreviewActivity3;
 import com.android.onmarcy.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import model.Approach;
 import model.Campaign;
+import model.Message;
 import model.User;
 
 public class ContentActivity extends AppCompatActivity {
-    private TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation, tvViewComments;
-    private Button btnApproach, btnCancelApproach;
+    private TextView tvTitle, tvDescription, tvPrice, tvBrand, tvInstagram, tvDate, tvTime, tvDuration, tvCategory, tvAge, tvGender, tvLocation, tvViewComments, tvCaption, tvBio;
+    private Button btnApproach, btnCancelApproach, btnPreviewPost, btnPreviewStory;
+    private LinearLayout linearPost, linearStory;
     private EditText edtMsg;
     private ImageView btnSend;
     private Campaign campaign;
@@ -41,6 +52,8 @@ public class ContentActivity extends AppCompatActivity {
     public static final String EXTRA_APPROVAL = "approval";
     private User user;
     private int totalComments = 0;
+    private ArrayList<String> picturesPost = new ArrayList<>();
+    private ArrayList<String> picturesStory = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +67,6 @@ public class ContentActivity extends AppCompatActivity {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-
-        if(totalComments == 0){
-            tvViewComments.setVisibility(View.GONE);
         }
 
         if (getIntent().hasExtra(EXTRA_CAMPAIGN)) {
@@ -124,9 +133,19 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String msg = edtMsg.getText().toString();
 
-                if(!msg.equals("")){
-                    // do something
-                    edtMsg.setText("");
+                if (!msg.equals("")) {
+                    Message.insert(ContentActivity.this, campaign.getCode(), msg, new Message.Callback() {
+                        @Override
+                        public void success() {
+                            tvViewComments.setVisibility(View.VISIBLE);
+                            edtMsg.setText("");
+                        }
+
+                        @Override
+                        public void error() {
+
+                        }
+                    });
                 }
             }
         });
@@ -136,6 +155,24 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ContentActivity.this, ViewCommentsActivity.class);
                 intent.putExtra(ViewCommentsActivity.TAG, campaign.getCode());
+                startActivity(intent);
+            }
+        });
+
+        btnPreviewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, PreviewActivity3.class);
+                intent.putExtra(PreviewActivity3.TAG, picturesPost);
+                startActivity(intent);
+            }
+        });
+
+        btnPreviewStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, PreviewActivity3.class);
+                intent.putExtra(PreviewActivity3.TAG, picturesStory);
                 startActivity(intent);
             }
         });
@@ -168,6 +205,35 @@ public class ContentActivity extends AppCompatActivity {
                     if (gender == 2) tvGender.setText(getString(R.string.female));
                     if (gender == 3) tvGender.setText(getString(R.string.all));
                     tvLocation.setText(campaign.getCityName());
+                    if (campaign.caption.equals("")) {
+                        tvCaption.setText("-");
+                    } else {
+                        tvCaption.setText(campaign.caption);
+                    }
+                    if (campaign.bio.equals("")) {
+                        tvBio.setText("-");
+                    } else {
+                        tvBio.setText(campaign.bio);
+                    }
+
+                    if (!campaign.posts[0].equals("")) {
+                        linearPost.setVisibility(View.VISIBLE);
+                    }
+                    if (!campaign.stories[0].equals("")) {
+                        linearStory.setVisibility(View.VISIBLE);
+                    }
+
+                    for (int i = 0; i < campaign.posts.length; i++) {
+                        if(!campaign.posts[i].equals("")){
+                            picturesPost.add(campaign.posts[i]);
+                        }
+                    }
+
+                    for (int i = 0; i < campaign.stories.length; i++) {
+                        if(!campaign.stories[i].equals("")){
+                            picturesStory.add(campaign.stories[i]);
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -178,9 +244,27 @@ public class ContentActivity extends AppCompatActivity {
 
             }
         });
+
+        Message.select(this, campaign.getCode(), new Message.CallbackSelect() {
+            @Override
+            public void success(JSONArray data) {
+                totalComments = data.length();
+
+                if (totalComments == 0) {
+                    tvViewComments.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void error() {
+                if (totalComments == 0) {
+                    tvViewComments.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
-    private void setVisibility(){
+    private void setVisibility() {
         if (user.getUserType() == 1 || getIntent().hasExtra(EXTRA_APPROVAL)) {
             btnApproach.setVisibility(View.GONE);
             btnCancelApproach.setVisibility(View.GONE);
@@ -226,5 +310,11 @@ public class ContentActivity extends AppCompatActivity {
         edtMsg = findViewById(R.id.edt_msg);
         btnSend = findViewById(R.id.btn_send);
         tvViewComments = findViewById(R.id.tv_view_comments);
+        tvCaption = findViewById(R.id.tv_caption);
+        tvBio = findViewById(R.id.tv_bio);
+        btnPreviewPost = findViewById(R.id.btn_preview_post);
+        btnPreviewStory = findViewById(R.id.btn_preview_story);
+        linearPost = findViewById(R.id.linear_layout_post);
+        linearStory = findViewById(R.id.linear_layout_story);
     }
 }

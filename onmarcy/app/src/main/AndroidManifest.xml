@@ -63,6 +63,9 @@ package="com.android.onmarcy">
         android:name=".PreviewActivity2"
         android:screenOrientation="portrait" />
     <activity
+        android:name=".PreviewActivity3"
+        android:screenOrientation="portrait" />
+    <activity
         android:name=".campaign.ViewCommentsActivity"
         android:screenOrientation="portrait" />
     <activity
