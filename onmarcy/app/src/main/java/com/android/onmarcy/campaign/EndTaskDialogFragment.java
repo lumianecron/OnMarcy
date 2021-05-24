@@ -91,7 +91,7 @@ public class EndTaskDialogFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             campaign = savedInstanceState.getParcelable(STATE_CAMPAIGN);
         }
     }
@@ -126,26 +126,32 @@ public class EndTaskDialogFragment extends DialogFragment {
                     edtNotes.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtLike.getText().toString())) {
                     edtLike.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtReach.getText().toString())) {
                     edtReach.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtImpression.getText().toString())) {
                     edtImpression.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtSave.getText().toString())) {
                     edtSave.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtComment.getText().toString())) {
                     edtComment.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtEngagement.getText().toString())) {
                     edtEngagement.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
@@ -168,12 +174,15 @@ public class EndTaskDialogFragment extends DialogFragment {
                                 String result = "result" + ctr;
                                 Campaign.uploadResultPicture(activity, campaign.getCode(), result, base64StringList[i], false, new Campaign.Callback() {
                                     @Override
-                                    public void success() {}
+                                    public void success() {
+                                    }
 
                                     @Override
-                                    public void error() {}
+                                    public void error() {
+                                    }
                                 });
                             }
+
                             Toast.makeText(activity, getString(R.string.success), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(activity, TaskActivity.class);
                             startActivity(intent);
@@ -271,7 +280,7 @@ public class EndTaskDialogFragment extends DialogFragment {
     private void bindData() {
         tvTitle.setText(campaign.getTitle());
         tvBrand.setText(campaign.getBrandName());
-        if(campaign.getNotes().equals("")) tvDesc.setVisibility(View.GONE);
+        if (campaign.getNotes().equals("")) tvDesc.setVisibility(View.GONE);
         tvDesc.setText(campaign.getNotes());
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         tvPrice.setText(getString(R.string.price_format, nf.format(campaign.getPrice())));
@@ -299,6 +308,7 @@ public class EndTaskDialogFragment extends DialogFragment {
 
     public void verifyStoragePermissions(Activity activity) {
         permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
         } else {
@@ -309,21 +319,22 @@ public class EndTaskDialogFragment extends DialogFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             selectImage();
         }
     }
 
     public void selectImage() {
-        final CharSequence[] options = {"Choose from Gallery", "Cancel"};
+        final CharSequence[] options = {getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Insert Picture");
+        builder.setTitle(R.string.insert_picture);
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Choose from Gallery")) {
+                if (options[item].equals(getString(R.string.choose_from_gallery))) {
                     pickFromGallery();
-                } else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -342,16 +353,21 @@ public class EndTaskDialogFragment extends DialogFragment {
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 Uri resultUri = result.getUri();
+
                 if (mode == 1) imageUri[0] = resultUri;
                 if (mode == 2) imageUri[1] = resultUri;
                 if (mode == 3) imageUri[2] = resultUri;
+
                 Bitmap thumbnail;
+
                 try {
                     thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), resultUri);
                     thumbnail = getResizedBitmap(thumbnail, 600);
+
                     if (mode == 1) base64StringList[0] = BitMapToString(thumbnail);
                     if (mode == 2) base64StringList[1] = BitMapToString(thumbnail);
                     if (mode == 3) base64StringList[2] = BitMapToString(thumbnail);
+
                     System.out.println(BitMapToString(thumbnail));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -362,7 +378,7 @@ public class EndTaskDialogFragment extends DialogFragment {
         }
     }
 
-    public String BitMapToString(Bitmap userImage1) {
+    private String BitMapToString(Bitmap userImage1) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         userImage1.compress(Bitmap.CompressFormat.PNG, 60, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -370,11 +386,11 @@ public class EndTaskDialogFragment extends DialogFragment {
         return base64String;
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
-
         float bitmapRatio = (float) width / (float) height;
+
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
@@ -382,6 +398,7 @@ public class EndTaskDialogFragment extends DialogFragment {
             height = maxSize;
             width = (int) (height * bitmapRatio);
         }
+
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 

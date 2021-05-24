@@ -37,7 +37,7 @@ import model.User;
  * create an instance of this fragment.
  */
 public class HistoryFragment extends Fragment {
-    Activity activity;
+    private Activity activity;
     private RecyclerView rvHistory;
     private CampaignAdapter campaignAdapter;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
@@ -84,7 +84,7 @@ public class HistoryFragment extends Fragment {
         campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
             @Override
             public void onItemClicked(Campaign campaign) {
-                Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -96,12 +96,12 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void update(Campaign campaign) {
-                Toast.makeText(activity, "Update", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void delete(Campaign campaign) {
-                Toast.makeText(activity, "Delete", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -111,46 +111,48 @@ public class HistoryFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         rvHistory.setAdapter(campaignAdapter);
 
-        if(user.getUserType() == 1){ //Brand
+        if (user.getUserType() == 1) { //Brand
             getCampaignBrand();
         }
-        if(user.getUserType() == 2){ //Marketer
+
+        if (user.getUserType() == 2) { //Marketer
             getCampaignMarketer();
         }
     }
 
-    private void getCampaignBrand(){
-        //select campaign
+    private void getCampaignBrand() {
         for (int i = 5; i < 7; i++) {
             Campaign.select(activity, "", 0, "", "", "", 0, "", "", "", 0
                     , 0, 0, 0, 0, i, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
-                @Override
-                public void success(JSONArray data) {
-                    for (int j = 0; j < data.length(); j++) {
-                        try {
-                            campaigns.add(new Campaign(data.getJSONObject(j)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        @Override
+                        public void success(JSONArray data) {
+                            for (int j = 0; j < data.length(); j++) {
+                                try {
+                                    campaigns.add(new Campaign(data.getJSONObject(j)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            filter();
+
+                            if (campaigns.size() == 0) {
+                                tvNotFound.setVisibility(View.VISIBLE);
+                            }
                         }
-                    }
-                    filter();
 
-                    if(campaigns.size() == 0){
-                        tvNotFound.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void error() {
-                    Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-                }
-            });
+                        @Override
+                        public void error() {
+                            Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
-    private void getCampaignMarketer(){
+    private void getCampaignMarketer() {
         Campaign.selectCampaignResult(activity, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
@@ -161,9 +163,10 @@ public class HistoryFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+
                 filter();
 
-                if(campaigns.size() == 0){
+                if (campaigns.size() == 0) {
                     tvNotFound.setVisibility(View.VISIBLE);
                 }
             }
@@ -175,20 +178,23 @@ public class HistoryFragment extends Fragment {
         });
     }
 
-    private void filter(){
+    private void filter() {
         Calendar calendar1 = Calendar.getInstance();
         Calendar calendar2 = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         for (int i = 0; i < campaigns.size(); i++) {
             try {
                 calendar2.setTime(simpleDateFormat.parse(campaigns.get(i).getDate()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(calendar1.get(Calendar.MONTH) + 1 != calendar2.get(Calendar.MONTH) + 1 || calendar1.get(Calendar.YEAR) != calendar2.get(Calendar.YEAR)){
+
+            if (calendar1.get(Calendar.MONTH) + 1 != calendar2.get(Calendar.MONTH) + 1 || calendar1.get(Calendar.YEAR) != calendar2.get(Calendar.YEAR)) {
                 campaigns.remove(i);
             }
         }
+
         campaignAdapter.notifyDataSetChanged();
     }
 }

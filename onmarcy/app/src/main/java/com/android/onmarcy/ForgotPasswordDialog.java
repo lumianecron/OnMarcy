@@ -22,7 +22,7 @@ public class ForgotPasswordDialog extends Dialog {
         super(context);
     }
 
-    public interface OnMyDialogResult{
+    public interface OnMyDialogResult {
         void finish(String email);
     }
 
@@ -37,9 +37,9 @@ public class ForgotPasswordDialog extends Dialog {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(edtEmail.getText().toString())){
+                if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                     edtEmail.setError(getContext().getResources().getString(R.string.please_fill_out_this_field));
-                }else{
+                } else {
                     onMyDialogResult.finish(edtEmail.getText().toString());
                     dismiss();
                 }

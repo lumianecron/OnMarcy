@@ -38,7 +38,7 @@ public class DetailMarketerActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.profile));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(getIntent().hasExtra(EXTRA_USERNAME)){
+        if (getIntent().hasExtra(EXTRA_USERNAME)) {
             username = getIntent().getStringExtra(EXTRA_USERNAME);
             name = getIntent().getStringExtra(EXTRA_NAME);
             photo = getIntent().getStringExtra(EXTRA_PHOTO);
@@ -64,20 +64,26 @@ public class DetailMarketerActivity extends AppCompatActivity {
                 tvMale.setText(String.valueOf(socialMedia.getMarketMale()));
                 tvFemale.setText(String.valueOf(socialMedia.getMarketFemale()));
                 tvTimePosting.setText(String.valueOf(socialMedia.getTimePosting()));
+
                 String txtService = "";
                 ArrayList<String> services = new ArrayList<>();
+
                 if (socialMedia.getServiceBio() == 1) {
                     services.add(getString(R.string.bio));
                 }
+
                 if (socialMedia.getServicePost() == 1) {
                     services.add(getString(R.string.post));
                 }
+
                 if (socialMedia.getServiceStory() == 1) {
                     services.add(getString(R.string.story));
                 }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     txtService = String.join(", ", services);
                 }
+
                 tvServiceType.setText(txtService);
             }
 
@@ -104,14 +110,14 @@ public class DetailMarketerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void bindView(){
+    private void bindView() {
         tvName = findViewById(R.id.tv_name);
         tvUser = findViewById(R.id.tv_user);
         tvFollowers = findViewById(R.id.tv_followers);

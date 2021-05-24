@@ -37,6 +37,7 @@ public class CropActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         savedImageURI = Uri.parse(getIntent().getStringExtra(TAG));
+
         cropView.setImageUri(savedImageURI);
 
         cropView.configureOverlay()
@@ -60,18 +61,20 @@ public class CropActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(false);
                 builder.setTitle(R.string.confirmation);
                 builder.setMessage(R.string.msg_save_changes);
+
                 builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         save();
                     }
                 });
+
                 builder.setNegativeButton(R.string.discard, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -93,11 +96,12 @@ public class CropActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void save(){
+    private void save() {
         cropView.crop(new CropIwaSaveConfig.Builder(destinationUri())
                 .setCompressFormat(Bitmap.CompressFormat.PNG)
                 .setQuality(100)
                 .build());
+
         cropView.setCropSaveCompleteListener(bitmapUri -> {
             Intent intent = new Intent(CropActivity.this, HomeActivity.class);
             intent.putExtra(HomeActivity.TAG, true);
@@ -106,13 +110,15 @@ public class CropActivity extends AppCompatActivity {
         });
     }
 
-    private Uri destinationUri(){
+    private Uri destinationUri() {
         String folderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/OnMarcy/";
         File folder = new File(folderPath);
+
         if (!folder.exists()) {
             File wallpaperDirectory = new File(folderPath);
             wallpaperDirectory.mkdirs();
         }
+
         File newFile = new File(folderPath, new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg");
         Uri relativePath = Uri.fromFile(newFile);
         return relativePath;

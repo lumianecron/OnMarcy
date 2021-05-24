@@ -66,6 +66,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -83,18 +84,17 @@ import static android.app.Activity.RESULT_OK;
  */
 public class ProfileFragment extends Fragment {
     private Activity activity;
-    CircleImageView imageView;
-    TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
-    TextInputLayout textInputLayoutInstagram, textInputLayoutVerification, textInputLayoutCategory;
-    AutoCompleteTextView autoCompleteTextView;
-    TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
-    SearchableSpinner spCity;
-    Button btnSend, arrow, btnVerify, btnEdit;
-    LinearLayout hiddenView, linearSendInstagram;
-    CardView cardView;
-    LinearLayout layoutVerification;
-    MaterialCardView baseCardview;
-
+    private CircleImageView imageView;
+    private TextInputEditText edtName, edtUsername, edtEmail, edtPhone, edtPassword, edtConfirm, edtVerification, edtInstagram;
+    private TextInputLayout textInputLayoutInstagram, textInputLayoutVerification, textInputLayoutCategory;
+    private AutoCompleteTextView autoCompleteTextView;
+    private TextView tvStatus, tvFollower, tvCategory, tvFollowing, tvUsername, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType, tvScore;
+    private SearchableSpinner spCity;
+    private Button btnSend, arrow, btnVerify, btnEdit;
+    private LinearLayout hiddenView, linearSendInstagram;
+    private CardView cardView;
+    private LinearLayout layoutVerification;
+    private MaterialCardView baseCardview;
     private ArrayList<City> cities = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayAdapter<City> adapter;
@@ -149,6 +149,7 @@ public class ProfileFragment extends Fragment {
         if (activity.getIntent().hasExtra(CropActivity.TAG)) {
             imageUri = Uri.parse(activity.getIntent().getStringExtra(CropActivity.TAG));
             Bitmap thumbnail = null;
+
             try {
                 thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
                 thumbnail = getResizedBitmap(thumbnail, 600);
@@ -168,6 +169,7 @@ public class ProfileFragment extends Fragment {
                     edtInstagram.setError(getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (selectedCategory.equals("")) {
                     autoCompleteTextView.setError(getString(R.string.please_choose_category));
                     isValid = false;
@@ -178,6 +180,7 @@ public class ProfileFragment extends Fragment {
                     builder.setCancelable(false);
                     builder.setTitle(R.string.confirmation);
                     builder.setMessage(getString(R.string.msg_verification_ig, edtInstagram.getText().toString()));
+
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -185,6 +188,7 @@ public class ProfileFragment extends Fragment {
                             linearSendInstagram.setVisibility(View.GONE);
                         }
                     });
+
                     builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -224,6 +228,7 @@ public class ProfileFragment extends Fragment {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                     }
+
                     hiddenView.setVisibility(View.GONE);
                     arrow.setText(R.string.expand);
                 } else {
@@ -289,6 +294,7 @@ public class ProfileFragment extends Fragment {
         btnEdit = view.findViewById(R.id.btn_edit);
         linearSendInstagram = view.findViewById(R.id.linear_send_instagram);
         btnAddPhoto = view.findViewById(R.id.btn_add_photo);
+        tvScore = view.findViewById(R.id.tv_score);
     }
 
     private void bindData() {
@@ -354,21 +360,29 @@ public class ProfileFragment extends Fragment {
                         tvCategory.setText(socialMedia.getCategoryName());
                         layoutVerification.setVisibility(View.GONE);
                         baseCardview.setVisibility(View.VISIBLE);
+                        NumberFormat nf = NumberFormat.getInstance();
+                        nf.setMaximumFractionDigits(2);
+                        tvScore.setText(nf.format(calculateScore(socialMedia.getTotalFollower(), socialMedia.getTotalFollowing(), socialMedia.getTotalPost(), socialMedia.getTotalComment(), socialMedia.getTotalLike())));
 
                         String txtService = "";
                         ArrayList<String> services = new ArrayList<>();
+
                         if (socialMedia.getServiceBio() == 1) {
                             services.add(getString(R.string.bio));
                         }
+
                         if (socialMedia.getServicePost() == 1) {
                             services.add(getString(R.string.post));
                         }
+
                         if (socialMedia.getServiceStory() == 1) {
                             services.add(getString(R.string.story));
                         }
+
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             txtService = String.join(", ", services);
                         }
+
                         tvServiceType.setText(txtService);
                     }
                 } catch (Exception ex) {
@@ -388,6 +402,23 @@ public class ProfileFragment extends Fragment {
 
         loadCity();
         loadCategory();
+    }
+
+    private double calculateScore(int followers, int following, int totalPost, int totalComment, int totalLike) {
+        float followersDivFollowing = followers / following;
+        float postCommentLike = totalPost + totalComment + totalLike;
+
+        if (totalLike < totalComment) {
+            postCommentLike = postCommentLike - totalComment;
+        }
+
+        if (totalLike < totalPost) {
+            postCommentLike = postCommentLike - totalPost;
+        }
+
+        double total = postCommentLike / followersDivFollowing;
+
+        return total;
     }
 
     @Override
@@ -439,18 +470,22 @@ public class ProfileFragment extends Fragment {
                     edtName.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtUsername.getText().toString())) {
                     edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtEmail.getText().toString())) {
                     edtEmail.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtPhone.getText().toString())) {
                     edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (!edtConfirm.getText().toString().equals(edtPassword.getText().toString())) {
                     edtConfirm.setError(getResources().getString(R.string.password_doesnt_match));
                     isValid = false;
@@ -491,6 +526,7 @@ public class ProfileFragment extends Fragment {
                 builder.setCancelable(false);
                 builder.setTitle(R.string.confirmation);
                 builder.setMessage(R.string.msg_logout);
+
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -500,6 +536,7 @@ public class ProfileFragment extends Fragment {
                         getActivity().finishAffinity();
                     }
                 });
+
                 builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -526,12 +563,12 @@ public class ProfileFragment extends Fragment {
         SocialMedia.insert(getActivity(), user.getUsername(), 1, categoryCode, code, edtInstagram.getText().toString(), 0, 0, 0, 0, 0, 0, 0, 0, 0, "0", 1, 0, 0, "", true, new SocialMedia.Callback() {
             @Override
             public void success() {
-//                Global.showLoading(getContext(), getString(R.string.success), getString(R.string.info));
+
             }
 
             @Override
             public void error() {
-//                Global.showLoading(getContext(), getString(R.string.error), getString(R.string.info));
+
             }
         });
 
@@ -539,6 +576,7 @@ public class ProfileFragment extends Fragment {
         builder.setCancelable(true);
         builder.setTitle(R.string.info);
         builder.setMessage(R.string.msg_verification);
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -561,26 +599,26 @@ public class ProfileFragment extends Fragment {
         homeActivity.profileFragment();
     }
 
-    public void loadCity() {
+    private void loadCity() {
         City.select(getActivity(), new City.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
                 cities.clear();
                 int idx = 0;
+
                 for (int i = 0; i < data.length(); i++) {
                     try {
                         City city = new City(data.getJSONObject(i));
                         cities.add(city);
+
                         if (cities.get(i).getName().equalsIgnoreCase(cityName)) {
                             idx = i;
                         }
-//                        Log.d("RUNNNNN", "idx : " + i);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                /*Log.d("RUNNNNN", "city : " + cityName);
-                Log.d("RUNNNNN", "idxCity : " + idx);*/
+
                 adapter.notifyDataSetChanged();
                 spCity.setSelection(idx, true);
             }
@@ -592,7 +630,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void loadCategory() {
+    private void loadCategory() {
         Category.select(getActivity(), new Category.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
@@ -601,12 +639,10 @@ public class ProfileFragment extends Fragment {
                     try {
                         Category category = new Category(data.getJSONObject(i));
                         categories.add(category);
-//                        Log.d("RUNNNNN", "idx : " + i);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                Log.d("RUNNN", "Category count : " + categories.size());
             }
 
             @Override
@@ -616,14 +652,16 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public int getCode(String cityName) {
+    private int getCode(String cityName) {
         int index = -1;
+
         for (int i = 0; i < cities.size(); i++) {
             if (cities.get(i).getName().equals(cityName)) {
                 index = i;
                 break;
             }
         }
+
         return cities.get(index).getCode();
     }
 
@@ -694,8 +732,8 @@ public class ProfileFragment extends Fragment {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "New Picture");
                 values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                imageUri = activity.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                imageUri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraIntent.putExtra("android.intent.extras.CAMERA_FACING", 1);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -712,9 +750,6 @@ public class ProfileFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
                 try {
-//                    Bitmap thumbnail = MediaStore.Images.Media.getBitmap(activity.getContentResolver(), imageUri);
-//                    thumbnail = getResizedBitmap(thumbnail, 400);
-//                    uploadPicture(BitMapToString(thumbnail));
                     cropImage(imageUri);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -727,9 +762,6 @@ public class ProfileFragment extends Fragment {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-//                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-//                thumbnail = getResizedBitmap(thumbnail, 400);
-//                uploadPicture(BitMapToString(thumbnail));
                 cropImage(Uri.fromFile(new File(picturePath)));
             }
         }
@@ -758,7 +790,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public String BitMapToString(Bitmap userImage1) {
+    private String BitMapToString(Bitmap userImage1) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         userImage1.compress(Bitmap.CompressFormat.PNG, 60, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -766,11 +798,12 @@ public class ProfileFragment extends Fragment {
         return base64String;
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
         float bitmapRatio = (float) width / (float) height;
+
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
@@ -778,6 +811,7 @@ public class ProfileFragment extends Fragment {
             height = maxSize;
             width = (int) (height * bitmapRatio);
         }
+
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 }

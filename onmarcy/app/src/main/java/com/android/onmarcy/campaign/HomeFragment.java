@@ -57,9 +57,9 @@ import model.User;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    Activity activity;
-    RecyclerView rvCampaign;
-    FloatingActionButton floatingActionButton;
+    private Activity activity;
+    private RecyclerView rvCampaign;
+    private FloatingActionButton floatingActionButton;
     private ArrayList<Campaign> campaigns = new ArrayList<>();
     private ArrayList<Campaign> temp = new ArrayList<>();
     private CampaignAdapter campaignAdapter;
@@ -153,11 +153,13 @@ public class HomeFragment extends Fragment {
                 @Override
                 public boolean onQueryTextSubmit(String s) {
                     temp.clear();
+
                     for (int i = 0; i < campaigns.size(); i++) {
                         if (campaigns.get(i).getTitle().toUpperCase().contains(s.toUpperCase())) {
                             temp.add(campaigns.get(i));
                         }
                     }
+
                     campaignAdapter.notifyDataSetChanged();
 
                     if (temp.size() < 1) {
@@ -188,12 +190,14 @@ public class HomeFragment extends Fragment {
                 param.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
                 param.y = 110;
                 window.setAttributes(param);
+
                 filterDialog.onMyDialogResult = new FilterDialog.OnMyDialogResult() {
                     @Override
                     public void finish(int status, int lowest, int highest, int year) {
                         getFilteredCampaign(status, lowest, highest, year);
                     }
                 };
+
                 filterDialog.show();
                 break;
         }
@@ -207,6 +211,7 @@ public class HomeFragment extends Fragment {
                     public void success(JSONArray data) {
                         temp.clear();
                         campaigns.clear();
+
                         for (int i = 0; i < data.length(); i++) {
                             try {
                                 campaigns.add(new Campaign(data.getJSONObject(i)));
@@ -241,7 +246,7 @@ public class HomeFragment extends Fragment {
                         campaignAdapter.setOnItemCallback(new CampaignAdapter.OnItemCallback() {
                             @Override
                             public void onItemClicked(Campaign campaign) {
-                                Toast.makeText(activity, campaign.getTitle(), Toast.LENGTH_SHORT).show();
+
                             }
 
                             @Override
@@ -266,6 +271,7 @@ public class HomeFragment extends Fragment {
                                 builder.setCancelable(false);
                                 builder.setTitle(R.string.confirmation);
                                 builder.setMessage(R.string.msg_delete_campaign);
+
                                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -283,6 +289,7 @@ public class HomeFragment extends Fragment {
                                         });
                                     }
                                 });
+
                                 builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -299,6 +306,7 @@ public class HomeFragment extends Fragment {
                                 Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
                             }
                         });
+
                         rvCampaign.setAdapter(campaignAdapter);
                     }
 

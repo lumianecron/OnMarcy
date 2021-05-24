@@ -28,6 +28,8 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="popup_agreement">Please agree with our terms</string>
     <string name="register">register</string>
+    <string name="successfully_sent">Successfully sent</string>
+    <string name="please_check_your_email">Please check your email</string>
 
     <!--    Login-->
     <string name="login_to_your_account">LOGIN TO YOUR ACCOUNT</string>

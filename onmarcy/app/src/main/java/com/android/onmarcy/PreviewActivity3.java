@@ -70,8 +70,6 @@ public class PreviewActivity3 extends AppCompatActivity {
                         .load(pictures.get(position))
                         .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                         .into(imageView);
-
-                System.out.println(position);
             }
 
             public void onSwipeLeft() {
@@ -85,8 +83,6 @@ public class PreviewActivity3 extends AppCompatActivity {
                         .load(pictures.get(position))
                         .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                         .into(imageView);
-
-                System.out.println(position);
             }
         });
     }

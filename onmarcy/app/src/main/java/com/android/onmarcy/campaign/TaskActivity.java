@@ -78,7 +78,7 @@ public class TaskActivity extends AppCompatActivity {
         });
     }
 
-    private void setVisibility(){
+    private void setVisibility() {
         if (campaigns.size() == 0) {
             tvNotFound.setVisibility(View.VISIBLE);
         } else {

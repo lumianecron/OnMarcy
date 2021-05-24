@@ -38,6 +38,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
         rvPendingCampaign.setLayoutManager(new LinearLayoutManager(this));
         pendingCampaignAdapter = new PendingCampaignAdapter(campaigns);
         rvPendingCampaign.setAdapter(pendingCampaignAdapter);
+
         pendingCampaignAdapter.setOnItemCallBack(new PendingCampaignAdapter.OnItemCallBack() {
             @Override
             public void onLinkClicked(Campaign campaign) {
@@ -62,6 +63,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
             @Override
             public void success(JSONArray data) {
                 campaigns.clear();
+
                 for (int i = 0; i < data.length(); i++) {
                     try {
                         campaigns.add(new Campaign(data.getJSONObject(i)));
@@ -69,6 +71,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 pendingCampaignAdapter.notifyDataSetChanged();
 
                 if (campaigns.size() < 1) {

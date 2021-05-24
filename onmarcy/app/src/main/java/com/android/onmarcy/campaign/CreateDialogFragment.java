@@ -136,6 +136,7 @@ public class CreateDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
         bindView(getView());
+
         registerForContextMenu(autoCompleteTextView);
         autoCompleteTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,30 +185,37 @@ public class CreateDialogFragment extends DialogFragment {
                     edtTitle.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtMax.getText().toString())) {
                     edtMax.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtMin.getText().toString())) {
                     edtMin.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtTime.getText().toString())) {
                     edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtDuration.getText().toString())) {
                     edtDuration.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtPrice.getText().toString())) {
                     edtPrice.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (selectedCategory.equals("")) {
                     autoCompleteTextView.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtDate.getText().toString())) {
                     edtDate.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
@@ -228,7 +236,7 @@ public class CreateDialogFragment extends DialogFragment {
 
                 int max = (!edtMax.getText().toString().equals("")) ? Integer.parseInt(edtMax.getText().toString()) : 0;
                 int min = (!edtMin.getText().toString().equals("")) ? Integer.parseInt(edtMin.getText().toString()) : 0;
-                if(max < min){
+                if (max < min) {
                     edtMax.setError(getString(R.string.msg_age));
                     isValid = false;
                 }
@@ -409,15 +417,6 @@ public class CreateDialogFragment extends DialogFragment {
         }
     }
 
-    private String[] getArrayOfPath(ArrayList<String> base64String){
-        String[] arr = new String[base64String.size()];
-        for (int i = 0; i < base64String.size(); i++) {
-            arr[i] = base64String.get(i);
-        }
-
-        return arr;
-    }
-
     private void convertToBase64() throws IOException {
         for (int i = 0; i < picturePathListPost.size(); i++) {
             if (picturePathListPost.get(i).equals("")) {
@@ -473,7 +472,7 @@ public class CreateDialogFragment extends DialogFragment {
         }
     }
 
-    public void selectImage() {
+    private void selectImage() {
         final CharSequence[] options = {"Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Insert Picture");
@@ -537,18 +536,10 @@ public class CreateDialogFragment extends DialogFragment {
                             for (int i = 0; i < picturePathList.size(); i++) {
                                 picturePathListPost.add(picturePathList.get(i));
                             }
-
-                            for (int i = 0; i < picturePathListPost.size(); i++) {
-                                System.out.println("POST: " + picturePathListPost.get(i));
-                            }
                         } else {
                             picturePathListStory.clear();
                             for (int i = 0; i < picturePathList.size(); i++) {
                                 picturePathListStory.add(picturePathList.get(i));
-                            }
-
-                            for (int i = 0; i < picturePathListStory.size(); i++) {
-                                System.out.println("STORY: " + picturePathListStory.get(i));
                             }
                         }
                     }
@@ -559,7 +550,7 @@ public class CreateDialogFragment extends DialogFragment {
         }
     }
 
-    public String BitMapToString(Bitmap userImage1) {
+    private String BitMapToString(Bitmap userImage1) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         userImage1.compress(Bitmap.CompressFormat.PNG, 60, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -567,11 +558,11 @@ public class CreateDialogFragment extends DialogFragment {
         return base64String;
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
@@ -586,7 +577,7 @@ public class CreateDialogFragment extends DialogFragment {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         activity.getMenuInflater().inflate(R.menu.context_menu_category, menu);
-        menu.setHeaderTitle("Choose Category");
+        menu.setHeaderTitle(getString(R.string.choose_category));
 
         MenuItem.OnMenuItemClickListener listener = new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -617,7 +608,7 @@ public class CreateDialogFragment extends DialogFragment {
         return super.onContextItemSelected(item);
     }
 
-    public void loadCity() {
+    private void loadCity() {
         City.select(getActivity(), new City.CallbackSelect() {
             @Override
             public void success(JSONArray data) {

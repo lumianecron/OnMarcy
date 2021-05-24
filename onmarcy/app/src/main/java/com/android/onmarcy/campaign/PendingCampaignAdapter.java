@@ -23,7 +23,7 @@ public class PendingCampaignAdapter extends RecyclerView.Adapter<PendingCampaign
         this.campaigns = campaigns;
     }
 
-    public interface OnItemCallBack{
+    public interface OnItemCallBack {
         void onLinkClicked(Campaign campaign);
     }
 
@@ -47,9 +47,10 @@ public class PendingCampaignAdapter extends RecyclerView.Adapter<PendingCampaign
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         holder.tvPrice.setText(holder.itemView.getContext().getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
 
-        if(campaign.getNotes().equals("")){
+        if (campaign.getNotes().equals("")) {
             holder.tvDescription.setVisibility(View.GONE);
         }
+
         holder.tvDescription.setText(campaign.getNotes());
 
         holder.tvLink.setOnClickListener(view -> {
@@ -64,6 +65,7 @@ public class PendingCampaignAdapter extends RecyclerView.Adapter<PendingCampaign
 
     public class PendingCampaignViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvPrice, tvLink, tvDescription;
+
         public PendingCampaignViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);

@@ -44,11 +44,11 @@ import model.User;
  * create an instance of this fragment.
  */
 public class RegisterFragment extends Fragment {
-    TextInputEditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
-    TextView tvTerms;
-    Spinner spCity, spType;
-    CheckBox cbPolicy;
-    Button btnRegister;
+    private TextInputEditText edtEmail, edtUsername, edtPassword, edtConfirm, edtReferral, edtName, edtPhone;
+    private TextView tvTerms;
+    private Spinner spCity, spType;
+    private CheckBox cbPolicy;
+    private Button btnRegister;
     private ArrayList<City> cities = new ArrayList<>();
 
     public RegisterFragment() {
@@ -95,6 +95,7 @@ public class RegisterFragment extends Fragment {
 
             }
         });
+
         ArrayAdapter<City> cityAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, cities);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCity.setAdapter(cityAdapter);
@@ -116,26 +117,32 @@ public class RegisterFragment extends Fragment {
                         isValid = false;
                     }
                 }
+
                 if (TextUtils.isEmpty(edtUsername.getText().toString())) {
                     edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtPassword.getText().toString())) {
                     edtPassword.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtConfirm.getText().toString())) {
                     edtConfirm.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (!edtConfirm.getText().toString().equals(edtPassword.getText().toString())) {
                     edtConfirm.setError(getResources().getString(R.string.password_doesnt_match));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtName.getText().toString())) {
                     edtName.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtPhone.getText().toString())) {
                     edtPhone.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
@@ -174,7 +181,7 @@ public class RegisterFragment extends Fragment {
                             User.verifyEmail(getActivity(), edtUsername.getText().toString(), edtEmail.getText().toString(), false, new User.CallbackSelect() {
                                 @Override
                                 public void success(JSONObject data) {
-                                    Toast.makeText(getActivity(), "Please check your email", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.please_check_your_email), Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -182,7 +189,7 @@ public class RegisterFragment extends Fragment {
 
                                 }
                             });
-                            Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_SHORT).show();
+
                             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
                         }
 
@@ -191,7 +198,6 @@ public class RegisterFragment extends Fragment {
                             Toast.makeText(getActivity(), getString(R.string.fail), Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 } else {
                     Log.d("RUNNN", "attempt failed");
                 }
@@ -202,12 +208,14 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 TermsOfServiceDialog dialog = new TermsOfServiceDialog(getActivity());
+
                 dialog.dialogResult = new TermsOfServiceDialog.OnMyDialogResult() {
                     @Override
                     public void finish(boolean isClose) {
 
                     }
                 };
+
                 dialog.show();
             }
         });

@@ -18,9 +18,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class FilterDialog extends Dialog {
-    RadioButton rbActive, rbProgress, rbCompleted;
-    EditText edtLowest, edtHighest, edtYear;
-    LinearLayout containerStatus;
+    private RadioButton rbActive, rbProgress, rbCompleted;
+    private EditText edtLowest, edtHighest, edtYear;
+    private LinearLayout containerStatus;
     private int type;
     private int status;
     private int lowest, highest;
@@ -32,7 +32,7 @@ public class FilterDialog extends Dialog {
         this.type = type;
     }
 
-    public interface OnMyDialogResult{
+    public interface OnMyDialogResult {
         void finish(int status, int lowest, int highest, int year);
     }
 
@@ -41,7 +41,6 @@ public class FilterDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.filter_dialog);
-
         rbActive = findViewById(R.id.rb_active);
         rbProgress = findViewById(R.id.rb_progress);
         rbCompleted = findViewById(R.id.rb_completed);
@@ -50,19 +49,19 @@ public class FilterDialog extends Dialog {
         containerStatus = findViewById(R.id.container_status);
         edtYear = findViewById(R.id.edt_year);
 
-        if(this.type == 2){ //Marketer
+        if (this.type == 2) { //Marketer
             containerStatus.setVisibility(View.GONE);
         }
 
         findViewById(R.id.btn_filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rbActive.isChecked()) status = 1;
-                if(rbProgress.isChecked()) status = 2;
-                if(rbCompleted.isChecked()) status = 3;
+                if (rbActive.isChecked()) status = 1;
+                if (rbProgress.isChecked()) status = 2;
+                if (rbCompleted.isChecked()) status = 3;
                 lowest = (!TextUtils.isEmpty(edtLowest.getText().toString())) ? Integer.parseInt(edtLowest.getText().toString()) : Integer.MIN_VALUE;
                 highest = (!TextUtils.isEmpty(edtHighest.getText().toString())) ? Integer.parseInt(edtHighest.getText().toString()) : Integer.MAX_VALUE;
-                year  = (!TextUtils.isEmpty(edtYear.getText().toString())) ? Integer.parseInt(edtYear.getText().toString()) : 0;
+                year = (!TextUtils.isEmpty(edtYear.getText().toString())) ? Integer.parseInt(edtYear.getText().toString()) : 0;
                 onMyDialogResult.finish(status, lowest, highest, year);
                 dismiss();
             }

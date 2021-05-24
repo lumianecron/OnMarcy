@@ -36,11 +36,15 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         }
     }
 
-    public interface OnItemCallback{
+    public interface OnItemCallback {
         void onItemClicked(Campaign campaign);
+
         void showContent(Campaign campaign);
+
         void update(Campaign campaign);
+
         void delete(Campaign campaign);
+
         void showResult(Campaign campaign);
     }
 
@@ -64,45 +68,46 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         holder.tvPrice.setText(holder.itemView.getContext().getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
 
-        if(user.getUserType() == 2){
+        if (user.getUserType() == 2) {
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
         }
 
-        if(campaign.getStatus() == 1){
+        if (campaign.getStatus() == 1) {
             holder.tvStatus.setText(R.string.active);
-        }else if(campaign.getStatus() == 2){
+        } else if (campaign.getStatus() == 2) {
             holder.tvStatus.setText(R.string.on_progress);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
-        }else if(campaign.getStatus() == 3){
+        } else if (campaign.getStatus() == 3) {
             holder.tvStatus.setText(R.string.completed);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
             holder.linearResult.setVisibility(View.VISIBLE);
-        }else if(campaign.getStatus() == 4){
+        } else if (campaign.getStatus() == 4) {
             holder.tvStatus.setText(R.string.pending);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
-        }else if(campaign.getStatus() == 5){
+        } else if (campaign.getStatus() == 5) {
             holder.tvStatus.setText(R.string.accepted);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
             holder.linearResult.setVisibility(View.VISIBLE);
-        }else if(campaign.getStatus() == 6){
+        } else if (campaign.getStatus() == 6) {
             holder.tvStatus.setText(R.string.rejected);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
             holder.linearResult.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.tvStatus.setText(R.string.inactive);
             holder.linearUpdate.setVisibility(View.GONE);
             holder.linearDelete.setVisibility(View.GONE);
         }
 
-        if(campaign.getNotes().equals("")){
+        if (campaign.getNotes().equals("")) {
             holder.tvDescription.setVisibility(View.GONE);
         }
+
         holder.tvDescription.setText(campaign.getNotes());
 
         String[] date = campaign.getDate().split("-");
@@ -138,6 +143,7 @@ public class CampaignAdapter extends RecyclerView.Adapter<CampaignAdapter.Campai
         LinearLayout linearUpdate, linearDelete, linearResult;
         TextView tvTitle, tvPrice, tvStatus, tvDate, tvDescription;
         Button btnContent, btnUpdate, btnDelete, btnResult;
+
         public CampaignViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_title);

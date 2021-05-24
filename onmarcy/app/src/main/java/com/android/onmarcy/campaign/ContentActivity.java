@@ -185,11 +185,13 @@ public class ContentActivity extends AppCompatActivity {
                 try {
                     Campaign campaign = new Campaign(data.getJSONObject(0));
                     tvTitle.setText(campaign.getTitle());
+
                     if (campaign.getNotes().equals("")) {
                         tvDescription.setText("-");
                     } else {
                         tvDescription.setText(campaign.getNotes());
                     }
+
                     tvInstagram.setText(campaign.getBrandCode());
                     NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
                     tvPrice.setText(getResources().getString(R.string.price_format, nf.format(campaign.getPrice())));
@@ -200,16 +202,20 @@ public class ContentActivity extends AppCompatActivity {
                     tvDuration.setText(campaign.getDuration() + "");
                     tvCategory.setText(campaign.getCategoryName());
                     tvAge.setText(campaign.getAgeMin() + " - " + campaign.getAgeMax());
+
                     int gender = campaign.getGender();
                     if (gender == 1) tvGender.setText(getString(R.string.male));
                     if (gender == 2) tvGender.setText(getString(R.string.female));
                     if (gender == 3) tvGender.setText(getString(R.string.all));
+
                     tvLocation.setText(campaign.getCityName());
+
                     if (campaign.caption.equals("")) {
                         tvCaption.setText("-");
                     } else {
                         tvCaption.setText(campaign.caption);
                     }
+
                     if (campaign.bio.equals("")) {
                         tvBio.setText("-");
                     } else {
@@ -224,13 +230,13 @@ public class ContentActivity extends AppCompatActivity {
                     }
 
                     for (int i = 0; i < campaign.posts.length; i++) {
-                        if(!campaign.posts[i].equals("")){
+                        if (!campaign.posts[i].equals("")) {
                             picturesPost.add(campaign.posts[i]);
                         }
                     }
 
                     for (int i = 0; i < campaign.stories.length; i++) {
-                        if(!campaign.stories[i].equals("")){
+                        if (!campaign.stories[i].equals("")) {
                             picturesStory.add(campaign.stories[i]);
                         }
                     }

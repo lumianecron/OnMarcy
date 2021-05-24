@@ -34,8 +34,9 @@ public class MarketerAdapter extends RecyclerView.Adapter<MarketerAdapter.Market
         this.code = code;
     }
 
-    public interface OnItemCallback{
+    public interface OnItemCallback {
         void onItemClicked(User user);
+
         void accept(String username, int code);
     }
 
@@ -58,6 +59,7 @@ public class MarketerAdapter extends RecyclerView.Adapter<MarketerAdapter.Market
         User user = users.get(position);
         Approach approach = approaches.get(position);
         holder.tvUsername.setText(user.getUsername());
+
         if (user.getPhotoUrl().equals("")) {
             Glide.with(holder.itemView.getContext())
                     .load(R.drawable.person)
@@ -69,6 +71,7 @@ public class MarketerAdapter extends RecyclerView.Adapter<MarketerAdapter.Market
                     .apply(new RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888).override(Target.SIZE_ORIGINAL))
                     .into(holder.imgMarketer);
         }
+
         String[] arr = approach.getDate().split(" ");
         String[] dates = arr[0].split("-");
         String[] times = arr[1].split(":");
@@ -100,6 +103,7 @@ public class MarketerAdapter extends RecyclerView.Adapter<MarketerAdapter.Market
         TextView tvUsername, tvDate, tvNotes;
         CircleImageView imgMarketer;
         Button btnAccept;
+
         public MarketerAdapterViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             tvUsername = itemView.findViewById(R.id.tv_username);

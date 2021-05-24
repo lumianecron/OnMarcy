@@ -2,6 +2,7 @@ package com.android.onmarcy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ public class PreviewActivity2 extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.preview));
         img = findViewById(R.id.imageView);
 
-        if(getIntent().hasExtra(TAG)){
+        if (getIntent().hasExtra(TAG)) {
             url = getIntent().getStringExtra(TAG);
             Glide.with(this)
                     .load(url)

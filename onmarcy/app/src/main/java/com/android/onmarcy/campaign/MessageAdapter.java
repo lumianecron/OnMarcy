@@ -49,6 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
         holder.tvUsername.setText(message.getUsername());
         holder.tvMessage.setText(message.getMessage());
         holder.tvDate.setText(getIntervalDateTime(message.getDate()));
+
         if (message.getPhotoUrl().equals("")) {
             Glide.with(holder.itemView.getContext())
                     .load(R.drawable.person)
@@ -100,94 +101,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
             currentDatetime = mFormat.parse(currentTime);
 
             long diff = currentDatetime.getTime() - datetime.getTime();
-            long diffSeconds = diff / 1000 % 60;//TimeUnit.MILLISECONDS.toSeconds(diff);
-            long diffMinutes = diff / (60 * 1000) % 60;//TimeUnit.MILLISECONDS.toMinutes(diff);
-            long diffHours = diff / (60 * 60 * 1000) % 24;//TimeUnit.MILLISECONDS.toHours(diff);
-            long diffDays = diff / (24 * 60 * 60 * 1000);//TimeUnit.MILLISECONDS.toDays(diff);
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
             long diffWeeks = diff / (7 * 24 * 60 * 60 * 1000);
             long diffMonths = (diff / (7 * 24 * 60 * 60 * 1000) / 4);
             long diffYears = diff / (7 * 24 * 60 * 60 * 1000) / (4 * 12);
 
-//            boolean isMinute = false;
-//            boolean isHour = false;
-//            boolean isDay = false;
-//            boolean isWeek = false;
-//            boolean isMonth = false;
-//            boolean isYear = false;
-
-//            if (diffSeconds > 1 && diffSeconds < 60) {
-//                text = diffSeconds + " seconds ago";
-//            } else if (diffSeconds > 59) {
-//                isMinute = true;
-//            }
-//
-//            if (diffMinutes < 2 && isMinute) {
-//                text = diffMinutes + " minute ago";
-//            } else if (diffMinutes > 1 && diffMinutes < 60 && isMinute) {
-//                text = diffMinutes + " minutes ago";
-//            } else if (diffMinutes > 59) {
-//                isHour = true;
-//            }
-//
-//            if (diffHours < 2 && isHour) {
-//                text = diffHours + " hour ago";
-//            } else if (diffHours > 1 && diffHours < 24 && isHour) {
-//                text = diffHours + " hours ago";
-//            } else if (diffHours > 23) {
-//                isDay = true;
-//            }
-//
-//            if (diffDays < 2 && isDay) {
-//                text = diffDays + " day ago";
-//            } else if (diffDays > 1 && diffDays < 7 && isDay) {
-//                text = diffDays + " days ago";
-//            } else if (diffDays > 6 && isDay) {
-//                isWeek = true;
-//            }
-//
-//            if (diffWeeks < 2 && isWeek) {
-//                text = diffWeeks + " week ago";
-//            } else if (diffWeeks > 1 && diffWeeks < 4 && isWeek) {
-//                text = diffWeeks + " weeks ago";
-//            } else if (diffWeeks > 3 && isWeek) {
-//                isMonth = true;
-//            }
-//
-//            if (diffMonths < 2 && isMonth) {
-//                text = diffMonths + " month ago";
-//            } else if (diffMonths > 1 && diffMonths < 12 && isMonth) {
-//                text = diffMonths + " months ago";
-//            } else if (diffMonths > 11 && isMonth) {
-//                isYear = true;
-//            }
-//
-//            if (diffYears < 2 && isYear) {
-//                text = diffYears + " year ago";
-//            } else if (diffYears > 1 && isYear) {
-//                text = diffYears + " years ago";
-//            }
-
-            if(diffYears > 0){
-                if(diffYears == 1){
+            if (diffYears > 0) {
+                if (diffYears == 1) {
                     text = diffYears + " year ago";
-                }else{
+                } else {
                     text = diffYears + " years ago";
                 }
-            }else{
-                if(diffMonths > 0){
-                    if(diffMonths == 1){
+            } else {
+                if (diffMonths > 0) {
+                    if (diffMonths == 1) {
                         text = diffMonths + " month ago";
-                    }else{
+                    } else {
                         text = diffMonths + " months ago";
                     }
-                }else{
-                    if(diffWeeks > 0){
+                } else {
+                    if (diffWeeks > 0) {
                         if (diffWeeks == 1) {
                             text = diffWeeks + " week ago ";
                         } else {
                             text = diffWeeks + " weeks ago ";
                         }
-                    }else{
+                    } else {
                         if (diffDays > 0) {
                             if (diffDays == 1) {
                                 text = diffDays + " day ago ";

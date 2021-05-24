@@ -46,7 +46,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
         rvMarketer.setHasFixedSize(true);
         rvMarketer.setLayoutManager(new LinearLayoutManager(this));
 
-        if(getIntent().hasExtra(EXTRA_CODE)){
+        if (getIntent().hasExtra(EXTRA_CODE)) {
             code = getIntent().getIntExtra(EXTRA_CODE, 0);
             marketerAdapter = new MarketerAdapter(users, approaches, code);
         }
@@ -84,7 +84,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
         setVisibility();
     }
 
-    private void getMarketer(){
+    private void getMarketer() {
         Campaign.selectUserApproach(this, code, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
@@ -110,17 +110,17 @@ public class ViewMarketerActivity extends AppCompatActivity {
         });
     }
 
-    private void setVisibility(){
-        if(users.size() < 1){
+    private void setVisibility() {
+        if (users.size() < 1) {
             tvNotFound.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvNotFound.setVisibility(View.GONE);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }

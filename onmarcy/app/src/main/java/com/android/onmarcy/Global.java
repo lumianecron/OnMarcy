@@ -35,11 +35,12 @@ public class Global {
     private static int progressNow = 0;
 
     public static SharedPreferences sharedPreferences;
-    public enum SHARED_INDEX{
+
+    public enum SHARED_INDEX {
         USER,
     }
 
-    public Global(Context context){
+    public Global(Context context) {
         sharedPreferences = context.getSharedPreferences("shared", Context.MODE_PRIVATE);
     }
 
@@ -60,25 +61,23 @@ public class Global {
         editor.apply();
     }
 
-    public static void hideLoading()
-    {
-        if(loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
+    public static void hideLoading() {
+        if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
         progressMax = 0;
         progressNow = 0;
     }
 
-    public static void showLoading(Context _context, String _title, String _message)
-    {
-        if(loadingDialog != null && loadingDialog.isShowing()) return;
+    public static void showLoading(Context _context, String _title, String _message) {
+        if (loadingDialog != null && loadingDialog.isShowing()) return;
         loadingDialog = new ProgressDialog(_context);
-        if(!_title.equals("")) loadingDialog.setTitle(_title);
+        if (!_title.equals("")) loadingDialog.setTitle(_title);
         loadingDialog.setMessage(_message);
         loadingDialog.setCancelable(true);
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
     }
 
-    public static String executePost(String _targetURL, JSONObject _jsonObject, int _timeoutMiliSecond){
+    public static String executePost(String _targetURL, JSONObject _jsonObject, int _timeoutMiliSecond) {
         String url = "api-onmarcy.genoratory.com/";
         String hostUrl = "https://" + url;
 
@@ -95,7 +94,7 @@ public class Global {
             HttpConnectionParams.setTcpNoDelay(httpParameters, true);
 
             // 2. make POST request to the given URL
-            HttpPost httpPost = new HttpPost( hostUrl + _targetURL );
+            HttpPost httpPost = new HttpPost(hostUrl + _targetURL);
 
             // 3. convert JSONObject to JSON to String
             String json = _jsonObject.toString();
@@ -109,7 +108,7 @@ public class Global {
 
             // 6. set httpPost Entity
             httpPost.setEntity(stringEntity);
-//            Log.wtf("PARAMETER", new Gson().toJson(_jsonObject));
+            Log.wtf("PARAMETER", new Gson().toJson(_jsonObject));
 
             // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json");
@@ -122,11 +121,12 @@ public class Global {
             inputStream = httpResponse.getEntity().getContent();
 
             // 10. convert inputstream to string
-            if(inputStream != null) result = convertInputStreamToString(inputStream);
+            if (inputStream != null) result = convertInputStreamToString(inputStream);
             else result = "Did not work!";
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) { e.printStackTrace(); }
 
         // 11. return result
         Log.wtf("RESPONSE", result);
@@ -134,23 +134,23 @@ public class Global {
     }
 
     private static String convertInputStreamToString(InputStream _inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(_inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(_inputStream));
         String line;
         StringBuilder result = new StringBuilder();
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result.append(line);
 
         _inputStream.close();
         return result.toString();
     }
 
-    public static String convertToAsterisk(String _text, int startIndex){
+    public static String convertToAsterisk(String _text, int startIndex) {
         int offset = _text.length() - Math.abs(startIndex);
         String result = "";
-        if(offset < 0){
+        if (offset < 0) {
             return _text;
-        }else{
-            for(int i = 0; i < offset; i++){
+        } else {
+            for (int i = 0; i < offset; i++) {
                 result += "*";
             }
             result += _text.substring(offset, _text.length());
@@ -173,11 +173,11 @@ public class Global {
 
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
+            for (int i = 0; i < messageDigest.length; i++)
                 hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
 
             return hexString.toString();
-        }catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return "";

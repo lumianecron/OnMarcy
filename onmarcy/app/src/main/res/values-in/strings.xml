@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OnMarcy</string>
+
+    <string-array name="types">
+        <item>Brand</item>
+        <item>Marketer</item>
+    </string-array>
+
+    <string name="url">https://api-onmarcy.genoratory.com/</string>
+    <string name="url_host">checkout.xendit.co</string>
+
+    <!--    Register-->
+    <string name="email_format_is_not_valid">Format email tidak valid</string>
+    <string name="please_fill_out_this_field">Please fill out this field</string>
+    <string name="register_an_account">DAFTAR AKUN</string>
+    <string name="email_address">Alamat Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="re_enter_password">Masukkan Password Kembali</string>
+    <string name="password_doesnt_match">Password tidak cocok</string>
+    <string name="referral_code_optional">Referral Code (optional)</string>
+    <string name="personal_information">PERSONAL INFORMATION</string>
+    <string name="name">Nama</string>
+    <string name="phone">Telepon</string>
+    <string name="city">Kota</string>
+    <string name="account_type">Jenis Akun</string>
+    <string name="i_have_read_and_agree_to_the">I have read and agree to the</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="popup_agreement">Please agree with our terms</string>
+    <string name="register">register</string>
+    <string name="successfully_sent">Berhasil terkirim</string>
+    <string name="please_check_your_email">Tolong periksa email anda</string>
+
+    <!--    Login-->
+    <string name="login_to_your_account">LOGIN TO YOUR ACCOUNT</string>
+    <string name="don_t_have_an_account_yet">Belum punya akun?</string>
+    <string name="join_us">Gabung kita!</string>
+    <string name="login">login</string>
+    <string name="forgot_password">lupa password</string>
+
+    <!--    Profile-->
+    <string name="profile">Profil</string>
+    <string name="followers">Pengikut</string>
+    <string name="following">Mengikuti</string>
+    <string name="new_password">Password Baru</string>
+    <string name="select_city">Pilih Kota</string>
+    <string name="please_choose_city">Tolong pilih kota</string>
+    <string name="type_your_instagram">Ketikkan Instagram anda</string>
+    <string name="send">Kirim</string>
+    <string name="submit">submit</string>
+    <string name="verified">Verified</string>
+    <string name="pending">Pending</string>
+    <string name="total_post">Total post</string>
+    <string name="total_comment">Total comment</string>
+    <string name="total_like">Total like</string>
+    <string name="minimum_age">Umur minimal</string>
+    <string name="maximum_age">Umur maksimal</string>
+    <string name="time_posting">Waktu posting</string>
+    <string name="service_type">Jenis servis</string>
+    <string name="female">Perempuan</string>
+    <string name="verification_code">Kode verifikasi</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
+    <string name="category">Kategori</string>
+    <string name="verify">Verify</string>
+    <string name="bio">Bio</string>
+    <string name="post">Post</string>
+    <string name="story">Story</string>
+    <string name="edit">Ubah</string>
+    <string name="update_instagram">Update Instagram</string>
+    <string name="pending_campaign">Pending Campaign</string>
+    <string name="please_choose_category">Tolong pilih kategori</string>
+    <string name="msg_choose_service">Tolong pilih setidaknya 1 servis</string>
+    <string name="logout">Keluar</string>
+
+    <!--    Create Campaign-->
+    <string name="create_campaign">Buat Campaign</string>
+    <string name="title">Judul</string>
+    <string name="male">Laki-laki</string>
+    <string name="all">Semua</string>
+    <string name="notes">Catatan</string>
+    <string name="select_time">Pilih waktu</string>
+    <string name="duration">Durasi</string>
+    <string name="price">Harga</string>
+    <string name="create">Buat</string>
+    <string name="choose_category">Pilih Kategori</string>
+    <string name="campaign_description">DESKRIPSI CAMPAIGN</string>
+    <string name="msg_age">Umur maksimal harus lebih besar</string>
+
+    <!--    List Campaign-->
+    <string name="campaigns">Campaigns</string>
+    <string name="active">Aktif</string>
+    <string name="on_progress">Sedang dilakukan</string>
+    <string name="completed">Selesai</string>
+    <string name="accepted">Diterima</string>
+    <string name="rejected">Ditolak</string>
+    <string name="inactive">Tidak Aktif</string>
+    <string name="price_format">Rp. %1$s,00</string>
+    <string name="delete">Hapus</string>
+    <string name="update">Ubah</string>
+    <string name="content">Konten</string>
+    <string name="view_result">Lihat Hasil</string>
+    <string name="no_result_found">Hasil Tidak Ditemukan</string>
+    <string name="date">%1$s-%2$s-%3$s</string>
+    <string name="datetime">%1$s-%2$s-%3$s %4$s:%5$s</string>
+
+    <!--    Menu Item-->
+    <string name="home">Home</string>
+    <string name="lists">Lists</string>
+    <string name="chat">Chat</string>
+    <string name="history">History</string>
+
+    <!--    Filter-->
+    <string name="lowest_price">Harga Terendah</string>
+    <string name="highest_price">Harga Tertinggi</string>
+    <string name="filter">Filter</string>
+    <string name="search">Cari</string>
+    <string name="search_campaign">Cari Campaign</string>
+
+    <!--    Confirmation Dialog-->
+    <string name="msg_back">Apakah anda yakin ingin keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="msg_verification">Tolong tunggu setidaknya 24 jam untuk kode verifikasi yang akan dikirimkan ke Instagram anda</string>
+    <string name="info">INFO</string>
+    <string name="ok">OK</string>
+    <string name="msg_logout">Anda yakin ingin keluar?</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="msg_delete_campaign">Anda yakin ingin menghapus campaign?</string>
+    <string name="msg_verification_ig">Apakah anda yakin %1$s adalah akun Instagram anda?</string>
+
+    <!--    Toast-->
+    <string name="success">Sukses</string>
+    <string name="fail">Gagal</string>
+    <string name="login_successful">Login berhasil!</string>
+    <string name="login_unsuccessful">Login tidak berhasil!</string>
+    <string name="error">error</string>
+    <string name="verification_success">Verifikasi sukses</string>
+    <string name="verification_fail">Verifikasi gagal</string>
+    <string name="update_unsuccessful">Update tidak berhasil</string>
+    <string name="update_successful">Update berhasil</string>
+
+    <!--    Category Item-->
+    <string name="category1"><![CDATA[Business & Industry]]></string>
+    <string name="category2">Entertainment</string>
+    <string name="category3"><![CDATA[Family & Relationships]]></string>
+    <string name="category4"><![CDATA[Fitness & Wellness]]></string>
+    <string name="category5"><![CDATA[Food & Beverages]]></string>
+    <string name="category6"><![CDATA[Hobbies & Activities]]></string>
+    <string name="category7"><![CDATA[Shopping & Fashion]]></string>
+    <string name="category8"><![CDATA[Sports & Outdoors]]></string>
+    <string name="category9">Technology</string>
+
+    <!--    Content-->
+    <string name="description">Deskripsi</string>
+    <string name="brand">Brand</string>
+    <string name="instagram_username">Instagram Username</string>
+    <string name="date_posting">Tanggal Posting</string>
+    <string name="upload_time">Waktu Upload</string>
+    <string name="age">Umur</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="location">Lokasi</string>
+    <string name="details">Detail</string>
+    <string name="target_market">Target Market</string>
+    <string name="update_campaign">Update Campaign</string>
+    <string name="TARGET_MARKET">TARGET MARKET</string>
+
+    <string name="payment">Pembayaran</string>
+
+    <!--    Photo-->
+    <string name="take_a_photo">Ambil Foto</string>
+    <string name="choose_from_gallery">Pilih dari Galeri</string>
+    <string name="remove_photo">Hapus Foto</string>
+    <string name="cancel">Batal</string>
+    <string name="insert_picture">Masukkan Gambar</string>
+    <string name="msg_save_changes">Simpan perubahan?</string>
+    <string name="save">Simpan</string>
+    <string name="discard">Batalkan</string>
+    <string name="upload_content">UPLOAD KONTEN</string>
+    <string name="caption">Caption</string>
+    <string name="link_in_bio">Link In Bio</string>
+    <string name="preview">Preview</string>
+    <string name="msg_limit">Batas %1$d foto</string>
+
+    <string name="your_task">Tugas Anda</string>
+
+    <!--    Proof-->
+    <string name="upload_screenshot">Upload Screenshot</string>
+    <string name="result">Hasil</string>
+    <string name="total_save">Total save</string>
+    <string name="total_reach">Total reach</string>
+    <string name="total_engagement">Total engagement</string>
+    <string name="total_impression">Total impression</string>
+    <string name="accept">Terima</string>
+    <string name="list_marketer">List Marketer</string>
+    <string name="detail_result">Detail Hasil</string>
+    <string name="view_details">Lihat Detail</string>
+    <string name="add_a_comment">Tambahkan komentar</string>
+    <string name="comment">Komentar</string>
+    <string name="approach">Approach</string>
+    <string name="view_comments">Lihat komentar</string>
+    <string name="comments">Komentar</string>
+
+</resources>

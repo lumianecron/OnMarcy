@@ -52,7 +52,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
         getMessages();
     }
 
-    private void getMessages(){
+    private void getMessages() {
         Message.select(this, code, new Message.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
@@ -77,7 +77,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }

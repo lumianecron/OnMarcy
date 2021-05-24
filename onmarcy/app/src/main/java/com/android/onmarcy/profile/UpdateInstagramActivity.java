@@ -64,7 +64,7 @@ public class UpdateInstagramActivity extends AppCompatActivity {
         });
     }
 
-    private void bindView(){
+    private void bindView() {
         edtFollowers = findViewById(R.id.edt_followers);
         edtFollowing = findViewById(R.id.edt_following);
         edtTotalPost = findViewById(R.id.edt_total_post);
@@ -80,7 +80,7 @@ public class UpdateInstagramActivity extends AppCompatActivity {
         cbStory = findViewById(R.id.cb_story);
     }
 
-    private void bindData(){
+    private void bindData() {
         SocialMedia.select(this, new SocialMedia.CallbackSelect() {
             @Override
             public void success(JSONObject jsonObject) {
@@ -98,20 +98,22 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     edtTime.setText(socialMedia.getTimePosting() + "");
 
                     codeSocialMedia = socialMedia.getCode() + "";
-                    if(socialMedia.getServiceBio() == 1){
+
+                    if (socialMedia.getServiceBio() == 1) {
                         cbBio.setChecked(true);
                         bioService = 1;
                     }
-                    if(socialMedia.getServicePost() == 1){
+
+                    if (socialMedia.getServicePost() == 1) {
                         cbPost.setChecked(true);
                         postService = 1;
                     }
-                    if(socialMedia.getServiceStory() == 1){
+
+                    if (socialMedia.getServiceStory() == 1) {
                         cbStory.setChecked(true);
                         storyService = 1;
                     }
                 } catch (Exception ex) {
-                    Toast.makeText(UpdateInstagramActivity.this, ex + "", Toast.LENGTH_SHORT).show();
                     Log.d("RUNNN", ex + "");
                 }
             }
@@ -138,43 +140,53 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     edtFollowers.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtFollowing.getText().toString())) {
                     edtFollowing.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtTotalPost.getText().toString())) {
                     edtTotalPost.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtTotalComment.getText().toString())) {
                     edtTotalComment.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtTotalLike.getText().toString())) {
                     edtTotalLike.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtMin.getText().toString())) {
                     edtMin.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtMax.getText().toString())) {
                     edtMax.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtMale.getText().toString())) {
                     edtMale.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtFemale.getText().toString())) {
                     edtFemale.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
+
                 if (TextUtils.isEmpty(edtTime.getText().toString())) {
                     edtTime.setError(getResources().getString(R.string.please_fill_out_this_field));
                     isValid = false;
                 }
-                if(!cbBio.isChecked() && !cbPost.isChecked() && !cbStory.isChecked()){
+
+                if (!cbBio.isChecked() && !cbPost.isChecked() && !cbStory.isChecked()) {
                     Toast.makeText(this, getString(R.string.msg_choose_service), Toast.LENGTH_SHORT).show();
                     isValid = false;
                 }
@@ -184,45 +196,45 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     postService = (cbPost.isChecked()) ? 1 : 0;
                     storyService = (cbStory.isChecked()) ? 1 : 0;
                     SocialMedia.update_info(UpdateInstagramActivity.this,
-                        "",
-                        1,
-                        Integer.parseInt(edtTotalPost.getText().toString()),
-                        Integer.parseInt(edtFollowers.getText().toString()),
-                        Integer.parseInt(edtFollowing.getText().toString()),
-                        Integer.parseInt(edtTotalComment.getText().toString()),
-                        Integer.parseInt(edtTotalLike.getText().toString()),
-                        Integer.parseInt(edtMin.getText().toString()),
-                        Integer.parseInt(edtMax.getText().toString()),
-                        Integer.parseInt(edtMale.getText().toString()),
-                        Integer.parseInt(edtFemale.getText().toString()),
-                        edtTime.getText().toString(),
-                        postService,
-                        storyService,
-                        bioService,
-                        codeSocialMedia,
-                        false,
-                        new SocialMedia.Callback(){
-                            @Override
-                            public void success() {
-                                Toast.makeText(UpdateInstagramActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
-//                                UpdateInstagramActivity.super.onBackPressed();
-                                Intent intent = new Intent(UpdateInstagramActivity.this, HomeActivity.class);
-                                intent.putExtra(HomeActivity.TAG, true);
-                                startActivity(intent);
-                                finishAffinity();
-                            }
+                            "",
+                            1,
+                            Integer.parseInt(edtTotalPost.getText().toString()),
+                            Integer.parseInt(edtFollowers.getText().toString()),
+                            Integer.parseInt(edtFollowing.getText().toString()),
+                            Integer.parseInt(edtTotalComment.getText().toString()),
+                            Integer.parseInt(edtTotalLike.getText().toString()),
+                            Integer.parseInt(edtMin.getText().toString()),
+                            Integer.parseInt(edtMax.getText().toString()),
+                            Integer.parseInt(edtMale.getText().toString()),
+                            Integer.parseInt(edtFemale.getText().toString()),
+                            edtTime.getText().toString(),
+                            postService,
+                            storyService,
+                            bioService,
+                            codeSocialMedia,
+                            false,
+                            new SocialMedia.Callback() {
+                                @Override
+                                public void success() {
+                                    Toast.makeText(UpdateInstagramActivity.this, getString(R.string.success), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(UpdateInstagramActivity.this, HomeActivity.class);
+                                    intent.putExtra(HomeActivity.TAG, true);
+                                    startActivity(intent);
+                                    finishAffinity();
+                                }
 
-                            @Override
-                            public void error() {
-                                Toast.makeText(UpdateInstagramActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void error() {
+                                    Toast.makeText(UpdateInstagramActivity.this, getString(R.string.fail), Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
                 break;
             case android.R.id.home:
                 super.onBackPressed();
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

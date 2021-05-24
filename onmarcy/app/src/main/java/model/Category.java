@@ -21,10 +21,11 @@ public class Category {
 
     public interface CallbackSelect {
         void success(JSONArray data);
+
         void error();
     }
 
-    public Category(JSONObject json){
+    public Category(JSONObject json) {
         try {
             this.code = json.has("code") ? json.getInt("code") : 0;
             this.name = json.has("name") ? json.getString("name") : "";
@@ -52,8 +53,9 @@ public class Category {
             try {
                 User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
                 jsonObject.put("hash", user.getHash());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            catch (JSONException e) { e.printStackTrace(); }
             return Global.executePost(urls[0], jsonObject, 3000);
         }
 

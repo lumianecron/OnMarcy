@@ -71,12 +71,14 @@ public class WebDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(getView());
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
         });
+
         toolbar.setTitle(R.string.payment);
 
         webView.loadUrl(link);
@@ -89,6 +91,7 @@ public class WebDialogFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
+
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setWindowAnimations(R.style.AppTheme_Slide);
@@ -98,10 +101,10 @@ public class WebDialogFragment extends DialogFragment {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            // Kalau host URL cocok maka return false agar tidak mengganti pemuatan URL
-            if(getString(R.string.url_host).equals(Uri.parse(url).getHost())){
+            if (getString(R.string.url_host).equals(Uri.parse(url).getHost())) {
                 return false;
             }
+
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
             return true;
@@ -110,12 +113,12 @@ public class WebDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new Dialog(getActivity(), getTheme()){
+        return new Dialog(getActivity(), getTheme()) {
             @Override
             public void onBackPressed() {
                 if (webView.canGoBack()) {
                     webView.goBack();
-                }else{
+                } else {
                     dismiss();
                 }
             }

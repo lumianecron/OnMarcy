@@ -38,35 +38,37 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Button back action
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this).setCancelable(false);
                 alert.setMessage(R.string.msg_back);
+
                 alert.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Close the app
                         finishAffinity();
                     }
                 });
+
                 alert.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // Do nothing
+
                     }
                 });
+
                 AlertDialog alertDialog = alert.create();
                 alertDialog.show();
             }
         };
+
         getOnBackPressedDispatcher().addCallback(this, callback);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_home:
                         fragment = HomeFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
@@ -87,18 +89,18 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             fragment = HomeFragment.newInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
             getSupportActionBar().setTitle(R.string.app_name);
         }
 
-        if(getIntent().hasExtra(TAG)){
+        if (getIntent().hasExtra(TAG)) {
             bottomNavigationView.setSelectedItemId(R.id.menu_profile);
         }
     }
 
-    public void profileFragment(){
+    public void profileFragment() {
         fragment = ProfileFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         getSupportActionBar().setTitle(R.string.profile);

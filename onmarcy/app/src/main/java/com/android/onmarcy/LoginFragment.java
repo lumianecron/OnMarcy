@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindView(view);
-        JSONObject jsonObject = new JSONObject();
+
         try {
             User user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
             if (!user.getUsername().equals("")) {
@@ -75,12 +75,6 @@ public class LoginFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-//        edtUsername.setText("lumia");
-//        edtPassword.setText(("12345678"));
-
-        edtUsername.setText("enjirou");
-        edtPassword.setText(("12345678"));
 
         tvJoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +87,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 boolean success = true;
+
                 if (TextUtils.isEmpty(edtUsername.getText().toString())) {
                     edtUsername.setError(getResources().getString(R.string.please_fill_out_this_field));
                     success = false;
                 }
+
                 if (TextUtils.isEmpty(edtPassword.getText().toString())) {
                     edtPassword.setError(getResources().getString(R.string.please_fill_out_this_field));
                     success = false;
@@ -110,8 +106,6 @@ public class LoginFragment extends Fragment {
                         public void success(JSONObject data) {
                             User user = new User(data);
                             Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
-                            Log.d("RUNNN", "username : " + user.getUsername());
-//                            Global.showLoading(getActivity(), "INFO", "Login successful!");
                             Toast.makeText(getActivity(), getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                             startActivity(intent);
@@ -131,13 +125,14 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ForgotPasswordDialog forgotPasswordDialog = new ForgotPasswordDialog(getActivity());
+
                 forgotPasswordDialog.onMyDialogResult = new ForgotPasswordDialog.OnMyDialogResult() {
                     @Override
                     public void finish(String email) {
                         User.forgotPassword(getActivity(), email, false, new User.CallbackSelect() {
                             @Override
                             public void success(JSONObject data) {
-                                Toast.makeText(getActivity(), "Successfully sent", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), getString(R.string.successfully_sent), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -147,6 +142,7 @@ public class LoginFragment extends Fragment {
                         });
                     }
                 };
+
                 forgotPasswordDialog.show();
             }
         });

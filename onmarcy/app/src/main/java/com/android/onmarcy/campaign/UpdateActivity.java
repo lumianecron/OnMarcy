@@ -98,8 +98,10 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        if (getIntent().hasExtra(EXTRA_CAMPAIGN))
+        if (getIntent().hasExtra(EXTRA_CAMPAIGN)){
             campaign = getIntent().getParcelableExtra(EXTRA_CAMPAIGN);
+        }
+
         bindView();
         bindData();
 
@@ -200,7 +202,7 @@ public class UpdateActivity extends AppCompatActivity {
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.context_menu_category, menu);
-        menu.setHeaderTitle("Choose Category");
+        menu.setHeaderTitle(getString(R.string.choose_category));
 
         MenuItem.OnMenuItemClickListener listener = new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -283,7 +285,7 @@ public class UpdateActivity extends AppCompatActivity {
 
                 int max = (!edtMax.getText().toString().equals("")) ? Integer.parseInt(edtMax.getText().toString()) : 0;
                 int min = (!edtMin.getText().toString().equals("")) ? Integer.parseInt(edtMin.getText().toString()) : 0;
-                if(max < min){
+                if (max < min) {
                     edtMax.setError(getString(R.string.msg_age));
                     isValid = false;
                 }
@@ -371,15 +373,6 @@ public class UpdateActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String[] getArrayOfPath(ArrayList<String> base64String){
-        String[] arr = new String[base64String.size()];
-        for (int i = 0; i < base64String.size(); i++) {
-            arr[i] = base64String.get(i);
-        }
-
-        return arr;
-    }
-
     private void convertToBase64() throws IOException {
         for (int i = 0; i < picturePathListPost.size(); i++) {
             if (picturePathListPost.get(i).equals("")) {
@@ -418,7 +411,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
-    public void verifyStoragePermissions(Activity activity) {
+    private void verifyStoragePermissions(Activity activity) {
         permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
@@ -436,19 +429,19 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     public void selectImage() {
-        final CharSequence[] options = {"Choose from Gallery", "Cancel"};
+        final CharSequence[] options = {getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
-        builder.setTitle("Insert Picture");
+        builder.setTitle(getString(R.string.insert_picture));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Choose from Gallery")) {
+                if (options[item].equals(getString(R.string.choose_from_gallery))) {
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     intent.setAction(Intent.ACTION_PICK);
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-                } else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -499,18 +492,10 @@ public class UpdateActivity extends AppCompatActivity {
                             for (int i = 0; i < picturePathList.size(); i++) {
                                 picturePathListPost.add(picturePathList.get(i));
                             }
-
-                            for (int i = 0; i < picturePathListPost.size(); i++) {
-                                System.out.println("POST: " + picturePathListPost.get(i));
-                            }
                         } else {
                             picturePathListStory.clear();
                             for (int i = 0; i < picturePathList.size(); i++) {
                                 picturePathListStory.add(picturePathList.get(i));
-                            }
-
-                            for (int i = 0; i < picturePathListStory.size(); i++) {
-                                System.out.println("STORY: " + picturePathListStory.get(i));
                             }
                         }
                     }
@@ -521,7 +506,7 @@ public class UpdateActivity extends AppCompatActivity {
         }
     }
 
-    public String BitMapToString(Bitmap userImage1) {
+    private String BitMapToString(Bitmap userImage1) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         userImage1.compress(Bitmap.CompressFormat.PNG, 60, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -529,11 +514,11 @@ public class UpdateActivity extends AppCompatActivity {
         return base64String;
     }
 
-    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+    private Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
@@ -606,6 +591,7 @@ public class UpdateActivity extends AppCompatActivity {
             public void success(JSONArray data) {
                 cities.clear();
                 int index = 0;
+
                 for (int i = 0; i < data.length(); i++) {
                     try {
                         City city = new City(data.getJSONObject(i));
@@ -617,6 +603,7 @@ public class UpdateActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 adapter.notifyDataSetChanged();
                 spCity.setSelection(index, true);
             }

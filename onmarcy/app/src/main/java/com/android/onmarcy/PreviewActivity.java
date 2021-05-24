@@ -28,7 +28,7 @@ public class PreviewActivity extends AppCompatActivity {
     private ArrayList<String> picturePathList = new ArrayList<>();
     private int position = 0;
     private int mode = 0;
-    Uri imageUri;
+    private Uri imageUri;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

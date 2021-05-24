@@ -53,11 +53,13 @@ public class ViewResultActivity extends AppCompatActivity {
 
         tvTitle.setText(campaign.getTitle());
         tvBrand.setText(campaign.getBrandName());
+
         if (campaign.getNotes().equals("")) {
             tvDesc.setText("-");
         } else {
             tvDesc.setText(campaign.getNotes());
         }
+
         NumberFormat nf = NumberFormat.getInstance(new Locale("da", "DK"));
         tvPrice.setText(getString(R.string.price_format, nf.format(campaign.getPrice())));
 
@@ -128,7 +130,7 @@ public class ViewResultActivity extends AppCompatActivity {
     }
 
     private void setVisibility(String post, String story, String bio) {
-        if(!post.equals("null") || !story.equals("null") || !bio.equals("null")){
+        if (!post.equals("null") || !story.equals("null") || !bio.equals("null")) {
             linearLayoutUploadScreenshot.setVisibility(View.VISIBLE);
         }
 
@@ -159,7 +161,7 @@ public class ViewResultActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
