@@ -73,7 +73,7 @@ public class SocialMedia {
     @SerializedName("service_bio")
     private int serviceBio;
 
-    @SerializedName("status_verifiy")
+    @SerializedName("status_verify")
     private int statusVerify;
 
     @SerializedName("grade")
