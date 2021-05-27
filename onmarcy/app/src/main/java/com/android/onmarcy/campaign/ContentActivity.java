@@ -59,7 +59,7 @@ public class ContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
-        getSupportActionBar().setTitle(getString(R.string.content));
+        getSupportActionBar().setTitle(getString(R.string.Detail_Campaign));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindView();
 

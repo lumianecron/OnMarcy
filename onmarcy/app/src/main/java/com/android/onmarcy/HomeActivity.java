@@ -71,17 +71,17 @@ public class HomeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.menu_home:
                         fragment = HomeFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
                         getSupportActionBar().setTitle(R.string.app_name);
                         return true;
                     case R.id.menu_profile:
                         fragment = ProfileFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
                         getSupportActionBar().setTitle(R.string.profile);
                         return true;
                     case R.id.menu_history:
                         fragment = HistoryFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
                         getSupportActionBar().setTitle(R.string.history);
                         return true;
                 }
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             fragment = HomeFragment.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
             getSupportActionBar().setTitle(R.string.app_name);
         }
 
@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void profileFragment() {
         fragment = ProfileFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
         getSupportActionBar().setTitle(R.string.profile);
     }
 }

@@ -405,15 +405,19 @@ public class ProfileFragment extends Fragment {
     }
 
     private double calculateScore(int followers, int following, int totalPost, int totalComment, int totalLike) {
-        float followersDivFollowing = followers / following;
-        float postCommentLike = totalPost + totalComment + totalLike;
+        double followersDivFollowing = (followers + following)/((followers + following)/10);
+        int postCommentLike = totalPost + totalComment + totalLike;
+
+        if(followersDivFollowing < 0){
+            followersDivFollowing *= -1;
+        }
 
         if (totalLike < totalComment) {
-            postCommentLike = postCommentLike - totalComment;
+            postCommentLike = postCommentLike - (totalComment/5);
         }
 
         if (totalLike < totalPost) {
-            postCommentLike = postCommentLike - totalPost;
+            postCommentLike = postCommentLike - (totalPost/5);
         }
 
         double total = postCommentLike / followersDivFollowing;

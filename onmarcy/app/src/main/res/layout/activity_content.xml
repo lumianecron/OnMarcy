@@ -213,7 +213,7 @@
 
                 <TextView
                     style="@style/subtitle"
-                    android:text="@string/upload_content"
+                    android:text="@string/Upload_Content"
                     android:textStyle="bold" />
 
                 <LinearLayout

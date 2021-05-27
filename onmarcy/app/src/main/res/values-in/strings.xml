@@ -161,10 +161,12 @@
     <string name="age">Umur</string>
     <string name="gender">Jenis Kelamin</string>
     <string name="location">Lokasi</string>
-    <string name="details">Detail</string>
-    <string name="target_market">Target Market</string>
+    <string name="details">Details</string>
+    <string name="target_market">Target Pemasaran</string>
     <string name="update_campaign">Update Campaign</string>
-    <string name="TARGET_MARKET">TARGET MARKET</string>
+    <string name="TARGET_MARKET">TARGET PEMASARAN</string>
+    <string name="Upload_Content">Upload Konten</string>
+    <string name="Detail_Campaign">Detail Campaign</string>
 
     <string name="payment">Pembayaran</string>
 
