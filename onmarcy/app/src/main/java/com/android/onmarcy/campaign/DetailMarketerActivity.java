@@ -3,12 +3,15 @@ package com.android.onmarcy.campaign;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.android.onmarcy.R;
+import com.android.onmarcy.profile.PortfolioActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
@@ -29,6 +32,7 @@ public class DetailMarketerActivity extends AppCompatActivity {
     public static final String EXTRA_NAME = "name";
     public static final String EXTRA_PHOTO = "photo";
     private String username, name, photo;
+    private SocialMedia socialMedia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +55,7 @@ public class DetailMarketerActivity extends AppCompatActivity {
         SocialMedia.detail(this, username, new SocialMedia.CallbackSelect() {
             @Override
             public void success(JSONObject jsonObject) {
-                SocialMedia socialMedia = new SocialMedia(jsonObject);
+                socialMedia = new SocialMedia(jsonObject);
                 tvUsername.setText(socialMedia.getId());
                 tvCategory.setText(socialMedia.getCategoryName());
                 tvFollowers.setText(String.valueOf(socialMedia.getTotalFollower()));
@@ -109,10 +113,23 @@ public class DetailMarketerActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_portfolio, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.item_portfolio:
+                Intent intent = new Intent(this, PortfolioActivity.class);
+                intent.putExtra(PortfolioActivity.TAG, socialMedia.getCode());
+                intent.putExtra(PortfolioActivity.TAG2, true);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

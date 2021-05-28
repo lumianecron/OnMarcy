@@ -203,5 +203,10 @@
     <string name="approach">Approach</string>
     <string name="view_comments">Lihat komentar</string>
     <string name="comments">Komentar</string>
+    <string name="submission">Pengumpulan</string>
+    <string name="portfolio">Portofolio</string>
+    <string name="no_image_found">Gambar tidak ditemukan</string>
+    <string name="msg_add_portfolio">Portofolio berhasil ditambahkan</string>
+    <string name="msg_delete_portfolio">Apakah anda yakin menghapus portofolio ini</string>
 
 </resources>

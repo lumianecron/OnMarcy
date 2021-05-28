@@ -279,7 +279,12 @@ public class ContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.view_marketer_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.item_view_marketer);
+        if(user.getUserType() == 2){
+            menuItem.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

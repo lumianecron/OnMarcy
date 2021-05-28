@@ -19,4 +19,8 @@
     <item
         android:id="@+id/item_your_task"
         android:title="@string/your_task" />
+
+    <item
+        android:id="@+id/item_portfolio"
+        android:title="Portfolio" />
 </menu>

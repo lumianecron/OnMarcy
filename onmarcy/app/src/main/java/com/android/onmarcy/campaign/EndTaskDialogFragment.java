@@ -108,6 +108,7 @@ public class EndTaskDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         activity = getActivity();
+
         bindView(getView());
         bindData();
 
@@ -118,6 +119,7 @@ public class EndTaskDialogFragment extends DialogFragment {
                     dismiss();
                 }
             });
+            toolbar.setTitle(R.string.submission);
             toolbar.inflateMenu(R.menu.menu_crop);
             toolbar.setOnMenuItemClickListener(item -> {
                 boolean isValid = true;

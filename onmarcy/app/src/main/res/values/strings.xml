@@ -202,5 +202,10 @@
     <string name="approach">Approach</string>
     <string name="view_comments">View comments</string>
     <string name="comments">Comments</string>
+    <string name="submission">Submission</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="no_image_found">No Image Found</string>
+    <string name="msg_add_portfolio">Portfolio successfully added</string>
+    <string name="msg_delete_portfolio">Are you sure to delete this portfolio</string>
 
 </resources>

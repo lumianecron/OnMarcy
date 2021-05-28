@@ -72,6 +72,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import model.Category;
 import model.City;
+import model.Portfolio;
 import model.SocialMedia;
 import model.User;
 
@@ -98,6 +99,7 @@ public class ProfileFragment extends Fragment {
     private ArrayList<City> cities = new ArrayList<>();
     private ArrayList<Category> categories = new ArrayList<>();
     private ArrayAdapter<City> adapter;
+    private SocialMedia socialMedia;
     private User user;
     private int code = 0;
     private String cityName = "";
@@ -334,7 +336,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void success(JSONObject jsonObject) {
                 try {
-                    SocialMedia socialMedia = new SocialMedia(jsonObject);
+                    socialMedia = new SocialMedia(jsonObject);
                     tvStatus.setVisibility(View.VISIBLE);
 
                     if (socialMedia.getStatusVerify() == 0) {
@@ -456,11 +458,14 @@ public class ProfileFragment extends Fragment {
 
         if (user.getUserType() == 2) {
             menuItem = menu.findItem(R.id.item_pending_campaign);
-        } else {
+            menuItem.setVisible(false);
+        } else if(user.getUserType() == 1 || socialMedia.getStatusVerify() == 0) {
             menuItem = menu.findItem(R.id.item_your_task);
+            menuItem.setVisible(false);
+            menuItem = menu.findItem(R.id.item_portfolio);
+            menuItem.setVisible(false);
         }
 
-        menuItem.setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -559,6 +564,10 @@ public class ProfileFragment extends Fragment {
                 intent = new Intent(activity, TaskActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.item_portfolio:
+                intent = new Intent(activity, PortfolioActivity.class);
+                intent.putExtra(PortfolioActivity.TAG, socialMedia.getCode());
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
