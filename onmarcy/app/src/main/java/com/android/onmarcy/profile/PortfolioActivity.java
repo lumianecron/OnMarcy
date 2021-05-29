@@ -108,10 +108,14 @@ public class PortfolioActivity extends AppCompatActivity {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
-                intent.putExtra(HomeActivity.TAG, true);
-                startActivity(intent);
-                finishAffinity();
+                if (!isViewOnly) {
+                    Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
+                    intent.putExtra(HomeActivity.TAG, true);
+                    startActivity(intent);
+                    finishAffinity();
+                } else {
+                    finish();
+                }
             }
         };
 
@@ -122,10 +126,14 @@ public class PortfolioActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
-                intent.putExtra(HomeActivity.TAG, true);
-                startActivity(intent);
-                finishAffinity();
+                if (!isViewOnly) {
+                    Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
+                    intent.putExtra(HomeActivity.TAG, true);
+                    startActivity(intent);
+                    finishAffinity();
+                } else {
+                    finish();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
