@@ -145,9 +145,13 @@ public class User {
         this.isActive = isActive;
     }
 
-    public String getPhotoUrl() { return photoUrl; }
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
 
-    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public interface CallbackSelect {
         void success(JSONObject data);
@@ -324,8 +328,8 @@ public class User {
     }
 
     //UPDATE
-    public static void updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
-        new updateBrand(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_brand");
+    public static void updateBrand(Activity activity, String name, String phone, int city, String password, Boolean useLoading, Callback callback) {
+        new updateBrand(activity, name, phone, city, password, useLoading, callback).execute("v1/profile/update_brand");
     }
 
     private static class updateBrand extends AsyncTask<String, Void, String> {
@@ -335,14 +339,16 @@ public class User {
         final String name;
         final String phone;
         final int city;
+        final String password;
 
-        private updateBrand(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        private updateBrand(Activity activity, String name, String phone, int city, String password, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
             this.name = name;
             this.phone = phone;
             this.city = city;
+            this.password = password;
         }
 
         @Override
@@ -356,6 +362,7 @@ public class User {
                 jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
                 jsonObject.put("gender", 1);
+                jsonObject.put("password_new", password);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -388,8 +395,8 @@ public class User {
     }
 
     //UPDATE
-    public static void updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
-        new updateMarketer(activity, name, phone, city, useLoading, callback).execute("v1/profile/update_marketer");
+    public static void updateMarketer(Activity activity, String name, String phone, int city, String password, Boolean useLoading, Callback callback) {
+        new updateMarketer(activity, name, phone, city, password, useLoading, callback).execute("v1/profile/update_marketer");
     }
 
     private static class updateMarketer extends AsyncTask<String, Void, String> {
@@ -399,14 +406,16 @@ public class User {
         final String name;
         final String phone;
         final int city;
+        final String password;
 
-        private updateMarketer(Activity activity, String name, String phone, int city, Boolean useLoading, Callback callback) {
+        private updateMarketer(Activity activity, String name, String phone, int city, String password, Boolean useLoading, Callback callback) {
             this.activity = new WeakReference<>(activity);
             this.callback = callback;
             this.useLoading = useLoading;
             this.name = name;
             this.phone = phone;
             this.city = city;
+            this.password = password;
         }
 
         @Override
@@ -420,6 +429,7 @@ public class User {
                 jsonObject.put("city_code", city);
                 jsonObject.put("name", name);
                 jsonObject.put("gender", 1);
+                jsonObject.put("password_new", password);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -457,7 +467,6 @@ public class User {
     }
 
     private static class verifyEmail extends AsyncTask<String, Void, String> {
-
         final WeakReference<Activity> activity;
         final CallbackSelect callback;
         final Boolean useLoading;

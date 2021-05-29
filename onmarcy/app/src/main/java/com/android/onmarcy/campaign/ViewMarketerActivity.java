@@ -32,7 +32,6 @@ public class ViewMarketerActivity extends AppCompatActivity {
     private TextView tvNotFound;
     private MarketerAdapter marketerAdapter;
     private ArrayList<User> users = new ArrayList<>();
-    private String date = "";
     private int code = 0;
     private ArrayList<Approach> approaches = new ArrayList<>();
     private ProgressBar progressBar;
@@ -108,6 +107,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
 
             @Override
             public void error() {
+                progressBar.setVisibility(View.GONE);
                 setVisibility();
             }
         });

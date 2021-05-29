@@ -364,7 +364,7 @@ public class ProfileFragment extends Fragment {
                         baseCardview.setVisibility(View.VISIBLE);
                         NumberFormat nf = NumberFormat.getInstance();
                         nf.setMaximumFractionDigits(2);
-                        tvScore.setText(nf.format(calculateScore(socialMedia.getTotalFollower(), socialMedia.getTotalFollowing(), socialMedia.getTotalPost(), socialMedia.getTotalComment(), socialMedia.getTotalLike())));
+                        tvScore.setText(nf.format(calculateScore(socialMedia.getTotalFollower(), socialMedia.getTotalPost(), socialMedia.getTotalComment(), socialMedia.getTotalLike())));
 
                         String txtService = "";
                         ArrayList<String> services = new ArrayList<>();
@@ -406,23 +406,16 @@ public class ProfileFragment extends Fragment {
         loadCategory();
     }
 
-    private double calculateScore(int followers, int following, int totalPost, int totalComment, int totalLike) {
-        double followersDivFollowing = (followers + following)/((followers + following)/10);
-        int postCommentLike = totalPost + totalComment + totalLike;
+    private int calculateScore(int followers, int totalPost, int totalComment, int totalLike) {
+        int sum = totalPost + totalComment + totalLike;
+        int pow = String.valueOf(sum).length();
+        int total = 0;
 
-        if(followersDivFollowing < 0){
-            followersDivFollowing *= -1;
+        if(String.valueOf(followers).length() > pow){
+            total = (followers/(10^(pow-1))) + sum;
+        }else{
+            total = followers + sum;
         }
-
-        if (totalLike < totalComment) {
-            postCommentLike = postCommentLike - (totalComment/5);
-        }
-
-        if (totalLike < totalPost) {
-            postCommentLike = postCommentLike - (totalPost/5);
-        }
-
-        double total = postCommentLike / followersDivFollowing;
 
         return total;
     }
@@ -503,7 +496,7 @@ public class ProfileFragment extends Fragment {
                 if (isValid) {
                     if (user.getUserType() == 1) {
                         code = getCode(spCity.getSelectedItem().toString());
-                        User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
+                        User.updateBrand(getActivity(), edtName.getText().toString(), edtPhone.getText().toString(), code, edtPassword.getText().toString(), false, new User.Callback() {
                             @Override
                             public void success() {
                                 update();
@@ -516,7 +509,7 @@ public class ProfileFragment extends Fragment {
                         });
                     } else {
                         code = getCode(spCity.getSelectedItem().toString());
-                        User.updateMarketer(activity, edtName.getText().toString(), edtPhone.getText().toString(), code, false, new User.Callback() {
+                        User.updateMarketer(activity, edtName.getText().toString(), edtPhone.getText().toString(), code, edtPassword.getText().toString(), false, new User.Callback() {
                             @Override
                             public void success() {
                                 update();

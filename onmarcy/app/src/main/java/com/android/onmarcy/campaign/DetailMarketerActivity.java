@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -26,7 +27,7 @@ import model.Campaign;
 import model.SocialMedia;
 
 public class DetailMarketerActivity extends AppCompatActivity {
-    private TextView tvName, tvUser, tvUsername, tvCategory, tvFollowers, tvFollowing, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType;
+    private TextView tvName, tvUser, tvUsername, tvCategory, tvFollowers, tvFollowing, tvTotalPost, tvTotalComment, tvTotalLike, tvMinAge, tvMaxAge, tvMale, tvFemale, tvTimePosting, tvServiceType, tvScore;
     private CircleImageView imageView;
     public static final String EXTRA_USERNAME = "username";
     public static final String EXTRA_NAME = "name";
@@ -68,6 +69,9 @@ public class DetailMarketerActivity extends AppCompatActivity {
                 tvMale.setText(String.valueOf(socialMedia.getMarketMale()));
                 tvFemale.setText(String.valueOf(socialMedia.getMarketFemale()));
                 tvTimePosting.setText(String.valueOf(socialMedia.getTimePosting()));
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setMaximumFractionDigits(2);
+                tvScore.setText(nf.format(calculateScore(socialMedia.getTotalFollower(), socialMedia.getTotalPost(), socialMedia.getTotalComment(), socialMedia.getTotalLike())));
 
                 String txtService = "";
                 ArrayList<String> services = new ArrayList<>();
@@ -96,6 +100,20 @@ public class DetailMarketerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private int calculateScore(int followers, int totalPost, int totalComment, int totalLike) {
+        int sum = totalPost + totalComment + totalLike;
+        int pow = String.valueOf(sum).length();
+        int total = 0;
+
+        if(String.valueOf(followers).length() > pow){
+            total = (followers/(10^(pow-1))) + sum;
+        }else{
+            total = followers + sum;
+        }
+
+        return total;
     }
 
     private void setImage(String img) {
@@ -151,5 +169,6 @@ public class DetailMarketerActivity extends AppCompatActivity {
         tvServiceType = findViewById(R.id.tv_service_type);
         tvCategory = findViewById(R.id.tv_category);
         imageView = findViewById(R.id.image_view);
+        tvScore = findViewById(R.id.tv_score);
     }
 }
