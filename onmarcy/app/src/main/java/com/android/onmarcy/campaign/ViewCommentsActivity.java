@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.android.onmarcy.R;
 
@@ -32,6 +34,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
     private RecyclerView rvComments;
     private int code;
     private MessageAdapter messageAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_comments);
         getSupportActionBar().setTitle(R.string.comments);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressBar = findViewById(R.id.progressBar);
         rvComments = findViewById(R.id.rv_comments);
         rvComments.setHasFixedSize(true);
         rvComments.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +60,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
         Message.select(this, code, new Message.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 messages.clear();
                 for (int i = 0; i < data.length(); i++) {
                     try {
@@ -70,7 +75,7 @@ public class ViewCommentsActivity extends AppCompatActivity {
 
             @Override
             public void error() {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
     private RecyclerView rvCampaign;
     private TextView tvNotFound;
     private TaskAdapter taskAdapter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         getSupportActionBar().setTitle(R.string.your_task);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressBar = findViewById(R.id.progressBar);
         rvCampaign = findViewById(R.id.rv_campaign);
         tvNotFound = findViewById(R.id.tv_not_found);
         rvCampaign.setHasFixedSize(true);
@@ -59,6 +62,7 @@ public class TaskActivity extends AppCompatActivity {
         Campaign.selectMarketerTask(this, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 for (int i = 0; i < data.length(); i++) {
                     try {
                         campaigns.add(new Campaign(data.getJSONObject(i)));
@@ -74,6 +78,7 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void error() {
                 setVisibility();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.android.onmarcy.profile;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,9 +21,11 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.onmarcy.HomeActivity;
 import com.android.onmarcy.PortfolioAdapter;
 import com.android.onmarcy.PreviewActivity2;
 import com.android.onmarcy.R;
@@ -42,6 +45,7 @@ public class PortfolioActivity extends AppCompatActivity {
     public static final String TAG = "code";
     public static final String TAG2 = "view_only";
     private RecyclerView rvPortfolio;
+    private ProgressBar progressBar;
     private FloatingActionButton floatingActionButton;
     private TextView tvNotFound;
     private ArrayList<Portfolio> portfolios = new ArrayList<>();
@@ -64,6 +68,7 @@ public class PortfolioActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.portfolio);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         floatingActionButton = findViewById(R.id.floating_action_button);
+        progressBar = findViewById(R.id.progressBar);
         rvPortfolio = findViewById(R.id.rv_portfolio);
         tvNotFound = findViewById(R.id.tv_not_found);
         rvPortfolio.setHasFixedSize(true);
@@ -71,7 +76,7 @@ public class PortfolioActivity extends AppCompatActivity {
         portfolioAdapter = new PortfolioAdapter(portfolios);
         rvPortfolio.setAdapter(portfolioAdapter);
 
-        if(getIntent().hasExtra(TAG2)){
+        if (getIntent().hasExtra(TAG2)) {
             floatingActionButton.setVisibility(View.GONE);
             isViewOnly = true;
         }
@@ -88,7 +93,7 @@ public class PortfolioActivity extends AppCompatActivity {
             }
         });
 
-        if(getIntent().hasExtra(TAG)){
+        if (getIntent().hasExtra(TAG)) {
             code = getIntent().getIntExtra(TAG, 0);
             getPortfolio();
         }
@@ -100,22 +105,36 @@ public class PortfolioActivity extends AppCompatActivity {
             }
         });
 
-        setVisibility();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
+                intent.putExtra(HomeActivity.TAG, true);
+                startActivity(intent);
+                finishAffinity();
+            }
+        };
+
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                Intent intent = new Intent(PortfolioActivity.this, HomeActivity.class);
+                intent.putExtra(HomeActivity.TAG, true);
+                startActivity(intent);
+                finishAffinity();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void getPortfolio(){
+    private void getPortfolio() {
         Portfolio.select(this, code, new Portfolio.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 portfolios.clear();
                 for (int i = 0; i < data.length(); i++) {
                     try {
@@ -132,15 +151,16 @@ public class PortfolioActivity extends AppCompatActivity {
 
             @Override
             public void error() {
+                progressBar.setVisibility(View.GONE);
                 setVisibility();
             }
         });
     }
 
-    private void setVisibility(){
-        if(portfolios.size() == 0){
+    private void setVisibility() {
+        if (portfolios.size() == 0) {
             tvNotFound.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvNotFound.setVisibility(View.GONE);
         }
     }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
     private String date = "";
     private int code = 0;
     private ArrayList<Approach> approaches = new ArrayList<>();
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class ViewMarketerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_marketer);
         getSupportActionBar().setTitle(R.string.list_marketer);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressBar = findViewById(R.id.progressBar);
         rvMarketer = findViewById(R.id.rv_marketer);
         tvNotFound = findViewById(R.id.tv_not_found);
         rvMarketer.setHasFixedSize(true);
@@ -81,13 +84,13 @@ public class ViewMarketerActivity extends AppCompatActivity {
         });
 
         getMarketer();
-        setVisibility();
     }
 
     private void getMarketer() {
         Campaign.selectUserApproach(this, code, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 for (int i = 0; i < data.length(); i++) {
                     try {
                         User user = new User(data.getJSONObject(i));

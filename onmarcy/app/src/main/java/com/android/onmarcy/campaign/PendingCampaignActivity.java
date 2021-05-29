@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
     private ArrayList<Campaign> campaigns = new ArrayList<>();
     private PendingCampaignAdapter pendingCampaignAdapter;
     private TextView tvNotFound;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pending_campaign);
         getSupportActionBar().setTitle(R.string.pending_campaign);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressBar = findViewById(R.id.progressBar);
         tvNotFound = findViewById(R.id.tv_not_found);
         rvPendingCampaign = findViewById(R.id.rv_pending_campaign);
         rvPendingCampaign.setHasFixedSize(true);
@@ -62,6 +65,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
         Campaign.selectPending(this, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 campaigns.clear();
 
                 for (int i = 0; i < data.length(); i++) {
@@ -83,6 +87,7 @@ public class PendingCampaignActivity extends AppCompatActivity {
 
             @Override
             public void error() {
+                progressBar.setVisibility(View.GONE);
                 tvNotFound.setVisibility(View.VISIBLE);
             }
         });

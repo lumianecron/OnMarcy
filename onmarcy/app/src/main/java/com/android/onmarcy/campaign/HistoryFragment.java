@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class HistoryFragment extends Fragment {
     private ArrayList<Campaign> campaigns = new ArrayList<>();
     private TextView tvNotFound;
     private User user;
+    private ProgressBar progressBar;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -76,6 +78,7 @@ public class HistoryFragment extends Fragment {
             e.printStackTrace();
         }
 
+        progressBar = view.findViewById(R.id.progressBar);
         tvNotFound = view.findViewById(R.id.tv_not_found);
         rvHistory = view.findViewById(R.id.rv_history);
         rvHistory.setHasFixedSize(true);
@@ -129,6 +132,7 @@ public class HistoryFragment extends Fragment {
                     , 0, 0, 0, 0, i, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
                         @Override
                         public void success(JSONArray data) {
+                            progressBar.setVisibility(View.GONE);
                             for (int j = 0; j < data.length(); j++) {
                                 try {
                                     campaigns.add(new Campaign(data.getJSONObject(j)));
@@ -146,6 +150,7 @@ public class HistoryFragment extends Fragment {
 
                         @Override
                         public void error() {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -156,6 +161,7 @@ public class HistoryFragment extends Fragment {
         Campaign.selectCampaignResult(activity, new Campaign.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
+                progressBar.setVisibility(View.GONE);
                 for (int j = 0; j < data.length(); j++) {
                     try {
                         campaigns.add(new Campaign(data.getJSONObject(j)));
@@ -173,6 +179,7 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void error() {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
             }
         });

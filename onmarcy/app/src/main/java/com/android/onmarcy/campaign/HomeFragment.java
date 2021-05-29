@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
     private CampaignAdapter campaignAdapter;
     private User user;
     private TextView tvNotFound;
+    private ProgressBar progressBar;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -100,6 +102,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         floatingActionButton = view.findViewById(R.id.floating_action_button);
+        progressBar = view.findViewById(R.id.progressBar);
         tvNotFound = view.findViewById(R.id.tv_not_found);
         rvCampaign = view.findViewById(R.id.rv_campaign);
         rvCampaign.setHasFixedSize(true);
@@ -209,6 +212,7 @@ public class HomeFragment extends Fragment {
                 , 0, 0, 0, 0, status, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
                     @Override
                     public void success(JSONArray data) {
+                        progressBar.setVisibility(View.GONE);
                         temp.clear();
                         campaigns.clear();
 
@@ -312,6 +316,7 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void error() {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(activity, getString(R.string.fail), Toast.LENGTH_SHORT).show();
                     }
                 });
