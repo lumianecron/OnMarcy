@@ -600,13 +600,14 @@ public class ProfileFragment extends Fragment {
         user.setPhone(edtPhone.getText().toString());
         user.setCityCode(code);
         user.setPhotoUrl(photoURL);
+        user.setCityName(spCity.getSelectedItem().toString());
         Global.setShared(Global.SHARED_INDEX.USER, new Gson().toJson(user));
         HomeActivity homeActivity = (HomeActivity) activity;
         homeActivity.profileFragment();
     }
 
     private void loadCity() {
-        City.select(getActivity(), new City.CallbackSelect() {
+        City.select(activity, new City.CallbackSelect() {
             @Override
             public void success(JSONArray data) {
                 cities.clear();

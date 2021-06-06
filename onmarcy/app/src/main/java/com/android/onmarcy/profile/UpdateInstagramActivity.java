@@ -191,6 +191,13 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                     isValid = false;
                 }
 
+                int max = (!edtMax.getText().toString().equals("")) ? Integer.parseInt(edtMax.getText().toString()) : 0;
+                int min = (!edtMin.getText().toString().equals("")) ? Integer.parseInt(edtMin.getText().toString()) : 0;
+                if (max < min) {
+                    edtMax.setError(getString(R.string.msg_age));
+                    isValid = false;
+                }
+
                 if (isValid) {
                     bioService = (cbBio.isChecked()) ? 1 : 0;
                     postService = (cbPost.isChecked()) ? 1 : 0;
@@ -203,8 +210,8 @@ public class UpdateInstagramActivity extends AppCompatActivity {
                             Integer.parseInt(edtFollowing.getText().toString()),
                             Integer.parseInt(edtTotalComment.getText().toString()),
                             Integer.parseInt(edtTotalLike.getText().toString()),
-                            Integer.parseInt(edtMin.getText().toString()),
-                            Integer.parseInt(edtMax.getText().toString()),
+                            min,
+                            max,
                             Integer.parseInt(edtMale.getText().toString()),
                             Integer.parseInt(edtFemale.getText().toString()),
                             edtTime.getText().toString(),

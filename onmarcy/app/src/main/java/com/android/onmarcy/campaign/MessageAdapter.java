@@ -152,7 +152,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageA
                                     }
                                 } else {
                                     if (diffSeconds == 0) {
-                                        text = " seconds ago";
+                                        text = "few seconds ago";
                                     }
                                 }
 

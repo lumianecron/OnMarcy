@@ -111,6 +111,7 @@ public class HistoryFragment extends Fragment {
             public void showResult(Campaign campaign) {
                 Intent intent = new Intent(activity, ViewResultActivity.class);
                 intent.putExtra(ViewResultActivity.EXTRA_CAMPAIGN, campaign);
+                intent.putExtra(ContentActivity.EXTRA_APPROVAL, true);
                 startActivity(intent);
             }
         });

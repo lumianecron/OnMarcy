@@ -307,7 +307,9 @@ public class HomeFragment extends Fragment {
 
                             @Override
                             public void showResult(Campaign campaign) {
-                                Toast.makeText(activity, "Show Result", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(activity, ViewResultActivity.class);
+                                intent.putExtra(ViewResultActivity.EXTRA_CAMPAIGN, campaign);
+                                startActivity(intent);
                             }
                         });
 
