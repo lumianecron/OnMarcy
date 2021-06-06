@@ -67,6 +67,7 @@ public class HomeFragment extends Fragment {
     private User user;
     private TextView tvNotFound;
     private ProgressBar progressBar;
+    private int approach = 0;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment {
 
         try {
             user = new User(new JSONObject(Global.getShared(Global.SHARED_INDEX.USER, "{}")));
+            approach = (user.getUserType() == 2) ? 1 : 0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -209,7 +211,7 @@ public class HomeFragment extends Fragment {
 
     private void getFilteredCampaign(int status, int lowest, int highest, int year) {
         Campaign.select(getActivity(), "", 0, "", "", "", 0, "", "", "", 0
-                , 0, 0, 0, 0, status, "", "", 0, 10, 0, new Campaign.CallbackSelect() {
+                , 0, 0, 0, 0, status, "", "", 0, 10, approach, new Campaign.CallbackSelect() {
                     @Override
                     public void success(JSONArray data) {
                         progressBar.setVisibility(View.GONE);

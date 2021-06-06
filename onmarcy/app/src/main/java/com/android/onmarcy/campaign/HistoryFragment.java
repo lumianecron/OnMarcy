@@ -142,7 +142,8 @@ public class HistoryFragment extends Fragment {
                                 }
                             }
 
-                            filter();
+//                            filter();
+                            campaignAdapter.notifyDataSetChanged();
 
                             if (campaigns.size() == 0) {
                                 tvNotFound.setVisibility(View.VISIBLE);
@@ -171,7 +172,8 @@ public class HistoryFragment extends Fragment {
                     }
                 }
 
-                filter();
+//                filter();
+                campaignAdapter.notifyDataSetChanged();
 
                 if (campaigns.size() == 0) {
                     tvNotFound.setVisibility(View.VISIBLE);
